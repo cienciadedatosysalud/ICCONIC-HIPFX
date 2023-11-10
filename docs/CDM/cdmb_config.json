@@ -1,0 +1,1077 @@
+{
+    "created_dt": "20231024134617_cdmb",
+    "uuid": "7cfa41e3-91d1-45f1-949c-b0d9532ff1ed",
+    "metadata": {
+        "uuid": "9bbe4394-8e45-4f5d-8899-e85e56ed88a9",
+        "project": "ICCONIC_Hip_Fracture",
+        "funder": "",
+        "url_project": "www.atlasvpm.org",
+        "work_package": "1",
+        "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
+        "document": "Data model specification documenting both individual-level  data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
+        "version_sem": "1.1.1",
+        "authors": [
+            {
+                "name": "Francisco Estupiñán-Romero",
+                "affiliation": "Instituto Aragónes de Ciencias de la Salud",
+                "id": "0000-0002-6285-8120"
+            },
+            {
+                "name": "Natalia Martínez-Lizaga",
+                "affiliation": "Instituto Aragónes de Ciencias de la Salud",
+                "id": "0000-0002-9586-7955"
+            },
+            {
+                "name": "Tania Sawaya",
+                "affiliation": "Brown University School of Public Health",
+                "id": "0000-0003-2358-3029"
+            },
+            {
+                "name": "Irene Papanicolas",
+                "affiliation": "Brown University School of Public Health",
+                "id": "0000-0002-8000-3185"
+            },
+            {
+                "name": "Enrique Bernal-Delgado",
+                "affiliation": "Instituto Aragónes de Ciencias de la Salud",
+                "id": "0000-0002-0961-3298"
+            }
+        ],
+        "keywords": [
+            "indicators",
+            "atlasvpm",
+            "hip fracture"
+        ],
+        "description": "Data model specification documenting both individual-level  data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC. The data model specification includes the cohort definition (shared across the 3 studies), individual-level model specification for each of the 3 studies including data dictionaries and crosswalks for semantic interoperable definition of certain variables (i.e. socioeconomic groups, clinical conditions and comorbidities - (def)). See below some of the conventions used to document this data model",
+        "notes": "0.0.1\tFirst iteration of the common data model specification. Entity and node description based on a previous common data specification model for the study of the asociation of time to hip fracture with increased risk of mortality \n1.0.0\tFirst complete common data model with cohort definition specification including 'main_diagnosis_cd' crosswalks and variable level data dictionary and icd-9-mc/icd-10-mc crosswalks. Socioeconomic variables at the individual level ( 'def_soecon_lvl_cd', 'def_deprivation_lvl_cd') still pending further definition. Variable 'elixhauser_index_nm' pending drop out decision or further specification.\n1.1.0\tDeleted 'deprivation_lvl_cd' and 'elixhauser_index_nm' vars. Responded and resolved all comments from participant partners\n1.1.1\tUpdated 'liver_disease_bl' crosswalk definition as Reijo identified it was wrong (it was identical to 'inflamatory_bowel_disease_bl' definition)\n1.1.3\tUpdated 'anesthesia_type_cd' variable definition to distinguish between 'analgesi",
+        "spatial_coverage": "Study of all persons with a hospital episode (inpatients) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
+        "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/"
+    },
+    "cohort": {
+        "name": "ICCONIC hip fracture (hipfx) persona",
+        "description": "A cohort including all people with a hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture (hipfx)",
+        "inclusion_criteria": "Any person 65 years or older with an unplanned hospital episode (inpatient) with a main diagnosis  ('main_diagnosis_cd') of hip fracture during the study period",
+        "exclusion_criteria": "Any person under 65 years old\nMultiple fractures (polytrauma)\nAdmission from another hospital\n",
+        "beggining_study_period": "2017-01-01",
+        "end_study_period": "2021-12-31",
+        "cohort_definition_inclusion": {
+            "filename": "main_diagnosis.csv",
+            "nature": "Condition",
+            "column_name": "code"
+        },
+        "cohort_definition_exclusion": null
+    },
+    "entities": [
+        {
+            "uuid": "23823707-35e7-4614-9952-685e8afdfbaa",
+            "name": "patient_cohort",
+            "time_varying": false,
+            "variables": [
+                {
+                    "label": "patient_id",
+                    "description": "Pseudoid of the person included in the cohort",
+                    "standard_classification": "UTF-8",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "Calculated/derived from person_id encryption or pseudonym generation algorithm",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "hospitalization_episode_id",
+                    "description": "Pseudoid of the hospitalization episode (inpatient)",
+                    "standard_classification": "UTF-8",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "hospitalization episode here is refered as the hospital admission with a main diagnosis of hip fracture following the 'main_diagnosis_cd' definition and it entails from admission to hospital discharge. ",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "age_nm",
+                    "description": "Age of the person included in the cohort (at the time of entering the cohort)",
+                    "standard_classification": "",
+                    "format": "Integer",
+                    "type": "Numerical",
+                    "units": "years",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "sex_cd",
+                    "description": "Sex of the person included in the cohort (at the time of entering the cohort)",
+                    "standard_classification": "ISO/IEC 5218",
+                    "format": "Integer",
+                    "type": "Categorical",
+                    "units": "years",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO/IEC 5218",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "socecon_lvl_cd",
+                    "description": "Co-payment level",
+                    "standard_classification": "",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Optional",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Statistical information",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "residence_area_cd",
+                    "description": "Area of residence of the person included in the cohort (NUTS 3) (at the time of entering the cohort)",
+                    "standard_classification": "NUTS 2021 codes (or equivalent area regions)",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with NUTS 2021 classification (Eurostat) or equivalent area regions",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "This can be also completed with the zip code of the residence area (pending discussion). We assume a person maintains the same residence area during the whole period of analysis. This can be also equivalent residence area regions or healthcare influence area regions for non-EU countries not included within the NUTS standard",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "country_cd",
+                    "description": "Country of residence of the person included in the cohort (at the time of entering the cohort)",
+                    "standard_classification": "ISO 3166-1 alpha-3",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 3166-1 alpha-3",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "We assume a person maintains the same country during the whole period of analysis",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "hospital_st",
+                    "description": "Pseudoid (name, code, autonumeric or other institutional identification classification) for the hosp",
+                    "standard_classification": "",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "You can provide any code, name or string that helps as differentiate the hospital of admission. ",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "hospital_admission_dt",
+                    "description": "Date of the hospital admission ",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "main_diagnosis_cd",
+                    "description": "Code of main diagnosis at hospital admission ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "surgical_procedure_bl",
+                    "description": "Has the patient undergone a surgical procedure relevant for the study?",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "surgical_procedure_bl.csv"
+                    }
+                },
+                {
+                    "label": "surgical_procedure_dt",
+                    "description": "Date of the surgical procedure",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "surgical_procedure_cd",
+                    "description": "Code of the main surgical procedure relevant for the study (i.e.pinning, parcial replacement, total ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "{total= '0', partial = '1', pinning = '2', other = '3'}",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "surgical_procedure_cd.csv"
+                    }
+                },
+                {
+                    "label": "hospital_discharge_dt",
+                    "description": "Date of the hospital discharge (after surgery)",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "hospital_discharge_type_cd",
+                    "description": "Type of hospital discharge",
+                    "standard_classification": "",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with categories in the validation rules",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "Differentiating between where the patient is discharged to (i.e., home, another hospital, long-term care, etc.) or discharged dead",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "anesthesia_type_cd",
+                    "description": "Type of anesthesia used during the surgical procedure (i.e. locorregional or general)",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Observed",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_anesthesia_cd' tab for further information on how to calculate the type of anesthesia depending on procedure codes",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "anesthesia_type_cd.csv"
+                    }
+                },
+                {
+                    "label": "icu_admission_bl",
+                    "description": "Has been the patient admitted to intensive care unit (ICU)?",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "ifelse('icu_admission_dt' != NA, TRUE, FALSE)",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "icu_admission_dt",
+                    "description": "Date of admission to intensive care unit (ICU)",
+                    "standard_classification": "",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "ifelse(NA, 'icu_admission_bl' == FALSE)",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "icu_discharge_dt",
+                    "description": "Date of discharge from intensive care unit (ICU)",
+                    "standard_classification": "",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601 compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "anticoagulant_status_bl",
+                    "description": "Patient has an anticoagulant prescription before hip fracture hospitalization episode",
+                    "standard_classification": "crosswaks (ATC)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Outpatient prescritions",
+                    "observations_comments": "see 'def_anticoagulant_status_bl' tab for futher information on how to calculate if there is an antecedent of anticoagulant prescription. Patient is considered with 'anticoagulant_status_bl' = TRUE if it has any active prescription of an anticoagulant in the 6 months previous to the hospitalization episode",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "anticoagulant_status_bl.csv"
+                    }
+                },
+                {
+                    "label": "antiagregant_status_bl",
+                    "description": "Patient has an antiagregant prescripcition before hip fracture hospitalization episode",
+                    "standard_classification": "crosswaks (ATC)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Outpatient prescritions",
+                    "observations_comments": "see 'def_antiagregant_status_bl' tab for futher information on how to calculate if there is an antecedent of antiagregant prescription. Patient is considered with 'antiagregant_status_bl' = TRUE if it has any active prescription of an antiagregant in the 6 months previous to the hospitalization episode",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "antiagregant_status_bl.csv"
+                    }
+                },
+                {
+                    "label": "unplanned_readmission_7d_bl",
+                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 7 days after index hospita",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "TRUE if there is an unplanned readmission (for any cause) within the next 7 days after hospital discharge from hip fracture hospitalization episode",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "unplanned_readmission_30d_bl",
+                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 30 days after index hospit",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "TRUE if there is an unplanned readmission (for any cause) within the next 30 days after hospital discharge from hip fracture hospitalization episode",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "exitus_bl",
+                    "description": "Has the patient died during the period of study (2021-12-31)?",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Insurance registry or Health system users database or Hospital inpatient episodes (claims)",
+                    "observations_comments": "ifelse('exitus_dt' != NA, TRUE, FALSE)",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "exitus_dt",
+                    "description": "Date of death of the person (if the person has died)",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Insurance registry or Health system users database or Hospital inpatient episodes (claims)",
+                    "observations_comments": "ifelse(NA, 'exitus_bl' == FALSE)",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "chronic_kidney_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of chronic kidney disease stages 4/5 or dialysis status in the",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_chronic_kidney_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "chronic_kidney_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "tobacco_copd_bl",
+                    "description": "Has the patient a secondary diagnosis of tobacco-related disease or chronic obstructive pulmonary di",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_tobacco_copd_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "tobacco_copd_bl.csv"
+                    }
+                },
+                {
+                    "label": "depression_bl",
+                    "description": "Has the patient a secondary diagnosis of depression in the hospital episode (comorbidity) - or a his",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_depression_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "depression_bl.csv"
+                    }
+                },
+                {
+                    "label": "serious_mental_illness_bl",
+                    "description": "Has the patient a secondary diagnosis of serious mental illness in the hospital episode (comorbidity",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_serious_mental_illness_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "serious_mental_illness_bl.csv"
+                    }
+                },
+                {
+                    "label": "alcohol_abuse_bl",
+                    "description": "Has the patient a secondary diagnosis of alcohol abuse in the hospital episode (comorbidity) - or a ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_alcohol_abuse_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "alcohol_abuse_bl.csv"
+                    }
+                },
+                {
+                    "label": "obesity_overweight_bl",
+                    "description": "Has the patient a secondary diagnosis of obesity/overweight in the hospital episode (comorbidity) - ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_obesity_overweight_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "obesity_overweight_bl.csv"
+                    }
+                },
+                {
+                    "label": "osteoporosis_osteopenia_bl",
+                    "description": "Has the patient a secondary diagnosis of osteoporosis/osteopenia in the hospital episode (comorbidit",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_osteoporosis_osteopenia_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "osteoporosis_osteopenia_bl.csv"
+                    }
+                },
+                {
+                    "label": "dementia_bl",
+                    "description": "Has the patient a secondary diagnosis of dementia in the hospital episode (comorbidity) - or a histo",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_dementia_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "dementia_bl.csv"
+                    }
+                },
+                {
+                    "label": "diabetes_bl",
+                    "description": "Has the patient a secondary diagnosis of diabetes in the hospital episode (comorbidity) - or a histo",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_diabetes_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "diabetes_bl.csv"
+                    }
+                },
+                {
+                    "label": "liver_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of liver disease in the hospital episode (comorbidity) - or a ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_liver_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "liver_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "pancreatic_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of pancreatic disease in the hospital episode (comorbidity) - ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_pancreatic_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "pancreatic_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "inflamatory_bowel_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of inflamatory bowel disease in the hospital episode (comorbid",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_inflamatory_bowel_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "inflamatory_bowel_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "rheumatology_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of rheumatology disease in the hospital episode (comorbidity) ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_rheumatology_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "rheumatology_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "spinal_cord_disease_injury_bl",
+                    "description": "Has the patient a secondary diagnosis of spinal cord disease injury in the hospital episode (comorbi",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_spinal_cord_disease_injury_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "spinal_cord_disease_injury_bl.csv"
+                    }
+                },
+                {
+                    "label": "serious_neurological_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of serious neurological disease in the hospital episode (comor",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_serious_neurological_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "serious_neurological_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "parkinson_huntintong_diseases_bl",
+                    "description": "Has the patient a secondary diagnosis of parkinson huntintong diseases in the hospital episode (como",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_parkinson_huntintong_diseases_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "parkinson_huntintong_diseases_bl.csv"
+                    }
+                },
+                {
+                    "label": "seizure_disorder_convulsions_bl",
+                    "description": "Has the patient a secondary diagnosis of seizure disorder convulsions in the hospital episode (comor",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_seizure_disorder_convulsions_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "seizure_disorder_convulsions_bl.csv"
+                    }
+                },
+                {
+                    "label": "congestive_heart_failure_bl",
+                    "description": "Has the patient a secondary diagnosis of congestive heart failure in the hospital episode (comorbidi",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_congestive_heart_failure_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "congestive_heart_failure_bl.csv"
+                    }
+                },
+                {
+                    "label": "coronary_artery_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of coronary artery disease in the hospital episode (comorbidit",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_coronary_artery_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "coronary_artery_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "cerebrovascular_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of cerebrovascular disease in the hospital episode (comorbidit",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_cerebrovascular_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "cerebrovascular_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "peripheral_vascular_disease_bl",
+                    "description": "Has the patient a secondary diagnosis of peripheral vascular disease in the hospital episode (comorb",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_peripheral_vascular_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "peripheral_vascular_disease_bl.csv"
+                    }
+                },
+                {
+                    "label": "traumatic_brain_injury_bl",
+                    "description": "Has the patient a secondary diagnosis of traumatic brain injury in the hospital episode (comorbidity",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_trumatic_brain_injury_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "traumatic_brain_injury_bl.csv"
+                    }
+                },
+                {
+                    "label": "amputee_bl",
+                    "description": "Has the patient a secondary diagnosis of being an 'amputee' in the hospital episode (comorbidity) - ",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "see 'def_amputee_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "amputee_bl.csv"
+                    }
+                }
+            ],
+            "rules": [
+                {
+                    "expression": "age_nm BETWEEN 5 AND 115",
+                    "name": "age_nm",
+                    "description": "Rule for column age_nm"
+                },
+                {
+                    "expression": "sex_cd IN ('0', '1', '2', '9')",
+                    "name": "sex_cd",
+                    "description": "Rule for column sex_cd"
+                },
+                {
+                    "expression": "socecon_lvl_cd IN ('0', '1', '2', '3', '4', '5', '6', '7', '8')",
+                    "name": "socecon_lvl_cd",
+                    "description": "Rule for column socecon_lvl_cd"
+                },
+                {
+                    "expression": "hospital_admission_dt >= '2017-01-01'",
+                    "name": "hospital_admission_dt",
+                    "description": "Rule for column hospital_admission_dt"
+                },
+                {
+                    "expression": "surgical_procedure_dt >= '2017-01-01'",
+                    "name": "surgical_procedure_dt",
+                    "description": "Rule for column surgical_procedure_dt"
+                },
+                {
+                    "expression": "surgical_procedure_cd IN ('0', '1', '2', '3')",
+                    "name": "surgical_procedure_cd",
+                    "description": "Rule for column surgical_procedure_cd"
+                },
+                {
+                    "expression": "hospital_discharge_dt >= hospital_admission_dt",
+                    "name": "hospital_discharge_dt",
+                    "description": "Rule for column hospital_discharge_dt"
+                },
+                {
+                    "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4')",
+                    "name": "hospital_discharge_type_cd",
+                    "description": "Rule for column hospital_discharge_type_cd"
+                },
+                {
+                    "expression": "icu_admission_dt >= '2017-01-01'",
+                    "name": "icu_admission_dt",
+                    "description": "Rule for column icu_admission_dt"
+                },
+                {
+                    "expression": "icu_discharge_dt >= '2017-01-01'",
+                    "name": "icu_discharge_dt",
+                    "description": "Rule for column icu_discharge_dt"
+                },
+                {
+                    "expression": "exitus_dt >= '2017-01-01'",
+                    "name": "exitus_dt",
+                    "description": "Rule for column exitus_dt"
+                }
+            ]
+        },
+        {
+            "uuid": "2f9d596f-bdfe-4683-86fc-ed777ae83a88",
+            "name": "outpatient_prescription",
+            "time_varying": false,
+            "variables": [
+                {
+                    "label": "patient_id",
+                    "description": "Pseudoid of the person included in the cohort",
+                    "standard_classification": "UTF-8",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Calculated",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Insurance registry or Health system users database or Outpatient electronic prescription registry",
+                    "observations_comments": "Calculated/derived from person_id encryption or pseudonym generation algorithm",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "prescription_atc_cd",
+                    "description": "Outpatient prescription ATC code",
+                    "standard_classification": "ATC",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": true,
+                    "transformations_from_origin": "see 'def_prescription_atc_cd' tab",
+                    "possible_data_source": "Outpatient electronic prescription registry ",
+                    "observations_comments": "See 'def_prescription_atc' tab for futher information on what ATC codes are considerate relevant for the study",
+                    "examples": "",
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "prescription_atc.csv"
+                    }
+                },
+                {
+                    "label": "prescription_start_dt",
+                    "description": "Date of initiation of outpatient prescription",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Outpatient electronic prescription registry ",
+                    "observations_comments": "In case, only available dates are 'dispensing date' or only prescription start date is available for dispensed drugs both dates available are suitable to complete this variable",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "prescription_end_dt",
+                    "description": "Date of end of outpatient prescription",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Outpatient electronic prescription registry ",
+                    "observations_comments": "Please, see the variable is 'Recommended'. In case you have no access or availability to prescrition termination date, you still can participate leaving this variable empty with all registries missing. ",
+                    "examples": "",
+                    "catalog": null
+                }
+            ],
+            "rules": [
+                {
+                    "expression": "prescription_start_dt >= '2017-01-01'",
+                    "name": "prescription_start_dt",
+                    "description": "Rule for column prescription_start_dt"
+                },
+                {
+                    "expression": "prescription_end_dt >= prescription_start_dt",
+                    "name": "prescription_end_dt",
+                    "description": "Rule for column prescription_end_dt"
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "left_entity": "patient_cohort",
+            "right_entity": "outpatient_prescription",
+            "join_type": "LEFT JOIN",
+            "left_column": "patient_id",
+            "right_column": "patient_id"
+        }
+    ]
+}

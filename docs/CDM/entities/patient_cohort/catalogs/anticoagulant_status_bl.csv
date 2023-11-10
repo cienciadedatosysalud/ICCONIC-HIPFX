@@ -1,0 +1,12 @@
+classification_system,code,code_clean,description,type,source
+atc,B01AA07,B01AA07,Acenocumarol,anticoagulant,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AF02,B01AF02,Apixaban,anticoagulant,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AE07,B01AE07,Dabigatran,anticoagulant,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AF04,B01AF04,Edoxaban,anticoagulant,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AF01,B01AF01,Rivaroxaban,anticoagulant,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AA03,B01AA03,Warfarin,anticoagulant,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AB11,B01AB11,Bemiparin,heparin,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AB04,B01AB04,Dalteparin,heparin,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AB05,B01AB05,Enoxaparin,heparin,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AX05,B01AX05,Fondaparinux,heparin,WHO Collaborating Centre for Drug Statistics Methodology
+atc,B01AB10,B01AB10,Tinzaparin,heparin,WHO Collaborating Centre for Drug Statistics Methodology

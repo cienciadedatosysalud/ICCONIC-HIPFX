@@ -1,0 +1,60 @@
+{
+    "description": "The expressions of the different rules follow the syntax of the SQL OLAP database \n        management system called DuckDB. For more information, visit https://duckdb.org/docs/sql/introduction. \n        Keep in mind that you only have to declare as a rule the statement that would follow a WHERE clause. \n        e.g.,  Select * from people WHERE {expression}\n        expression = age >= 18\n        ",
+    "rules": [
+        {
+            "expression": "age_nm BETWEEN 5 AND 115",
+            "name": "age_nm",
+            "description": "Rule for column age_nm"
+        },
+        {
+            "expression": "sex_cd IN ('0', '1', '2', '9')",
+            "name": "sex_cd",
+            "description": "Rule for column sex_cd"
+        },
+        {
+            "expression": "socecon_lvl_cd IN ('0', '1', '2', '3', '4', '5', '6', '7', '8')",
+            "name": "socecon_lvl_cd",
+            "description": "Rule for column socecon_lvl_cd"
+        },
+        {
+            "expression": "hospital_admission_dt >= '2017-01-01'",
+            "name": "hospital_admission_dt",
+            "description": "Rule for column hospital_admission_dt"
+        },
+        {
+            "expression": "surgical_procedure_dt >= '2017-01-01'",
+            "name": "surgical_procedure_dt",
+            "description": "Rule for column surgical_procedure_dt"
+        },
+        {
+            "expression": "surgical_procedure_cd IN ('0', '1', '2', '3')",
+            "name": "surgical_procedure_cd",
+            "description": "Rule for column surgical_procedure_cd"
+        },
+        {
+            "expression": "hospital_discharge_dt >= hospital_admission_dt",
+            "name": "hospital_discharge_dt",
+            "description": "Rule for column hospital_discharge_dt"
+        },
+        {
+            "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4')",
+            "name": "hospital_discharge_type_cd",
+            "description": "Rule for column hospital_discharge_type_cd"
+        },
+        {
+            "expression": "icu_admission_dt >= '2017-01-01'",
+            "name": "icu_admission_dt",
+            "description": "Rule for column icu_admission_dt"
+        },
+        {
+            "expression": "icu_discharge_dt >= '2017-01-01'",
+            "name": "icu_discharge_dt",
+            "description": "Rule for column icu_discharge_dt"
+        },
+        {
+            "expression": "exitus_dt >= '2017-01-01'",
+            "name": "exitus_dt",
+            "description": "Rule for column exitus_dt"
+        }
+    ]
+}
