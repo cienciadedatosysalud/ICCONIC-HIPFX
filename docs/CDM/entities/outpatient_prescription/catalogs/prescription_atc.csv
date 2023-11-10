@@ -1,0 +1,438 @@
+classification_system,code,code_clean,drug_active_agent_desc,drug_category_desc,"deprescription_bl {deprescription = '1', prescription = '2'}",fracture_association_bl
+atc,R03BA01,R03BA01,beclometasone,Inhaled steroids,1.0,1
+atc,R03BA02,R03BA02,budesonide,Inhaled steroids,1.0,1
+atc,R03AK07,R03AK07,budesonide,Inhaled steroids,1.0,1
+atc,R03AL11,R03AL11,budesonide,Inhaled steroids,1.0,1
+atc,R03AK12,R03AK12,budesonide,Inhaled steroids,1.0,1
+atc,H02AB02,H02AB02,dexamethasone,Inhaled steroids,1.0,1
+atc,R03BA03,R03BA03,flunisolide,Inhaled steroids,1.0,1
+atc,R03BA05,R03BA05,fluticasone,Inhaled steroids,1.0,1
+atc,R03BA07,R03BA07,mometasone,Inhaled steroids,1.0,1
+atc,R03BA06,R03BA06,triamcinolone,Inhaled steroids,1.0,1
+atc,R03BA08,R03BA08,ciclesonide,Inhaled steroids,1.0,1
+atc,A07EA04 ,A07EA04 ,betamethasone,Oral Steroids,1.0,1
+atc,H02AB01 ,H02AB01 ,betamethasone,Oral Steroids,,1
+atc,R03BA02,R03BA02,budesonide,Oral Steroids,1.0,1
+atc,H02AB10 ,H02AB10 ,cortisone,Oral Steroids,1.0,1
+atc,H02AB02,H02AB02,dexamethasone,Oral Steroids,1.0,1
+atc,H02AA02 ,H02AA02 ,fludrocortisone,Oral Steroids,1.0,1
+atc,A01AC03 ,A01AC03 ,hydrocortisone,Oral Steroids,1.0,1
+atc,H02AB04,H02AB04,methylprednisolone,Oral Steroids,1.0,1
+atc,H02BX01,H02BX01,methylprednisolone,Oral Steroids,,1
+atc,H02AB06,H02AB06,prednisolone,Oral Steroids,,1
+atc,H02AB07,H02AB07,prednisone,Oral Steroids,1.0,1
+atc,H02AB08,H02AB08,triamcinolone,Oral Steroids,1.0,1
+atc,A02BC06 ,A02BC06 ,dexlansoprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC05,A02BC05,esomeprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC03 ,A02BC03 ,lansoprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC53 ,A02BC53 ,lansoprazole,Proton Pump Inhibitors,,1
+atc,A02BC01 ,A02BC01 ,omeprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC02 ,A02BC02 ,pantoprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC04,A02BC04,rabeprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC54,A02BC54,rabeprazole,Proton Pump Inhibitors,,1
+atc,A02BA01,A02BA01,cimetidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,1.0,1
+atc,A02BA51,A02BA51,cimetidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,,1
+atc,A02BA03,A02BA03,famotidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,1.0,1
+atc,A02BA53,A02BA53,famotidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,,1
+atc,A02BA04,A02BA04,nizatidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,1.0,1
+atc,A02BA02,A02BA02,ranitidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,1.0,1
+atc,A02BA07,A02BA07,ranitidine bismuth citrate,H2 Antagonists/ Histamine 2 Receptor Antagonists,1.0,1
+atc,N06BB04,N06BB04,citalopram,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AX23,N06AX23,desvenlafaxine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06BB10,N06BB10,escitalopram,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06BB03,N06BB03,fluoxetine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06CA03,N06CA03,fluoxetine and psycholeptics,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,,1
+atc,N06BB08,N06BB08,fluvoxamine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AB05,N06AB05,paroxetine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AB06,N06AB06,sertraline,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AX16,N06AX16,venlafaxine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AX26,N06AX26,vortioxetine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AX28,N06AX28,levomilnacipran,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AX17,N06AX17,milnacipran,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AX21,N06AX21,duloxetine,SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,1.0,1
+atc,N06AA09,N06AA09,amitriptyline,Tricyclic Antidepressants,1.0,1
+atc,N06CA01,N06CA01,amitriptyline and psycholeptics,Tricyclic Antidepressants,,1
+atc,N06AA17,N06AA17,amoxapine,Tricyclic Antidepressants,1.0,1
+atc,N06AA04,N06AA04,clomipramine,Tricyclic Antidepressants,1.0,1
+atc,N06AA01,N06AA01,desipramine,Tricyclic Antidepressants,1.0,1
+atc,N06AA02,N06AA02,imipramine,Tricyclic Antidepressants,1.0,1
+atc,N06AA03,N06AA03,imipramine oxide,Tricyclic Antidepressants,,1
+atc,N06AA10,N06AA10,nortriptyline,Tricyclic Antidepressants,1.0,1
+atc,N06AA11,N06AA11,protriptyline,Tricyclic Antidepressants,1.0,1
+atc,N06AA06,N06AA06,trimipramine,Tricyclic Antidepressants,1.0,1
+atc,N06AA12,N06AA12,doxepin,Tricyclic Antidepressants,1.0,1
+atc,A10BG03,A10BG03,pioglitazone,Thiazolidinediones,1.0,1
+atc,A10BD09,A10BD09,pioglitazone and alogliptin,Thiazolidinediones,,1
+atc,A10BD12,A10BD12,pioglitazone and sitagliptin,Thiazolidinediones,,1
+atc,A10BD05,A10BD05,metformin and pioglitazone,Thiazolidinediones,,1
+atc,A10BD06,A10BD06,glimepiride and pioglitazone,Thiazolidinediones,,1
+atc,A10BG02,A10BG02,rosiglitazone,Thiazolidinediones,1.0,1
+atc,A10BD03,A10BD03,metformin and rosiglitazone,Thiazolidinediones,,1
+atc,A10BD04,A10BD04,glimepiride and rosiglitazone,Thiazolidinediones,,1
+atc,N03AX10,N03AX10,felbamate,Anticonvulsants,1.0,1
+atc,N03AG06,N03AG06,tiagabine,Anticonvulsants,1.0,1
+atc,N03AX11,N03AX11,topiramate,Anticonvulsants,1.0,1
+atc,A08AA51,A08AA51,phentermine and topiramate,Anticonvulsants,,1
+atc,N03AG04,N03AG04,vigabatrin,Anticonvulsants,1.0,1
+atc,N03AG01,N03AG01,valproate (valproic acid),Anticonvulsants,1.0,1
+atc,N03AF01,N03AF01,carbamazepine,Anticonvulsants,1.0,1
+atc,N03AF04,N03AF04,eslicarbazepine,Anticonvulsants,1.0,1
+atc,N03AD01,N03AD01,ethosuximide,Anticonvulsants,1.0,1
+atc,N03AD51,N03AD51,ethosuximide,Anticonvulsants,,1
+atc,N03AB01,N03AB01,ethotoin,Anticonvulsants,1.0,1
+atc,N03AX21,N03AX21,ezogabine (also retigabine),Anticonvulsants,1.0,1
+atc,N03AB05,N03AB05,fosphenytoin,Anticonvulsants,1.0,1
+atc,N02BF01,N02BF01,gabapentin,Gapapentinoids N02BF,1.0,1
+atc,N03AX18,N03AX18,lacosamide,Gapapentinoids N02BF,1.0,1
+atc,N03AX09,N03AX09,lamotrigine,Gapapentinoids N02BF,1.0,1
+atc,N03AX14,N03AX14,levetiracetam,Gapapentinoids N02BF,1.0,1
+atc,N03AB04,N03AB04,mephenytoin,Gapapentinoids N02BF,1.0,1
+atc,N03AB54,N03AB54,mephenytoin,Gapapentinoids N02BF,,1
+atc,N03AD03,N03AD03,methsuximide,Gapapentinoids N02BF,1.0,1
+atc,N03AF02,N03AF02,oxcarbazepine,Gapapentinoids N02BF,1.0,1
+atc,N03AX22,N03AX22,perampanel,Gapapentinoids N02BF,1.0,1
+atc,N03AD02,N03AD02,phensuximide,Gapapentinoids N02BF,1.0,1
+atc,N03AB02,N03AB02,phenytoin,Gapapentinoids N02BF,1.0,1
+atc,N03AB52,N03AB52,phenytoin,Gapapentinoids N02BF,,1
+atc,N02BF02,N02BF02,pregabalin,Gapapentinoids N02BF,1.0,1
+atc,N03AF03,N03AF03,rufinamide,Gapapentinoids N02BF,1.0,1
+atc,N03AX15,N03AX15,zonisamide,Gapapentinoids N02BF,1.0,1
+atc,N05BA12,N05BA12,alprazolam,Benzodiazepines,1.0,1
+atc,N05BA02,N05BA02,chlordiazepoxide,Benzodiazepines,1.0,1
+atc,N05BA09,N05BA09,clobazam,Benzodiazepines,1.0,1
+atc,N03AE01,N03AE01,clonazepam,Benzodiazepines,1.0,1
+atc,N05BA05,N05BA05,clorazepate (potassium),Benzodiazepines,1.0,1
+atc,N05BA01,N05BA01,diazepam,Benzodiazepines,1.0,1
+atc,N05CD04,N05CD04,estazolam,Benzodiazepines,1.0,1
+atc,N05CD01,N05CD01,flurazepam,Benzodiazepines,1.0,1
+atc,N05BA13,N05BA13,halazepam,Benzodiazepines,1.0,1
+atc,N05BA06,N05BA06,lorazepam,Benzodiazepines,1.0,1
+atc,N05BA56,N05BA56,lorazepam,Benzodiazepines,,1
+atc,N05CD08,N05CD08,midazolam,Benzodiazepines,1.0,1
+atc,N05BA04,N05BA04,oxazepam,Benzodiazepines,1.0,1
+atc,N05BA11,N05BA11,prazepam,Benzodiazepines,1.0,1
+atc,N05CD10,N05CD10,quazepam,Benzodiazepines,1.0,1
+atc,N05CD07,N05CD07,temazepam,Benzodiazepines,1.0,1
+atc,N05CD05,N05CD05,triazolam,Benzodiazepines,1.0,1
+atc,N05CA03,N05CA03,butabarbital,Barbiturates,1.0,1
+atc,N05CA,N05CA,butalbital,Barbiturates,1.0,1
+atc,N03AA01,N03AA01,mephobarbital (methylphenobarbital),Barbiturates,1.0,1
+atc,N05CA01,N05CA01,pentobarbital,Barbiturates,1.0,1
+atc,N03AA02,N03AA02,phenobarbital,Barbiturates,1.0,1
+atc,N05CA06,N05CA06,secobarbital,Barbiturates,1.0,1
+atc,N03AA03,N03AA03,primidone,Barbiturates,1.0,1
+atc,N01AH02,N01AH02,alfentanil,Opioids,1.0,1
+atc,N02AF01,N02AF01,butorphanol,Opioids,1.0,1
+atc,R05DA04,R05DA04,codeine,Opioids,1.0,1
+atc,N02AJ07,N02AJ07,codeine and acetylsalicylic acid,Opioids,,1
+atc,N02AJ08,N02AJ08,codeine and ibuprofen,Opioids,,1
+atc,N02AJ09,N02AJ09,codeine and other non-opioid analgesics,Opioids,,1
+atc,N02AJ06,N02AJ06,codeine and paracetamol,Opioids,,1
+atc,N02AA59,N02AA59,"codeine, combinations excl. psycholeptics",Opioids,,1
+atc,N02AA79,N02AA79,"codeine, combinations with psycholeptics",Opioids,,1
+atc,N02AX03,N02AX03,dezocine,Opioids,1.0,1
+atc,N02AA08,N02AA08,dihydrocodeine,Opioids,1.0,1
+atc,N02AJ02,N02AJ02,dihydrocodeine and acetylsalicylic acid,Opioids,,1
+atc,N02AJ03,N02AJ03,dihydrocodeine and other non-opioid analgesics,Opioids,,1
+atc,N02AJ01,N02AJ01,dihydrocodeine and paracetamol,Opioids,,1
+atc,N02AA58,N02AA58,"dihydrocodeine, combinations",Opioids,,1
+atc,N02AB03,N02AB03,fentanyl,Opioids,1.0,1
+atc,N01AH01,N01AH01,fentanyl,Opioids,,1
+atc,N01AH51,N01AH51,fentanyl,Opioids,,1
+atc,R05DA03,R05DA03,hydrocodone,Opioids,1.0,1
+atc,N02AA03,N02AA03,hydromorphone,Opioids,1.0,1
+atc,N02AG04,N02AG04,hydromorphone and antispasmodics,Opioids,,1
+atc,N02AA53,N02AA53,hydromorphone and naloxone,Opioids,,1
+atc,N02AB02,N02AB02,meperidine,Opioids,1.0,1
+atc,N07BC02,N02AB02,acetyldihydrocodeine,Opioids,1.0,1
+atc,N02AC52,N02AC52,"methadone, combinations excl. psycholeptics",Opioids,,1
+atc,N02AA01,N02AA01,morphine,Opioids,1.0,1
+atc,N02AG01,N02AG01,morphine and antispasmodics,Opioids,,1
+atc,A07DA52,A07DA52,"morphine, combinations",Opioids,,1
+atc,N02AA51,N02AA51,"morphine, combinations",Opioids,,1
+atc,N02AA01,N02AA01,morphine liposomal,Opioids,1.0,1
+atc,N02AF02,N02AF02,nalbuphine,Opioids,1.0,1
+atc,N02AA02,N02AA02,opium,Opioids,1.0,1
+atc,A07DA02,A07DA02,opium,Opioids,,1
+atc,R05DA05,R05DA05,opium alkaloids with morphine,Opioids,,1
+atc,R05FA02,R05FA02,opium derivatives and expectorants,Opioids,,1
+atc,R05FA01,R05FA01,opium derivatives and mucolytics,Opioids,,1
+atc,N02AA05,N02AA05,oxycodone,Opioids,1.0,1
+atc,N02AJ18,N02AJ18,oxycodone and acetylsalicylic acid,Opioids,,1
+atc,N02AJ19,N02AJ19,oxycodone and ibuprofen,Opioids,,1
+atc,N02AA55,N02AA55,oxycodone and naloxone,Opioids,,1
+atc,N02AA56,N02AA56,oxycodone and naltrexone,Opioids,,1
+atc,N02AJ17,N02AJ17,oxycodone and paracetamol,Opioids,,1
+atc,N02AA11,N02AA11,oxymorphone,Opioids,1.0,1
+atc,A07DA02,A07DA02,paregoric (camphorated tincture of opium),Opioids,1.0,1
+atc,N02AD01,N02AD01,pentazocine,Opioids,1.0,1
+atc,N02AC04,N02AC04,dextropropoxyphene,Opioids,1.0,1
+atc,N02AC54,N02AC54,"dextropropoxyphene, combinations excl. psycholeptics",Opioids,,1
+atc,N02AC74,N02AC74,"dextropropoxyphene, combinations with psycholeptics",Opioids,,1
+atc,N01AH06,N01AH06,remifentanil,Opioids,1.0,1
+atc,N01AH03,N01AH03,sufentanil,Opioids,1.0,1
+atc,N02AX06,N02AX06,tapentadol,Opioids,1.0,1
+atc,N02AX02,N02AX02,tramadol,Opioids,1.0,1
+atc,N02AJ16,N02AJ16,tramadol and celecoxib,Opioids,,1
+atc,N02AJ14,N02AJ14,tramadol and dexketoprofen,Opioids,,1
+atc,N02AJ15,N02AJ15,tramadol and other non-opioid analgesics,Opioids,,1
+atc,N02AJ13,N02AJ13,tramadol and paracetamol,Opioids,,1
+atc,A06AH04,A06AH04,naloxone,Opioids,1.0,1
+atc,V03AB15,V03AB15,naloxone,Opioids,,1
+atc,N02AX51,N02AX51,tilidine and naloxone,Opioids,,1
+atc,N02AE01,N02AE01,buprenorphine,Opioids,1.0,1
+atc,N07BC01,N07BC01,buprenorphine,Opioids,,1
+atc,N07BC51,N07BC51,buprenorphine,Opioids,,1
+atc,N05BC01,N05BC01,meprobamate,Muscle relaxers,1.0,1
+atc,N05BC51,N05BC51,,Muscle relaxers,,1
+atc,N05CX01,N05CX01,,Muscle relaxers,,1
+atc,M03BA03,M03BA03,methocarbamol,Muscle relaxers,1.0,1
+atc,M03BA53,M03BA53,,Muscle relaxers,,1
+atc,M03BA73,M03BA73,,Muscle relaxers,,1
+atc,M03BA02,M03BA02,carisoprodol,Muscle relaxers,1.0,1
+atc,M03BA52,M03BA52,,Muscle relaxers,,1
+atc,M03BA72,M03BA72,,Muscle relaxers,,1
+atc,R06AX09,R06AX09,azatadine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB01,R06AB01,bromodiphenhydramine (brompheniramine),1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB01,R06AB01,brompheniramine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB51,R06AB51,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AA08,R06AA08,carbinoxamine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AE04,R06AE04,chlorcyclizine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB02,R06AB02,chlorpheniramine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB52,R06AB52,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AA04,R06AA04,clemastine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AA54,R06AA54,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AE03,R06AE03,cyclizine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AE53,R06AE53,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AX02,R06AX02,cyproheptadine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB06,R06AB06,dexbrompheniramine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB06,R06AB06,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AB02,R06AB02,dexchlorpheniramine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB52,R06AB52,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AA11,R06AA11,dimenhydrinate,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AA61,R06AA61,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AA02,R06AA02,diphenhydramine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AA52,R06AA52,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AA09,R06AA09,doxylamine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AA59,R06AA59,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,N05BB01,N05BB01,hydroxyzine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,N05BB51,N05BB51,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AE05,R06AE05,meclozine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AB05,R06AB05,pheniramine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AD02,R06AD02,promethazine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AD52,R06AD52,,1st Generation Antihistamines/ H1 Receptor Antagonists,,1
+atc,R06AC01,R06AC01,pyrilamine (mepyramine),1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AX07,R06AX07,triprolidine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,R06AC01,R06AC01,triethylperazine,1st Generation Antihistamines/ H1 Receptor Antagonists,1.0,1
+atc,N04BB01,N04BB01,amantadine,Anti- Parkinson's Disease,1.0,1
+atc,N04BC07,N04BC07,apomorphine,Anti- Parkinson's Disease,1.0,1
+atc,N04BC01,N04BC01,bromocriptine,Anti- Parkinson's Disease,1.0,1
+atc,N04BC06,N04BC06,cabergoline,Anti- Parkinson's Disease,1.0,1
+atc,NO4BA01,NO4BA01,carbidopa combination with levodopa,Anti- Parkinson's Disease,1.0,1
+atc,N04BA02,N04BA02,carbidopa,Anti- Parkinson's Disease,1.0,1
+atc,N04BX02,N04BX02,entacapone,Anti- Parkinson's Disease,1.0,1
+atc,N04BA01,N04BA01,levodopa,Anti- Parkinson's Disease,1.0,1
+atc,N04BA02,N04BA02,,Anti- Parkinson's Disease,,1
+atc,N04BA03,N04BA03,,Anti- Parkinson's Disease,,1
+atc,N04BC02,N04BC02,pergolide,Anti- Parkinson's Disease,1.0,1
+atc,N04BC05,N04BC05,pramipexole,Anti- Parkinson's Disease,1.0,1
+atc,N04BD02,N04BD02,rasagiline,Anti- Parkinson's Disease,1.0,1
+atc,N04BC04,N04BC04,ropinirole,Anti- Parkinson's Disease,1.0,1
+atc,N04BC09,N04BC09,rotigotine,Anti- Parkinson's Disease,1.0,1
+atc,N04BD01,N04BD01,selegiline,Anti- Parkinson's Disease,1.0,1
+atc,N04BX01,N04BX01,tolcapone,Anti- Parkinson's Disease,1.0,1
+atc,N04BC03,N04BC03,dihydroergocryptine,Anti- Parkinson's Disease,1.0,1
+atc,N04AC01,N04AC01,benzatropine,Anti- Parkinson's Disease,1.0,1
+atc,N04AA02,N04AA02,biperiden,Anti- Parkinson's Disease,1.0,1
+atc,N04AB02,N04AB02,orphenadrine,Anti- Parkinson's Disease,1.0,1
+atc,M03BC01,M03BC01,,Anti- Parkinson's Disease,,1
+atc,M03BC51,M03BC51,,Anti- Parkinson's Disease,,1
+atc,N04AA04,N04AA04,procyclidine,Anti- Parkinson's Disease,1.0,1
+atc,N04AA01,N04AA01,trihexyphenidyl,Anti- Parkinson's Disease,1.0,1
+atc,N04AA05,N04AA05,profenamine,Anti- Parkinson's Disease,1.0,1
+atc,C02AC01,C02AC01,clonidine,Centrally-Acting Antihypertensives,1.0,1
+atc,N02CX02,N02CX02,,Centrally-Acting Antihypertensives,,1
+atc,C02LC01,C02LC01,clonidine and diuretics,Centrally-Acting Antihypertensives,,1
+atc,C02LC51,C02LC51,"clonidine and diuretics, combinations with other drugs",Centrally-Acting Antihypertensives,,1
+atc,C02AC02,C02AC02,guanfacine,Centrally-Acting Antihypertensives,1.0,1
+atc,C02AB,C02AB,methyldopa,Centrally-Acting Antihypertensives,1.0,1
+atc,M03BX02,M03BX02,tizanidine,Centrally-Acting Antihypertensives,1.0,1
+atc,N05AA01,N05AA01,chlorpromazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AD08,N05AD08,droperidol,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AB02,N05AB02,fluphenazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AD01,N05AD01,haloperidol,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AH01,N05AH01,loxapine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AC03,N05AC03,mesoridazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AA02,N05AA02,methotrimeprazine (levomepromazine),1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AE02,N05AE02,molindone,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AB03,N05AB03,perphenazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AG02,N05AG02,pimozide,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AB04,N05AB04,prochlorperazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AC02,N05AC02,thioridazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AF04,N05AF04,thiothixene,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AB06,N05AB06,trifluoperazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AA05,N05AA05,triflupromazine,1st-Generation Antipsychotics (FGAP),1.0,1
+atc,N05AX12,N05AX12,aripiprazole,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AH05,N05AH05,asenapine,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AH02,N05AH02,clozapine,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AX14,N05AX14,iloperidone,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AE05,N05AE05,lurasidone,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AH03,N05AH03,olanzapine,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AH53,N05AH53,olanzapine and samidorphan,2nd-Generation Antipsychotics (SGAP),,1
+atc,N05AX13,N05AX13,paliperidone,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AH04,N05AH04,quetiapine,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AX08,N05AX08,risperidone,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AE04,N05AE04,ziprasidone,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AX16,N05AX16,brexpiprazole,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AX15,N05AX15,cariprazine,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,N05AX17,N05AX17,pimavanserin,2nd-Generation Antipsychotics (SGAP),1.0,1
+atc,C01DA63,C01DA63,erythrityl tetranitrate,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",1.0,1
+atc,A06AD14,A06AD14,pentaerythritol,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",1.0,1
+atc,C01DA02,C01DA02,nitroglycerin,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",1.0,1
+atc,C01DA08,C01DA08,isosorbide dinitrate,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",1.0,1
+atc,C05AE02,C05AE02,,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",,1
+atc,C01DA58,C01DA58,,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",,1
+atc,C01DA14,C01DA14,isosorbide mononitrate,"Nitrates* (do not include sublingual tablets, oral and transdermal only)",1.0,1
+atc,C03CA02,C03CA02,bumetanide,Loop Diuretics,1.0,1
+atc,C03CB02,C03CB02,,Loop Diuretics,,1
+atc,C03EB02,C03EB02,,Loop Diuretics,,1
+atc,C03CA01,C03CA01,furosemide,Loop Diuretics,1.0,1
+atc,C03CB01,C03CB01,,Loop Diuretics,,1
+atc,C03EB01,C03EB01,,Loop Diuretics,,1
+atc,C03CA04,C03CA04,torasemide,Loop Diuretics,1.0,1
+atc,C03CC01,C03CC01,ethacrynic acid,Loop Diuretics,1.0,1
+atc,C03AA01,C03AA01,bendroflumethiazide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03AB01,C03AB01,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03EA13,C03EA13,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03AA04,C03AA04,chlorothiazide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03AB04,C03AB04,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03AH01,C03AH01,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03BA04,C03BA04,chlorthalidone,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03AA03,C03AA03,hydrochlorothiazide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03AB03,C03AB03,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03EA01,C03EA01,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03AX01,C03AX01,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09DX07,C09DX07,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09DX03,C09DX03,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09BX03,C09BX03,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09DX08,C09DX08,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09DX01,C09DX01,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09XA52,C09XA52,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09XA54,C09XA54,,Thiazide and Thiazide-like Diuretics,,1
+atc,C09DX06,C09DX06,,Thiazide and Thiazide-like Diuretics,,1
+atc,C03BA11,C03BA11,indapamide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C09BX01,C09BX01,"perindopril, amlodipine and indapamide",Thiazide and Thiazide-like Diuretics,,1
+atc,C10BX13,C10BX13,"rosuvastatin, perindopril and indapamide",Thiazide and Thiazide-like Diuretics,,1
+atc,C03AA08,C03AA08,methyclothiazide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03AB08,C03AB08,methyclothiazide and potassium,Thiazide and Thiazide-like Diuretics,,1
+atc,C03BA08,C03BA08,metolazone,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03EA12,C03EA12,metolazone and potassium-sparing agents,Thiazide and Thiazide-like Diuretics,,1
+atc,C03AA05,C03AA05,polythiazide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,C03AB05,C03AB05,polythiazide and potassium,Thiazide and Thiazide-like Diuretics,,1
+atc,G01AE10,G01AE10,benzthiazide,Thiazide and Thiazide-like Diuretics,1.0,1
+atc,N05CM04,N05CM04,acetylcarbromal (carbromal),Sedative Hypnotics,1.0,1
+atc,N05BE01,N05BE01,busPIRone,Sedative Hypnotics,1.0,1
+atc,N05CC01,N05CC01,chloral hydrate,Sedative Hypnotics,1.0,1
+atc,M03BB02,M03BB02,chlormezanone,Sedative Hypnotics,1.0,1
+atc,M03BB52,M03BB52,,Sedative Hypnotics,,1
+atc,M03BB72,M03BB72,,Sedative Hypnotics,,1
+atc,N06AA12,N06AA12,doxepin,Sedative Hypnotics,1.0,1
+atc,R06AA09,R06AA09,doxylamine,Sedative Hypnotics,1.0,1
+atc,R06AA59,R06AA59,,Sedative Hypnotics,,1
+atc,N05CM08,N05CM08,ethchlorvynol,Sedative Hypnotics,1.0,1
+atc,N05BB01,N05BB01,hydrOXYzine,Sedative Hypnotics,1.0,1
+atc,N05BB51,N05BB51,,Sedative Hypnotics,,1
+atc,N05CH01,N05CH01,melatonin,Sedative Hypnotics,1.0,1
+atc,N05BC01,N05BC01,meprobamate,Sedative Hypnotics,1.0,1
+atc,N05BC51,N05BC51,,Sedative Hypnotics,,1
+atc,N05CX01,N05CX01,,Sedative Hypnotics,,1
+atc,N05CC05,N05CC05,paraldehyde,Sedative Hypnotics,1.0,1
+atc,R06AC01,R06AC01,pyrilamine (also mepyramine),Sedative Hypnotics,1.0,1
+atc,N05CH02,N05CH02,ramelteon,Sedative Hypnotics,1.0,1
+atc,N07XX04,N07XX04,sodium oxybate,Sedative Hypnotics,1.0,1
+atc,N05CH03,N05CH03,tasimelteon,Sedative Hypnotics,1.0,1
+atc,N05CC04,N05CC04,dichloralphenazone,Sedative Hypnotics,1.0,1
+atc,N05CM19,N05CM19,suvorexant,Sedative Hypnotics,1.0,1
+atc,N05CF04,N05CF04,eszopiclone,Sedative Hypnotics,1.0,1
+atc,N05CF03,N05CF03,zaleplon,Sedative Hypnotics,1.0,1
+atc,N05CF02,N05CF02,zolpidem,Sedative Hypnotics,1.0,1
+atc,N05CF01,N05CF01,zopiclone,Sedative Hypnotics,1.0,1
+atc,G03CA03,G03CA03,estradiol,Systemic Estrogens,2.0,0
+atc,G03CA07,G03CA07,estropipate,Systemic Estrogens,2.0,0
+atc,G03CA07,G03CA07,estrone,Systemic Estrogens,2.0,0
+atc,G03CA01,G03CA01,ethinyl estradiol,Systemic Estrogens,2.0,0
+atc,G03CA04,G03CA04,estriol,Systemic Estrogens,2.0,0
+atc,M05BA04,M05BA04,alendronate,Bisphosphonates,2.0,0
+atc,M05BB06,M05BB06,"alendronic acid and alfacalcidol, sequential",Bisphosphonates,,0
+atc,M05BB03,M05BB03,alendronic acid and colecalciferol,Bisphosphonates,,0
+atc,M05BB05,M05BB05,"alendronic acid, calcium and colecalciferol, sequential",Bisphosphonates,,0
+atc,M05BA01,M05BA01,etidronate,Bisphosphonates,2.0,0
+atc,M05BB01,M05BB01,"etidronic acid and calcium, sequential",Bisphosphonates,,0
+atc,M05BA06,M05BA06,ibandronate,Bisphosphonates,2.0,0
+atc,M05BB09,M05BB09,ibandronic acid and colecalciferol,Bisphosphonates,,0
+atc,M05BA07,M05BA07,risedronate,Bisphosphonates,2.0,0
+atc,M05BB02,M05BB02,"risedronic acid and calcium, sequential",Bisphosphonates,,0
+atc,M05BB07,M05BB07,risedronic acid and colecalciferol,Bisphosphonates,,0
+atc,M05BB04,M05BB04,"risedronic acid, calcium and colecalciferol, sequential",Bisphosphonates,,0
+atc,M05BA05,M05BA05,tiludronate,Bisphosphonates,2.0,0
+atc,M05BA08,M05BA08,zoledronate,Bisphosphonates,2.0,0
+atc,M05BB08,M05BB08,"zoledronic acid, calcium and colecalciferol, sequential",Bisphosphonates,,0
+atc,M05BA06,M05BA06,ibandronate,Bisphosphonates,2.0,0
+atc,M05BB09,M05BB09,ibandronic acid and colecalciferol,Bisphosphonates,,0
+atc,M05BA03,M05BA03,pamidronate,Bisphosphonates,2.0,0
+atc,H05BA,H05BA,calcitonin,Calcitonin,2.0,0
+atc,H05BA03,H05BA03,"calcitonin, human",Calcitonin,2.0,0
+atc,M05BX04,M05BX04,denosumab,Monoclonal Antibiody (RANK L),2.0,0
+atc,H05AA02,H05AA02,teriparatide,Parathyroid Hormone (PTH),2.0,0
+atc,G03XC01,G03XC01,raloxifene,Selective Estrogen Receptor Modulators,2.0,0
+atc,G03XC03,G03XC03,lasofoxifene,Selective Estrogen Receptor Modulators,2.0,0
+atc,G03XC05,G03XC05,ospemifene,Selective Estrogen Receptor Modulators,2.0,0
+atc,G03XC02,G03XC02,bazedoxifene,Selective Estrogen Receptor Modulators,2.0,0
+atc,G03CC07,G03CC07,conjugated estrogens and bazedoxifene,Selective Estrogen Receptor Modulators,,0
+atc,L02BA01,L02BA01,tamoxifen,Selective Estrogen Receptor Modulators,2.0,0
+atc,C07AB04,C07AB04,acebutolol,Beta Blockers,2.0,0
+atc,C07BB04,C07BB04,acebutolol and thiazides,Beta Blockers,,0
+atc,C07AB03,C07AB03,atenolol,Beta Blockers,2.0,0
+atc,C07FB03,C07FB03,atenolol and nifedipine,Beta Blockers,,0
+atc,C07CB03,C07CB03,atenolol and other diuretics,Beta Blockers,,0
+atc,C07CB53,C07CB53,"atenolol and other diuretics, combinations",Beta Blockers,,0
+atc,C07BB03,C07BB03,atenolol and thiazides,Beta Blockers,,0
+atc,C07DB01,C07DB01,"atenolol, thiazides and other diuretics",Beta Blockers,,0
+atc,C07AB05,C07AB05,betaxolol,Beta Blockers,2.0,0
+atc,C07AB07,C07AB07,bisoprolol,Beta Blockers,2.0,0
+atc,C07FX04,C07FX04,bisoprolol and acetylsalicylic acid,Beta Blockers,,0
+atc,C07FB07,C07FB07,bisoprolol and amlodipine,Beta Blockers,,0
+atc,C07BB07,C07BB07,bisoprolol and thiazides,Beta Blockers,,0
+atc,C09BX02,C09BX02,perindopril and bisoprolol,Beta Blockers,,0
+atc,C09BX04,C09BX04,"perindopril, bisoprolol and amlodipine",Beta Blockers,,0
+atc,C09BX05,C09BX05,ramipril and bisoprolol,Beta Blockers,,0
+atc,C07AA15,C07AA15,carteolol,Beta Blockers,2.0,0
+atc,C07AG02,C07AG02,carvedilol,Beta Blockers,2.0,0
+atc,C07FX06,C07FX06,carvedilol and ivabradine,Beta Blockers,,0
+atc,C07AG01,C07AG01,labetalol,Beta Blockers,2.0,0
+atc,C07CG01,C07CG01,labetalol and other diuretics,Beta Blockers,,0
+atc,C07BG01,C07BG01,labetalol and thiazides,Beta Blockers,,0
+atc,C07AB02,C07AB02,metoprolol,Beta Blockers,2.0,0
+atc,C07FX03,C07FX03,metoprolol and acetylsalicylic acid,Beta Blockers,,0
+atc,C07FB13,C07FB13,metoprolol and amlodipine,Beta Blockers,,0
+atc,C07FB02,C07FB02,metoprolol and felodipine,Beta Blockers,,0
+atc,C07FX05,C07FX05,metoprolol and ivabradine,Beta Blockers,,0
+atc,C07CB02,C07CB02,metoprolol and other diuretics,Beta Blockers,,0
+atc,C07BB02,C07BB02,metoprolol and thiazides,Beta Blockers,,0
+atc,C07BB52,C07BB52,"metoprolol and thiazides, combinations",Beta Blockers,,0
+atc,C07AA12,C07AA12,nadolol,Beta Blockers,2.0,0
+atc,C07BA12,C07BA12,nadolol and thiazides,Beta Blockers,,0
+atc,C07AB12,C07AB12,nebivolol,Beta Blockers,2.0,0
+atc,C07FB12,C07FB12,nebivolol and amlodipine,Beta Blockers,,0
+atc,C07BB12,C07BB12,nebivolol and thiazides,Beta Blockers,,0
+atc,C09DX05,C09DX05,valsartan and nebivolol,Beta Blockers,,0
+atc,C07AA23,C07AA23,penbutolol,Beta Blockers,2.0,0
+atc,C07CA23,C07CA23,penbutolol and other diuretics,Beta Blockers,,0
+atc,C07AA03,C07AA03,pindolol,Beta Blockers,2.0,0
+atc,C07CA03,C07CA03,pindolol and other diuretics,Beta Blockers,,0
+atc,C07AA05,C07AA05,propranolol,Beta Blockers,2.0,0
+atc,C07FX01,C07FX01,propranolol and other combinations,Beta Blockers,,0
+atc,C07BA05,C07BA05,propranolol and thiazides,Beta Blockers,,0
+atc,C07AA06,C07AA06,timolol,Beta Blockers,2.0,0
+atc,C07BA06,C07BA06,timolol and thiazides,Beta Blockers,,0
+atc,C07DA06,C07DA06,"timolol, thiazides and other diuretics",Beta Blockers,,0

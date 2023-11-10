@@ -1,0 +1,613 @@
+---
+title: "ICCONIC hip fracture: Analytical pipeline"
+author: Data Science for Health Services and Policy Research (IACS)
+editor: source
+
+#date: 
+# bibliography: 
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 5
+    highlight-style: pygments
+    code-fold: true
+    html-math-method: katex
+execute: 
+  warning: false
+  cache: false
+  echo: false
+params:
+    data_path: '../../inputs/data.duckdb' 
+---
+
+```{css, echo = FALSE}
+.justify {
+  text-align: justify !important
+}
+```
+
+
+```{r, output = FALSE, echo=FALSE, warning=FALSE}
+#| label: load r packages
+library(duckdb)
+library(dplyr)
+library(Hmisc)
+library(survival)
+library(survminer)
+library(lubridate)
+library(mgcv)
+library(stringr)
+library(sjPlot)
+library(gt)
+library(reshape2)
+require(htmltools)
+```
+
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: query descriptive
+
+
+con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+
+descriptive_values <- dbGetQuery(conn = con, "
+SELECT median(age_nm) as median_age, (QUANTILE_CONT(age_nm, 0.75)-QUANTILE_CONT(age_nm, 0.25)) as iqr_age,
+count(distinct patient_id) filter (where sex_cd = '1') as men,
+count(distinct patient_id) filter (where sex_cd = '2') as women,
+count(distinct patient_id) as n_patient,
+count(distinct hospitalization_episode_id) as n_hospitalization_episode_id,
+count(distinct patient_id) filter (where surgical_procedure_bl = TRUE) as n_patient_with_surgery,
+median(surgical_procedure_dt -hospital_admission_dt) as median_time_adm_to_surgery,
+(QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.75)-QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.25)) as IQR_median_time_adm_to_surgery,
+-- round(mean(surgical_procedure_dt -hospital_admission_dt),2) as mean_time_adm_to_surgery
+FROM main.patient_cohort")
+descriptive_values <- descriptive_values %>% mutate(
+  perc_men = round((men/n_patient)*100,2),
+  united_men =paste0(men, ' (',perc_men,'%)' ),
+  perc_women = round((women/n_patient)*100,2),
+  united_women =paste0(women, ' (',perc_women,'%)' )
+)
+descriptive_values <- descriptive_values %>% select(!c(men,women,perc_men,perc_women))
+## socec
+
+socecon_lvl <- dbGetQuery(conn = con,"
+SELECT
+	coalesce(socecon_lvl_cd, 'Unknown') as socecon_lvl_cd,
+	count(distinct patient_id) as patient_distinct_socecon,
+	
+FROM
+	main.patient_cohort
+GROUP BY
+	socecon_lvl_cd ")
+socecon_lvl <- socecon_lvl %>% mutate(
+  perc_socecon_lvl = round((patient_distinct_socecon/descriptive_values$n_patient)*100,2),
+  united_socecon =paste0(patient_distinct_socecon, ' (',perc_socecon_lvl,'%)' )
+)
+
+## surgical_procedure_cd
+surgical_procedure <- dbGetQuery(conn = con,"
+SELECT
+	coalesce(surgical_procedure_cd::int,
+	'Non surgical procedure' ) as surgical_procedure_cd ,
+	count(distinct patient_id) as patient_distinct_surgical_procedure_cd
+FROM
+	main.patient_cohort
+GROUP BY
+	surgical_procedure_cd")
+	
+surgical_procedure <- surgical_procedure %>% mutate(
+  perc_surgical_procedure = round((patient_distinct_surgical_procedure_cd/descriptive_values$n_patient)*100,2),
+  united_surgical_procedure=paste0(patient_distinct_surgical_procedure_cd, ' (',perc_surgical_procedure,'%)' )
+)
+
+## anesthesia_type_cd only in patients with surgical procedure, so perc is divided by number of patients with surgery
+
+anesthesia_type <- dbGetQuery(conn=con,"
+ SELECT
+	coalesce(anesthesia_type_cd::int,
+	'Unknown') as anesthesia_type_cd,
+	count(distinct patient_id) as patient_distinct_anesthesia_type_cd
+FROM
+	main.patient_cohort
+WHERE surgical_procedure_bl = TRUE
+GROUP BY
+	anesthesia_type_cd ")
+
+anesthesia_type <- anesthesia_type %>% mutate(
+  perc_anesthesia_type = round((patient_distinct_anesthesia_type_cd/descriptive_values$n_patient_with_surgery)*100,2),
+  united_anesthesia_type=paste0(patient_distinct_anesthesia_type_cd, ' (',perc_anesthesia_type,'%)' )
+)
+
+
+comorbidities <- dbGetQuery(conn=con,"
+with seleccion as (
+SELECT
+	patient_id ,
+	list_aggregate([chronic_kidney_disease_bl::int,
+	tobacco_copd_bl::int,
+	depression_bl::int,
+	serious_mental_illness_bl::int,
+	alcohol_abuse_bl::int,
+	obesity_overweight_bl::int,
+	osteoporosis_osteopenia_bl::int,
+	dementia_bl::int,
+	diabetes_bl::int,
+	liver_disease_bl::int,
+	pancreatic_disease_bl::int,
+	inflamatory_bowel_disease_bl::int,
+	rheumatology_disease_bl::int,
+	spinal_cord_disease_injury_bl::int,
+	serious_neurological_disease_bl::int,
+	parkinson_huntintong_diseases_bl::int,
+	seizure_disorder_convulsions_bl::int,
+	congestive_heart_failure_bl::int,
+	coronary_artery_disease_bl::int,
+	cerebrovascular_disease_bl::int,
+	peripheral_vascular_disease_bl::int,
+	traumatic_brain_injury_bl::int,
+	amputee_bl::int],
+	'sum') as sum_comorbidities
+from
+	main.patient_cohort)
+select
+	sum_comorbidities,
+	count(DISTINCT patient_id) as patient_distinct_n_comorbidities
+from
+	seleccion
+group by
+	sum_comorbidities")
+
+comorbidities <- comorbidities %>% mutate(
+  perc_comorbidities = round((patient_distinct_n_comorbidities/descriptive_values$n_patient)*100,2),
+  united_comorbidities=paste0(patient_distinct_n_comorbidities, ' (',perc_comorbidities,'%)' )
+)
+
+
+## surgical_procedure_cd in socecon_lvl_cd; percent with denominador n_patient distinct of each socecon level
+
+surgical_procedure_in_socecon_lvl  <- dbGetQuery(conn=con,"
+SELECT
+	coalesce(socecon_lvl_cd,
+	'Unknown') as socecon_lvl_cd,
+	coalesce(surgical_procedure_cd::int,
+	'Non surgical procedure' ) as surgical_procedure_cd ,
+	count(DISTINCT patient_id) as n_patient_surgical_socecon
+from
+	main.patient_cohort
+group by
+	socecon_lvl_cd ,
+	surgical_procedure_cd")
+	
+surgical_procedure_in_socecon_lvl <- left_join(x=surgical_procedure_in_socecon_lvl, y=socecon_lvl[c('socecon_lvl_cd','patient_distinct_socecon')], by = 'socecon_lvl_cd')
+
+surgical_procedure_in_socecon_lvl <- surgical_procedure_in_socecon_lvl %>% mutate(
+  perc_surgical_procedure_in_socecon_lvl = round((n_patient_surgical_socecon/patient_distinct_socecon)*100,2),
+  united_surgical_procedure_in_socecon_lvl=paste0(n_patient_surgical_socecon, ' (',perc_surgical_procedure_in_socecon_lvl,'%)' )
+)
+
+## median time in socecon_lvl_cd 
+mediantime_in_socecon_lvl <- dbGetQuery(conn=con,"
+SELECT
+	coalesce(socecon_lvl_cd,
+	'Unknown')  as socecon_lvl_cd,
+	median(surgical_procedure_dt -hospital_admission_dt) as median_time_adm_to_surgery,
+	(QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt),
+	0.75)-QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt),
+	0.25)) as IQR_median_time_adm_to_surgery,
+--round(mean(surgical_procedure_dt -hospital_admission_dt),2) as mean_time_adm_to_surgery
+from
+	main.patient_cohort
+group by
+	socecon_lvl_cd")
+
+variables_in_hospital <- dbGetQuery(conn=con,"
+SELECT
+	coalesce(hospital_st,
+	'Unknown')  as hospital_st,
+count(distinct patient_id) as n_patient,
+count(distinct hospitalization_episode_id) as n_hospitalization_episode_id,
+count(distinct patient_id) filter (where surgical_procedure_bl = TRUE) as n_patient_with_surgery,
+median(age_nm) as median_age, 
+(QUANTILE_CONT(age_nm, 0.75)-QUANTILE_CONT(age_nm, 0.25)) as iqr_age,
+count(distinct patient_id) filter (where sex_cd = '1') as men,
+count(distinct patient_id) filter (where sex_cd = '2') as women,
+median(surgical_procedure_dt -hospital_admission_dt) as median_time_adm_to_surgery,
+(QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.75)-QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.25)) as IQR_median_time_adm_to_surgery,
+from
+	main.patient_cohort
+group by
+	hospital_st")
+
+dbDisconnect(con, shutdown=TRUE)
+
+```
+
+
+
+## Descriptive
+
+
+The following are shown 2 descriptive tables of the imported data:
+
+- Table 1 shows the main characteristics of the patients registered in the database.
+
+- Table 2 main characteristics of the patients and the medians from admission to surgery (in days) and their interquartile range grouped by hospital.
+
+
+
+### Table 1: Descriptive inputs
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: descriptive tables inputs1
+descriptive_values_ <- melt(descriptive_values,id=NULL) 
+anesthesia_type <- anesthesia_type %>% arrange(anesthesia_type_cd) %>%  dplyr::select(anesthesia_type_cd,united_anesthesia_type) %>% 
+  mutate(variable = paste0('Anesthesia type: ',anesthesia_type_cd),
+         value=united_anesthesia_type) %>% dplyr::select(variable,value)
+
+comorbidities <- comorbidities %>% arrange(sum_comorbidities)  %>% dplyr::select(sum_comorbidities,united_comorbidities) %>% 
+  mutate(variable = paste0('Nº comorbidities: ',sum_comorbidities),
+         value=united_comorbidities) %>% dplyr::select(variable,value)
+
+surgical_procedure <- surgical_procedure %>% arrange(surgical_procedure_cd) %>%  dplyr::select(surgical_procedure_cd,united_surgical_procedure) %>% 
+  mutate(variable = paste0('Surgical procedure: ',surgical_procedure_cd),
+         value=united_surgical_procedure) %>% dplyr::select(variable,value)
+
+socecon_lvl <- socecon_lvl %>% arrange(socecon_lvl_cd) %>%  dplyr::select(socecon_lvl_cd,united_socecon) %>% 
+  mutate(variable = paste0('Socioeconomic lvl: ',socecon_lvl_cd),
+         value=united_socecon) %>% dplyr::select(variable,value)
+
+descriptive_values_ <- rbind(descriptive_values_,anesthesia_type,comorbidities,surgical_procedure,socecon_lvl)
+descriptive_values_$variable <- as.character(descriptive_values_$variable)
+
+
+descriptive_values_$variable[descriptive_values_$variable %in% 'median_age'] <- 'Median of age'
+descriptive_values_$variable[descriptive_values_$variable %in% 'iqr_age'] <- 'IQR of age'
+descriptive_values_$variable[descriptive_values_$variable %in% 'n_patient'] <- 'Nº patients (unique)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'n_hospitalization_episode_id'] <- 'Nº hospitalization episode (unique)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'n_patient_with_surgery'] <- 'Nº patient with surgery (unique)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'median_time_adm_to_surgery'] <- 'Median time from admission to surgery (in days)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'IQR_median_time_adm_to_surgery'] <- 'IQR time from admission to surgery (in days)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'united_men'] <- 'Men'
+descriptive_values_$variable[descriptive_values_$variable %in% 'united_women'] <- 'Women'
+
+
+table <- descriptive_values_ %>% gt(rowname_col = "variable") %>% 
+  tab_header(
+    title = "Descriptive table input"
+  ) %>% 
+  tab_stubhead(label = "Variable") %>% 
+     cols_label(
+      variable = 'Variable',
+      value = 'n (%)'
+       ) %>% 
+  tab_row_group(
+    label = "Surgical procedure",
+    rows = matches("surgical")) %>%
+    tab_row_group(
+    label = "Socioeconomic level",
+    rows = matches("socioecon")) %>%
+    tab_row_group(
+    label = "Anesthesia",
+    rows = matches("anesthesia")) %>%
+    tab_row_group(
+    label = "Comorbidities",
+    rows = matches("comorbidities")) %>%
+  row_group_order(groups = c(NA, "Socioeconomic level", "Surgical procedure", "Anesthesia","Comorbidities")) %>% 
+    tab_style(
+    style = cell_fill(color = "gray80"),
+    locations = cells_row_groups(groups=everything())
+  ) %>% 
+  cols_align(
+  align =  "center",
+  columns = value)
+
+div(style='height:600px; overflow-y: scroll', table)
+rm(anesthesia_type,comorbidities,socecon_lvl,surgical_procedure,descriptive_values_,table)
+
+
+
+```
+
+
+### Table 2: Variables by hospital
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: descriptive tables inputs2
+
+
+
+table <- variables_in_hospital %>% gt() %>%
+  tab_header(
+    title = "Variables by hospital"
+  ) %>%
+     cols_label(
+      hospital_st = 'Hospital',
+      n_patient = 'Nº patients (unique)',
+      n_hospitalization_episode_id = 'Nº hospitalization episode (unique)',
+      n_patient_with_surgery = 'Nº patient with surgery (unique)',
+      median_age = 'Median of age',
+      iqr_age = 'IQR of age',
+      men = 'Nº Men',
+      women = 'Nº Women',
+      median_time_adm_to_surgery = 'Median time from admission to surgery (in days)',
+      IQR_median_time_adm_to_surgery = 'IQR time from admission to surgery (in days)'
+       ) %>%
+        cols_align(
+  align =  "center",
+  columns = everything()) %>%
+      tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_row_groups())
+
+div(style='height:600px; overflow-y: scroll', table)
+  
+rm(table,variables_in_hospital)
+```
+
+
+
+## Analysis
+
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: analysis
+
+con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+
+df_patient <- dbGetQuery(conn = con, "SELECT * FROM patient_cohort")
+df_outpatient_prescription <- dbGetQuery(conn = con, "SELECT * FROM outpatient_prescription")
+dbDisconnect(con, shutdown=TRUE)
+
+df_patient_ <- df_patient %>% mutate_if(is.logical,as.numeric)
+
+start_study <- as.Date('2017-01-01')
+end_study <- as.Date('2023-12-31')
+
+##### survival time: admission -> exitus in function to surgical procedure bl
+
+df_patient_ <- df_patient_ %>% mutate(futime_adm_exi = case_when( 
+                        !is.na(exitus_dt) ~ as.numeric(exitus_dt - hospital_admission_dt), 
+                         is.na(exitus_dt) ~ as.numeric(end_study - hospital_admission_dt) ))
+
+survobj <- Surv(time=df_patient_$futime_adm_exi,
+                event=df_patient_$exitus_bl)
+
+
+
+surv_fit <- survfit(survobj ~ surgical_procedure_bl, data=df_patient_)
+
+
+
+```
+
+### Survival plot: Admission to exitus in fuction to have surgical procedure (Yes/No)
+
+Firstly, a survival analysis is carried out on patients who have been admitted to the hospital. This analysis compares patients who have been treated with surgery versus those who have not received surgery during a follow-up time of 30 days from the date of admission to hospital. 
+
+The Kaplan-Meier curve is shown below.
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: survival plot
+
+ggsurvplot(surv_fit, data = df_patient_, xlab="Days of follow-up",
+           ylab="Survival probability",
+           xlim=c(0,30),
+           ylim=c(0.6,1),
+           break.x.by=10,
+           conf.int = FALSE,
+           main="Product-Limit Survival Estimates", risk.table = TRUE)
+
+```
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: analysis cont
+
+df_patient_filter <- df_patient_ %>% filter(surgical_procedure_bl %in% 1)
+
+
+
+df_patient_filter <- df_patient_filter %>% 
+  mutate(
+    futime_adm_surg = as.numeric(surgical_procedure_dt - hospital_admission_dt),
+    futime_surg_end = case_when(
+      !is.na(exitus_dt) ~ as.numeric(exitus_dt - surgical_procedure_dt),
+      is.na(exitus_dt) ~ as.numeric(end_study - surgical_procedure_dt)),
+    exitus_7days_bl = case_when(
+      !is.na(exitus_dt) & futime_surg_end<= 7 ~ 1,
+      TRUE ~ 0),
+      exitus_30days_bl = case_when(
+      !is.na(exitus_dt) & futime_surg_end<= 30 ~ 1,
+      TRUE ~ 0),
+    exitus_hosp_bl = case_when(
+      hospital_discharge_dt==exitus_dt ~ 1,
+      TRUE ~ 0)
+  )
+
+df_patient_filter <- df_patient_filter %>% mutate(
+  period = (12*(year(surgical_procedure_dt)-year(start_study)) + month(surgical_procedure_dt)),
+  weekday = weekdays(as.POSIXlt(surgical_procedure_dt),abbreviate = FALSE),
+  day_month = day(surgical_procedure_dt)
+)
+
+
+df_model <- df_patient_filter %>% dplyr::select(exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,futime_adm_surg,age_nm,sex_cd,hospital_st,socecon_lvl_cd,
+                                              surgical_procedure_cd,anesthesia_type_cd,icu_admission_bl,anticoagulant_status_bl,antiagregant_status_bl,
+                                              chronic_kidney_disease_bl,tobacco_copd_bl,
+                                              depression_bl,serious_mental_illness_bl,alcohol_abuse_bl,             
+                                              obesity_overweight_bl,osteoporosis_osteopenia_bl,dementia_bl,diabetes_bl,
+                                              liver_disease_bl,pancreatic_disease_bl,inflamatory_bowel_disease_bl,rheumatology_disease_bl,
+                                              spinal_cord_disease_injury_bl,serious_neurological_disease_bl,
+                                              parkinson_huntintong_diseases_bl,seizure_disorder_convulsions_bl,congestive_heart_failure_bl,
+                                              coronary_artery_disease_bl,cerebrovascular_disease_bl,peripheral_vascular_disease_bl,
+                                              traumatic_brain_injury_bl,amputee_bl,period,weekday,day_month)
+
+df_model$sex_cd <- as.character(df_model$sex_cd)
+df_model$surgical_procedure_cd <- as.factor(df_model$surgical_procedure_cd)
+df_model$hospital_st <- as.factor(df_model$hospital_st)
+### select variables for model with 20% or less of missings
+
+threshold = 0.2
+df_model_aux <- df_model %>% select(!c(exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,period,day_month,futime_adm_surg))
+a <- names(df_model_aux)[sapply(df_model_aux, function(x) (sum(is.na(x))/nrow(df_model_aux)) <= threshold)]
+df_model_aux <- df_model_aux %>% select(a)
+formula_model <- paste0(colnames(df_model_aux), collapse = ' + ')
+rm(df_model_aux)
+
+```
+
+
+### Models
+
+In order to study whether there is a relationship between exitus and the time elapsed between the date of admission and the date of surgery, three GAMM (Generalized Additive Mixed Models) models will be built following the same methodology but varying the dependent variable (y):
+
+- Model 1: y = exitus in hospital (i.e. exitus date equals discharge from hospital date)
+
+- Model 2: y = exitus in 7 days or less from the surgery date
+
+- Model 3: y = exitus in 30 days or less from the surgery date
+
+The methodology followed for the construction of the 3 models was as follows:
+- 
+
+#### Model with variable to predict: exitus in hospital
+##### Model with all variables
+```{r, echo=FALSE,warning=FALSE}
+#| label: exitus in hospital all
+
+###### exitus in hospital #####
+
+
+formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+
+model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model, method = "REML")
+tab_model(model_exitus_hosp_bl)
+```
+
+##### Model with significative variables from above model and splines 
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: exitus in hospital simply
+
+sum_model_exitus_hosp_bl <- summary(model_exitus_hosp_bl)
+p_valor_nonspline <- as.data.frame(sum_model_exitus_hosp_bl$p.pv)
+p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_hosp_bl$p.pv` <= 0.05)
+
+p_valor_spline <- as.data.frame(sum_model_exitus_hosp_bl$s.table)
+p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
+
+aux1 <- data.frame(variables_df = colnames(df_model))
+aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
+aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
+aux3 <- aux3 %>% filter(!is.na(var))
+aux3 <- unique(aux3$var)
+formula_model <- paste0(aux3,collapse = '+')
+rm(aux1,aux2,aux3,p,p1)
+
+formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+
+model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model, method = "REML")
+
+tab_model(model_exitus_hosp_bl)
+
+```
+
+
+
+#### Model with variable to predict: exitus in 7 days after surgery
+##### Model with all variables
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: exitus 7 days all
+
+###### exitus 7 days #####
+
+
+formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+
+
+model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model, method = "REML")
+tab_model(model_exitus_7days_bl)
+
+```
+
+##### Model with significative variables from above model and splines
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: exitus 7 days simply
+
+sum_model_exitus_7days_bl <- summary(model_exitus_7days_bl)
+p_valor_nonspline <- as.data.frame(sum_model_exitus_7days_bl$p.pv)
+p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_7days_bl$p.pv` <= 0.05)
+
+p_valor_spline <- as.data.frame(sum_model_exitus_7days_bl$s.table)
+p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
+
+aux1 <- data.frame(variables_df = colnames(df_model))
+aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
+aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
+aux3 <- aux3 %>% filter(!is.na(var))
+aux3 <- unique(aux3$var)
+formula_model <- paste0(aux3,collapse = '+')
+rm(aux1,aux2,aux3,p,p1)
+
+formula_model_exitus_7days_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+
+
+model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model, method = "REML")
+
+tab_model(model_exitus_7days_bl)
+
+```
+
+
+#### Model with variable to predict: exitus in 30 days after surgery
+
+
+##### Model with all variables
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: exitus 30 days all
+###### exitus 30 days #####
+
+
+formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+
+
+model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
+tab_model(model_exitus_30days_bl)
+
+``` 
+
+##### Model with significative variables from above model and splines
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: exitus 30 days simply
+sum_model_exitus_30days_bl <- summary(model_exitus_30days_bl)
+p_valor_nonspline <- as.data.frame(sum_model_exitus_30days_bl$p.pv)
+p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_30days_bl$p.pv` <= 0.05)
+
+p_valor_spline <- as.data.frame(sum_model_exitus_30days_bl$s.table)
+p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
+
+aux1 <- data.frame(variables_df = colnames(df_model))
+aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
+aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
+aux3 <- aux3 %>% filter(!is.na(var))
+aux3 <- unique(aux3$var)
+formula_model <- paste0(aux3,collapse = '+')
+rm(aux1,aux2,aux3,p,p1)
+
+formula_model_exitus_30days_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+
+
+model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
+
+tab_model(model_exitus_30days_bl)
+
+
+
+```
+

@@ -1,0 +1,8 @@
+classification_system,code,code_clean,description,source,Unnamed: 5
+icd-09-mc,733.00,73300,"Osteoporosis, unspecified",,
+icd-09-mc,733.01,73301,Senile osteoporosis,,
+icd-09-mc,733.02,73302,Idiopathic osteoporosis,,
+icd-09-mc,733.03,73303,Disuse osteoporosis,,
+icd-09-mc,733.09,73309,Other osteoporosis,,
+icd-10-mc,M81.0,M810,Age-related osteoporosis without current pathological fracture,,
+icd-10-mc,M81.8,M818,Other osteoporosis without current pathological fracture,,

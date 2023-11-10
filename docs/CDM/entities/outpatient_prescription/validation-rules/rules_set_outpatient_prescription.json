@@ -1,0 +1,15 @@
+{
+    "description": "The expressions of the different rules follow the syntax of the SQL OLAP database \n        management system called DuckDB. For more information, visit https://duckdb.org/docs/sql/introduction. \n        Keep in mind that you only have to declare as a rule the statement that would follow a WHERE clause. \n        e.g.,  Select * from people WHERE {expression}\n        expression = age >= 18\n        ",
+    "rules": [
+        {
+            "expression": "prescription_start_dt >= '2017-01-01'",
+            "name": "prescription_start_dt",
+            "description": "Rule for column prescription_start_dt"
+        },
+        {
+            "expression": "prescription_end_dt >= prescription_start_dt",
+            "name": "prescription_end_dt",
+            "description": "Rule for column prescription_end_dt"
+        }
+    ]
+}
