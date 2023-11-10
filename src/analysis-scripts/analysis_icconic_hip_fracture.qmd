@@ -42,6 +42,7 @@ library(sjPlot)
 library(gt)
 library(reshape2)
 require(htmltools)
+library(ggplotify)
 ```
 
 
@@ -480,10 +481,37 @@ The methodology followed for the construction of the 3 models was as follows:
 ###### exitus in hospital #####
 
 
-formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# 
+# model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model, method = "REML")
 
-model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model, method = "REML")
-tab_model(model_exitus_hosp_bl)
+model_exitus_hosp_bl_simply <- mgcv::gam(exitus_hosp_bl ~ s(futime_adm_surg), data = df_model, method = "REML")
+
+# df_model[c('predict_model_exitus_hosp_bl_simply','se_predict_model_exitus_hosp_bl_simply')] <- model_exitus_hosp_bl_simply %>% predict(df_model, type = "response",se.fit=TRUE)
+# 
+# 
+# 
+# ggplot(data = df_model,  aes(x=futime_adm_surg, y=predict_model_exitus_hosp_bl_simply)) + 
+#   geom_line() +
+#   labs(title = '',
+#            x = 'Time from admission to surgery',
+#            y = 'Prediction to death in hospital') +
+#   scale_x_continuous(breaks=seq(min(df_model$futime_adm_surg,na.rm=TRUE), max(df_model$futime_adm_surg,na.rm=TRUE), 2)) +
+#   geom_hline(data=df_model, mapping=aes(yintercept=mean(predict_model_exitus_hosp_bl_simply,na.rm = TRUE)), color="red") +
+#   theme(panel.background = element_blank(), axis.line = element_line(color='black')) 
+
+# plot_smooths(model_exitus_hosp_bl_simply,futime_adm_surg) + 
+#   labs(title = '',
+#            x = 'Time from admission to surgery',
+#            y = 'Prediction to death in hospital') +
+#   geom_hline(data=df_model, mapping=aes(yintercept=0), color="red") +
+#   theme(panel.background = element_blank(), axis.line = element_line(color='black')) 
+# 
+
+
+
+plot(model_exitus_hosp_bl_simply, xlab = 'Time from admission to surgery', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)') 
+
 ```
 
 ##### Model with significative variables from above model and splines 
@@ -491,26 +519,26 @@ tab_model(model_exitus_hosp_bl)
 ```{r, echo=FALSE,warning=FALSE}
 #| label: exitus in hospital simply
 
-sum_model_exitus_hosp_bl <- summary(model_exitus_hosp_bl)
-p_valor_nonspline <- as.data.frame(sum_model_exitus_hosp_bl$p.pv)
-p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_hosp_bl$p.pv` <= 0.05)
-
-p_valor_spline <- as.data.frame(sum_model_exitus_hosp_bl$s.table)
-p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
-
-aux1 <- data.frame(variables_df = colnames(df_model))
-aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
-aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
-aux3 <- aux3 %>% filter(!is.na(var))
-aux3 <- unique(aux3$var)
-formula_model <- paste0(aux3,collapse = '+')
-rm(aux1,aux2,aux3,p,p1)
-
-formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
-
-model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model, method = "REML")
-
-tab_model(model_exitus_hosp_bl)
+# sum_model_exitus_hosp_bl <- summary(model_exitus_hosp_bl)
+# p_valor_nonspline <- as.data.frame(sum_model_exitus_hosp_bl$p.pv)
+# p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_hosp_bl$p.pv` <= 0.05)
+# 
+# p_valor_spline <- as.data.frame(sum_model_exitus_hosp_bl$s.table)
+# p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
+# 
+# aux1 <- data.frame(variables_df = colnames(df_model))
+# aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
+# aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
+# aux3 <- aux3 %>% filter(!is.na(var))
+# aux3 <- unique(aux3$var)
+# formula_model <- paste0(aux3,collapse = '+')
+# rm(aux1,aux2,aux3,p,p1)
+# 
+# formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# 
+# model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model, method = "REML")
+# 
+# tab_model(model_exitus_hosp_bl)
 
 ```
 
@@ -525,11 +553,27 @@ tab_model(model_exitus_hosp_bl)
 ###### exitus 7 days #####
 
 
-formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# 
+# 
+# model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model, method = "REML")
+# tab_model(model_exitus_7days_bl)
 
 
-model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model, method = "REML")
-tab_model(model_exitus_7days_bl)
+model_exitus_7days_bl_simply <- mgcv::gam(exitus_7days_bl ~ hospital_st + s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st), data = df_model, method = "REML")
+
+df_model[c('predict_model_exitus_7days_bl_simply','se_predict_model_exitus_7days_bl_simply')] <- model_exitus_7days_bl_simply %>% predict(df_model, type = "response",se.fit=TRUE)
+
+
+ggplot(data = df_model,  aes(x=futime_adm_surg, y=predict_model_exitus_7days_bl_simply)) + 
+  geom_line() +
+  labs(title = '',
+           x = 'Time from admission to surgery',
+           y = 'Prediction to death in 7 days after surgery') +
+    geom_hline(data=df_model, mapping=aes(yintercept=mean(predict_model_exitus_7days_bl_simply,na.rm = TRUE)), color="red") +
+    geom_vline(data=df_model, )
+  theme(panel.background = element_blank(), axis.line = element_rect(color='black')) 
+
 
 ```
 
@@ -538,27 +582,27 @@ tab_model(model_exitus_7days_bl)
 ```{r, echo=FALSE,warning=FALSE}
 #| label: exitus 7 days simply
 
-sum_model_exitus_7days_bl <- summary(model_exitus_7days_bl)
-p_valor_nonspline <- as.data.frame(sum_model_exitus_7days_bl$p.pv)
-p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_7days_bl$p.pv` <= 0.05)
-
-p_valor_spline <- as.data.frame(sum_model_exitus_7days_bl$s.table)
-p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
-
-aux1 <- data.frame(variables_df = colnames(df_model))
-aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
-aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
-aux3 <- aux3 %>% filter(!is.na(var))
-aux3 <- unique(aux3$var)
-formula_model <- paste0(aux3,collapse = '+')
-rm(aux1,aux2,aux3,p,p1)
-
-formula_model_exitus_7days_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
-
-
-model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model, method = "REML")
-
-tab_model(model_exitus_7days_bl)
+# sum_model_exitus_7days_bl <- summary(model_exitus_7days_bl)
+# p_valor_nonspline <- as.data.frame(sum_model_exitus_7days_bl$p.pv)
+# p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_7days_bl$p.pv` <= 0.05)
+# 
+# p_valor_spline <- as.data.frame(sum_model_exitus_7days_bl$s.table)
+# p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
+# 
+# aux1 <- data.frame(variables_df = colnames(df_model))
+# aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
+# aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
+# aux3 <- aux3 %>% filter(!is.na(var))
+# aux3 <- unique(aux3$var)
+# formula_model <- paste0(aux3,collapse = '+')
+# rm(aux1,aux2,aux3,p,p1)
+# 
+# formula_model_exitus_7days_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# 
+# 
+# model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model, method = "REML")
+# 
+# tab_model(model_exitus_7days_bl)
 
 ```
 
@@ -572,12 +616,28 @@ tab_model(model_exitus_7days_bl)
 #| label: exitus 30 days all
 ###### exitus 30 days #####
 
+# 
+# formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# 
+# 
+# model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
+# tab_model(model_exitus_30days_bl)
 
-formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+model_exitus_30days_bl_simply <- mgcv::gam(exitus_30days_bl ~ hospital_st + s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st), data = df_model, method = "REML")
+
+df_model[c('predict_model_exitus_30days_bl_simply','se_predict_model_exitus_30days_bl_simply')] <- model_exitus_30days_bl_simply %>% predict(df_model, type = "response",se.fit=TRUE)
 
 
-model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
-tab_model(model_exitus_30days_bl)
+ggplot(data = df_model,  aes(x=futime_adm_surg, y=predict_model_exitus_30days_bl_simply)) + 
+  geom_line() +
+  labs(title = '',
+           x = 'Time from admission to surgery',
+           y = 'Prediction to death in 30 days after surgery') +
+  theme(panel.background = element_blank(), axis.line = element_rect(color='black')) +
+  geom_hline(data=df_model, mapping=aes(yintercept=mean(predict_model_exitus_30days_bl_simply,na.rm = TRUE)), color="red")
+
+
+
 
 ``` 
 
@@ -585,27 +645,27 @@ tab_model(model_exitus_30days_bl)
 
 ```{r, echo=FALSE,warning=FALSE}
 #| label: exitus 30 days simply
-sum_model_exitus_30days_bl <- summary(model_exitus_30days_bl)
-p_valor_nonspline <- as.data.frame(sum_model_exitus_30days_bl$p.pv)
-p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_30days_bl$p.pv` <= 0.05)
-
-p_valor_spline <- as.data.frame(sum_model_exitus_30days_bl$s.table)
-p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
-
-aux1 <- data.frame(variables_df = colnames(df_model))
-aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
-aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
-aux3 <- aux3 %>% filter(!is.na(var))
-aux3 <- unique(aux3$var)
-formula_model <- paste0(aux3,collapse = '+')
-rm(aux1,aux2,aux3,p,p1)
-
-formula_model_exitus_30days_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
-
-
-model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
-
-tab_model(model_exitus_30days_bl)
+# sum_model_exitus_30days_bl <- summary(model_exitus_30days_bl)
+# p_valor_nonspline <- as.data.frame(sum_model_exitus_30days_bl$p.pv)
+# p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_30days_bl$p.pv` <= 0.05)
+# 
+# p_valor_spline <- as.data.frame(sum_model_exitus_30days_bl$s.table)
+# p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
+# 
+# aux1 <- data.frame(variables_df = colnames(df_model))
+# aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
+# aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
+# aux3 <- aux3 %>% filter(!is.na(var))
+# aux3 <- unique(aux3$var)
+# formula_model <- paste0(aux3,collapse = '+')
+# rm(aux1,aux2,aux3,p,p1)
+# 
+# formula_model_exitus_30days_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
+# 
+# 
+# model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
+# 
+# tab_model(model_exitus_30days_bl)
 
 
 
