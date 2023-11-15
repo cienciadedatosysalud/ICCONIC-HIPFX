@@ -1,0 +1,24 @@
+{
+    "files": [
+        {
+            "filename": "outputs/analysis_icconic_hip_fracture.html",
+            "hash": "191c8dce3079d2df9375ea1d16523bd0"
+        },
+        {
+            "filename": "outputs/aggregated_outputs_byhospital_exitus_in30days.csv",
+            "hash": "58758a4c3d5b0fb0cd7669c2fc96c254"
+        },
+        {
+            "filename": "outputs/aggregated_outputs_byhospital_exitus_inhospital.csv",
+            "hash": "1033619aea2942d02d85e388f82d5c61"
+        },
+        {
+            "filename": "outputs/logs/analysis_execution.log",
+            "hash": "3201e04a5bfa48db6c98d09a6da359a6"
+        },
+        {
+            "filename": "outputs/aggregated_outputs_byhospital_exitus_in7days.csv",
+            "hash": "8d74409840c5b64253be936be20bc4c0"
+        }
+    ]
+}

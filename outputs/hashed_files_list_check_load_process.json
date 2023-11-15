@@ -1,0 +1,12 @@
+{
+    "files": [
+        {
+            "filename": "outputs/logs/checking_data_syntax.log",
+            "hash": "b5aa1785e61caddc82c6ea5da8b8d0f8"
+        },
+        {
+            "filename": "inputs/data.duckdb",
+            "hash": "a8205859ca11e4f29e8c8723fb7b1682"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "files": [
+        {
+            "filename": "outputs/validator_output.json",
+            "hash": "e52e362c7294e7fffd278b9c3bf620a4"
+        },
+        {
+            "filename": "outputs/logs/checking_data_compliance.log",
+            "hash": "5108d69c539d9492b37eb5d62f1f7057"
+        },
+        {
+            "filename": "outputs/logs/report_validation_report.log",
+            "hash": "4cf29c84cd621024045bc98217ea298a"
+        },
+        {
+            "filename": "outputs/validator_report.html",
+            "hash": "57a8b44b7b4805b1d7b97b939f215d72"
+        }
+    ]
+}

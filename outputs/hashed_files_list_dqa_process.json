@@ -1,0 +1,24 @@
+{
+    "files": [
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_patient_cohort.html",
+            "hash": "96efa3a90ce097e97f1ad37e155dc50c"
+        },
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_patient_cohort.json",
+            "hash": "37d3b565fcf8b7cbe751011ae3957610"
+        },
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_outpatient_prescription.json",
+            "hash": "b052bddb536a876c53e919efaf4cffd3"
+        },
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_outpatient_prescription.html",
+            "hash": "a8918a5c6cab2802769879be5aab18a5"
+        },
+        {
+            "filename": "outputs/logs/data_quality_assesment.log",
+            "hash": "7e710cb18e48989ae2e987159b5d72d0"
+        }
+    ]
+}
