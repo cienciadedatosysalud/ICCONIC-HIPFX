@@ -1,38 +1,44 @@
 {
-    "created_dt": "20231024134617_cdmb",
-    "uuid": "7cfa41e3-91d1-45f1-949c-b0d9532ff1ed",
+    "created_dt": "20231214161636_cdmb",
+    "cdmb_version": "1.3.6",
+    "uuid": "6b2231d7-b3b1-43b6-9841-d476d0055fd4",
     "metadata": {
-        "uuid": "9bbe4394-8e45-4f5d-8899-e85e56ed88a9",
+        "uuid": "12c7a778-34ee-4211-9dea-a4aeb78fd792",
         "project": "ICCONIC_Hip_Fracture",
         "funder": "",
         "url_project": "www.atlasvpm.org",
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "document": "Data model specification documenting both individual-level  data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.1.1",
+        "version_sem": "1.2.0",
         "authors": [
             {
-                "name": "Francisco Estupiñán-Romero",
+                "name": "Estupiñán-Romero, Francisco ",
                 "affiliation": "Instituto Aragónes de Ciencias de la Salud",
                 "id": "0000-0002-6285-8120"
             },
             {
-                "name": "Natalia Martínez-Lizaga",
+                "name": "Martínez-Lizaga, Natalia ",
                 "affiliation": "Instituto Aragónes de Ciencias de la Salud",
                 "id": "0000-0002-9586-7955"
             },
             {
-                "name": "Tania Sawaya",
+                "name": "Sawaya, Tania ",
                 "affiliation": "Brown University School of Public Health",
                 "id": "0000-0003-2358-3029"
             },
             {
-                "name": "Irene Papanicolas",
+                "name": "Wei, Jinru",
+                "affiliation": "Brown University School of Public Health",
+                "id": ""
+            },
+            {
+                "name": "Papanicolas, Irene ",
                 "affiliation": "Brown University School of Public Health",
                 "id": "0000-0002-8000-3185"
             },
             {
-                "name": "Enrique Bernal-Delgado",
+                "name": "Bernal-Delgado, Enrique ",
                 "affiliation": "Instituto Aragónes de Ciencias de la Salud",
                 "id": "0000-0002-0961-3298"
             }
@@ -55,7 +61,7 @@
         "beggining_study_period": "2017-01-01",
         "end_study_period": "2021-12-31",
         "cohort_definition_inclusion": {
-            "filename": "main_diagnosis.csv",
+            "filename": "cohort_definition_inclusion.csv",
             "nature": "Condition",
             "column_name": "code"
         },
@@ -63,7 +69,7 @@
     },
     "entities": [
         {
-            "uuid": "23823707-35e7-4614-9952-685e8afdfbaa",
+            "uuid": "309f9507-0598-4b61-b6e5-b8d3e3fd134b",
             "name": "patient_cohort",
             "time_varying": false,
             "variables": [
@@ -94,7 +100,7 @@
                     "characteristic": "Observed",
                     "catalog_bl": false,
                     "transformations_from_origin": "",
-                    "possible_data_source": "Insurance registry or Health system users database",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
                     "observations_comments": "hospitalization episode here is refered as the hospital admission with a main diagnosis of hip fracture following the 'main_diagnosis_cd' definition and it entails from admission to hospital discharge. ",
                     "examples": "",
                     "catalog": null
@@ -309,7 +315,7 @@
                     "catalog_bl": false,
                     "transformations_from_origin": "compliance with categories in the validation rules",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "Differentiating between where the patient is discharged to (i.e., home, another hospital, long-term care, etc.) or discharged dead",
+                    "observations_comments": "Differentiating between where the patient is discharged to (i.e., home, another hospital, long-term care, assisted home-care, nursing facility, etc.) or discharged dead",
                     "examples": "",
                     "catalog": null
                 },
@@ -400,8 +406,8 @@
                     }
                 },
                 {
-                    "label": "antiagregant_status_bl",
-                    "description": "Patient has an antiagregant prescripcition before hip fracture hospitalization episode",
+                    "label": "antiaggregant_status_bl",
+                    "description": "Patient has an antiaggregant prescripcition before hip fracture hospitalization episode",
                     "standard_classification": "crosswaks (ATC)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -411,11 +417,11 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Outpatient prescritions",
-                    "observations_comments": "see 'def_antiagregant_status_bl' tab for futher information on how to calculate if there is an antecedent of antiagregant prescription. Patient is considered with 'antiagregant_status_bl' = TRUE if it has any active prescription of an antiagregant in the 6 months previous to the hospitalization episode",
+                    "observations_comments": "see 'def_antiaggregant_status_bl' tab for futher information on how to calculate if there is an antecedent of antiaggregant prescription. Patient is considered with 'antiaggregant_status_bl' = TRUE if it has any active prescription of an antiaggregant in the 6 months previous to the hospitalization episode",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
-                        "filename": "antiagregant_status_bl.csv"
+                        "filename": "antiaggregant_status_bl.csv"
                     }
                 },
                 {
@@ -768,8 +774,8 @@
                     }
                 },
                 {
-                    "label": "parkinson_huntintong_diseases_bl",
-                    "description": "Has the patient a secondary diagnosis of parkinson huntintong diseases in the hospital episode (como",
+                    "label": "parkinson_huntington_diseases_bl",
+                    "description": "Has the patient a secondary diagnosis of parkinson huntington diseases in the hospital episode (como",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -779,11 +785,11 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_parkinson_huntintong_diseases_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see 'def_parkinson_huntington_diseases_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
-                        "filename": "parkinson_huntintong_diseases_bl.csv"
+                        "filename": "parkinson_huntington_diseases_bl.csv"
                     }
                 },
                 {
@@ -918,6 +924,22 @@
                         "column_name": "code",
                         "filename": "amputee_bl.csv"
                     }
+                },
+                {
+                    "label": "previous_hospital_admission_bl",
+                    "description": "Has the patient a previous admission due to any cause?",
+                    "standard_classification": "",
+                    "format": "Boolean",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Calculated",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "Captures any precedent of a hospital admission due to any cause in the 6 months previous to the hospital index",
+                    "examples": "",
+                    "catalog": null
                 }
             ],
             "rules": [
@@ -979,7 +1001,7 @@
             ]
         },
         {
-            "uuid": "2f9d596f-bdfe-4683-86fc-ed777ae83a88",
+            "uuid": "56f3da38-7543-43e3-9279-ce0970aa5bbe",
             "name": "outpatient_prescription",
             "time_varying": false,
             "variables": [
@@ -1063,12 +1085,107 @@
                     "description": "Rule for column prescription_end_dt"
                 }
             ]
+        },
+        {
+            "uuid": "d0330328-9dc0-4e9c-902c-17760b2c2dc6",
+            "name": "post_index_hospital_episode",
+            "time_varying": false,
+            "variables": [
+                {
+                    "label": "patient_id",
+                    "description": "Pseudoid of the person included in the cohort",
+                    "standard_classification": "UTF-8",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Insurance registry or Health system users database",
+                    "observations_comments": "Calculated/derived from person_id encryption or pseudonym generation algorithm",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "post_index_hospitalization_episode_id",
+                    "description": "Pseudoid of the hospitalization episode (inpatient)",
+                    "standard_classification": "UTF-8",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "Any hospital episode due to any cause in the next year (12 months) after the index hospital episode due to hip fracture. This configures a long-form table",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "post_index_hospital_admission_dt",
+                    "description": "Date of the hospital admission",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "hospital admission date here is to admissions up to one year (12 months) after 'hospital_discharge_dt' of the entity patient_cohort. This configures a long-form table",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "post_index_main_diagnosis_cd",
+                    "description": "Code of main diagnosis at hospital admissions",
+                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "post_index_hospital_discharge_dt",
+                    "description": "Date of the hospital discharge (after surgery)",
+                    "standard_classification": "ISO 8601",
+                    "format": "Date",
+                    "type": "Date",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "compliance with ISO 8601",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "",
+                    "examples": "",
+                    "catalog": null
+                }
+            ],
+            "rules": []
         }
     ],
     "relationships": [
         {
             "left_entity": "patient_cohort",
             "right_entity": "outpatient_prescription",
+            "join_type": "LEFT JOIN",
+            "left_column": "patient_id",
+            "right_column": "patient_id"
+        },
+        {
+            "left_entity": "patient_cohort",
+            "right_entity": "post_index_hospital_episode",
             "join_type": "LEFT JOIN",
             "left_column": "patient_id",
             "right_column": "patient_id"
