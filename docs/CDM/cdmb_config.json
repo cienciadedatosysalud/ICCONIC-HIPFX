@@ -1,16 +1,16 @@
 {
-    "created_dt": "20231214161636_cdmb",
+    "created_dt": "20231218171531_cdmb",
     "cdmb_version": "1.3.6",
-    "uuid": "6b2231d7-b3b1-43b6-9841-d476d0055fd4",
+    "uuid": "8b9bd5a3-e9ba-46c6-a8a5-f71e18711ca0",
     "metadata": {
-        "uuid": "12c7a778-34ee-4211-9dea-a4aeb78fd792",
+        "uuid": "12c5cc15-0523-4dc8-a39c-b4bf893a0a9d",
         "project": "ICCONIC_Hip_Fracture",
         "funder": "",
         "url_project": "www.atlasvpm.org",
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
-        "document": "Data model specification documenting both individual-level  data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.2.0",
+        "document": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
+        "version_sem": "1.2.1",
         "authors": [
             {
                 "name": "Estupiñán-Romero, Francisco ",
@@ -48,7 +48,7 @@
             "atlasvpm",
             "hip fracture"
         ],
-        "description": "Data model specification documenting both individual-level  data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC. The data model specification includes the cohort definition (shared across the 3 studies), individual-level model specification for each of the 3 studies including data dictionaries and crosswalks for semantic interoperable definition of certain variables (i.e. socioeconomic groups, clinical conditions and comorbidities - (def)). See below some of the conventions used to document this data model",
+        "description": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC. The data model specification includes the cohort definition (shared across the 3 studies), individual-level model specification for each of the 3 studies including data dictionaries and crosswalks for semantic interoperable definition of certain variables (i.e. socioeconomic groups, clinical conditions and comorbidities - (def)). See below some of the conventions used to document this data model",
         "notes": "0.0.1\tFirst iteration of the common data model specification. Entity and node description based on a previous common data specification model for the study of the asociation of time to hip fracture with increased risk of mortality \n1.0.0\tFirst complete common data model with cohort definition specification including 'main_diagnosis_cd' crosswalks and variable level data dictionary and icd-9-mc/icd-10-mc crosswalks. Socioeconomic variables at the individual level ( 'def_soecon_lvl_cd', 'def_deprivation_lvl_cd') still pending further definition. Variable 'elixhauser_index_nm' pending drop out decision or further specification.\n1.1.0\tDeleted 'deprivation_lvl_cd' and 'elixhauser_index_nm' vars. Responded and resolved all comments from participant partners\n1.1.1\tUpdated 'liver_disease_bl' crosswalk definition as Reijo identified it was wrong (it was identical to 'inflamatory_bowel_disease_bl' definition)\n1.1.3\tUpdated 'anesthesia_type_cd' variable definition to distinguish between 'analgesi",
         "spatial_coverage": "Study of all persons with a hospital episode (inpatients) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/"
@@ -69,7 +69,7 @@
     },
     "entities": [
         {
-            "uuid": "309f9507-0598-4b61-b6e5-b8d3e3fd134b",
+            "uuid": "057d7daf-d238-4090-800e-4e7ec1c08749",
             "name": "patient_cohort",
             "time_varying": false,
             "variables": [
@@ -117,7 +117,7 @@
                     "catalog_bl": false,
                     "transformations_from_origin": "",
                     "possible_data_source": "Insurance registry or Health system users database",
-                    "observations_comments": "",
+                    "observations_comments": "age_nm >= 5 | age_nm <= 115",
                     "examples": "",
                     "catalog": null
                 },
@@ -187,7 +187,7 @@
                 },
                 {
                     "label": "hospital_st",
-                    "description": "Pseudoid (name, code, autonumeric or other institutional identification classification) for the hosp",
+                    "description": "Name of the hospital of admission",
                     "standard_classification": "",
                     "format": "String",
                     "type": "Categorical",
@@ -226,12 +226,15 @@
                     "units": "",
                     "requirement_level": "Required",
                     "characteristic": "Observed",
-                    "catalog_bl": false,
+                    "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "",
+                    "observations_comments": "see more information in 'patient_cohort_main_diagnosis_cd' tab",
                     "examples": "",
-                    "catalog": null
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "main_diagnosis_cd.csv"
+                    }
                 },
                 {
                     "label": "surgical_procedure_bl",
@@ -245,7 +248,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "",
+                    "observations_comments": "Options: TRUE, FALSE",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -270,7 +273,7 @@
                 },
                 {
                     "label": "surgical_procedure_cd",
-                    "description": "Code of the main surgical procedure relevant for the study (i.e.pinning, parcial replacement, total ",
+                    "description": "Code of the main surgical procedure relevant for the study (i.e.pinning, parcial, total replacement)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "String",
                     "type": "Categorical",
@@ -278,7 +281,7 @@
                     "requirement_level": "Required",
                     "characteristic": "Observed",
                     "catalog_bl": true,
-                    "transformations_from_origin": "{total= '0', partial = '1', pinning = '2', other = '3'}",
+                    "transformations_from_origin": "(total= '0', partial = '1', pinning = '2', other = '3')",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
                     "observations_comments": "",
                     "examples": "",
@@ -313,7 +316,7 @@
                     "requirement_level": "Required",
                     "characteristic": "Observed",
                     "catalog_bl": false,
-                    "transformations_from_origin": "compliance with categories in the validation rules",
+                    "transformations_from_origin": "(0 = 'Home', 1 = 'Exitus', 2 = 'Long-term Hospital', 3 = 'Other acute hospital', 4 = 'Other social care (or similar institutions), 5 = 'Nursing care facility', 6 = 'Assisted home care') ",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
                     "observations_comments": "Differentiating between where the patient is discharged to (i.e., home, another hospital, long-term care, assisted home-care, nursing facility, etc.) or discharged dead",
                     "examples": "",
@@ -329,7 +332,7 @@
                     "requirement_level": "Recommended",
                     "characteristic": "Observed",
                     "catalog_bl": true,
-                    "transformations_from_origin": "",
+                    "transformations_from_origin": "(0 = 'Analgesia', 1 = 'Locorregional anesthesia', 2 = 'General anesthesia')",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
                     "observations_comments": "see 'def_anesthesia_cd' tab for further information on how to calculate the type of anesthesia depending on procedure codes",
                     "examples": "",
@@ -380,7 +383,7 @@
                     "requirement_level": "Required",
                     "characteristic": "Observed",
                     "catalog_bl": false,
-                    "transformations_from_origin": "compliance with ISO 8601 compliance with ISO 8601",
+                    "transformations_from_origin": "compliance with ISO 8601",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
                     "observations_comments": "",
                     "examples": "",
@@ -426,7 +429,7 @@
                 },
                 {
                     "label": "unplanned_readmission_7d_bl",
-                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 7 days after index hospita",
+                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 7 days after hospitazation",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -442,7 +445,7 @@
                 },
                 {
                     "label": "unplanned_readmission_30d_bl",
-                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 30 days after index hospit",
+                    "description": "Have the patient had an unplanned readmission(for any cause) in the next 30 days after hospitazation",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -490,7 +493,7 @@
                 },
                 {
                     "label": "chronic_kidney_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of chronic kidney disease stages 4/5 or dialysis status in the",
+                    "description": "History of chronic kidney disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -500,7 +503,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_chronic_kidney_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_chronic_kidney_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -509,7 +512,7 @@
                 },
                 {
                     "label": "tobacco_copd_bl",
-                    "description": "Has the patient a secondary diagnosis of tobacco-related disease or chronic obstructive pulmonary di",
+                    "description": "History of tobacco-related disease or chronic obstructive pulmonary disease (comorbidity)",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -519,7 +522,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_tobacco_copd_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_tobacco_copd_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -528,7 +531,7 @@
                 },
                 {
                     "label": "depression_bl",
-                    "description": "Has the patient a secondary diagnosis of depression in the hospital episode (comorbidity) - or a his",
+                    "description": "History of depression (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -538,7 +541,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_depression_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_depression_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -547,7 +550,7 @@
                 },
                 {
                     "label": "serious_mental_illness_bl",
-                    "description": "Has the patient a secondary diagnosis of serious mental illness in the hospital episode (comorbidity",
+                    "description": "History of serious mental illness (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -557,7 +560,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_serious_mental_illness_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_serious_mental_illness_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -566,7 +569,7 @@
                 },
                 {
                     "label": "alcohol_abuse_bl",
-                    "description": "Has the patient a secondary diagnosis of alcohol abuse in the hospital episode (comorbidity) - or a ",
+                    "description": "History of alcohol abuse disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -576,7 +579,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_alcohol_abuse_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_alcohol_abuse_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -585,7 +588,7 @@
                 },
                 {
                     "label": "obesity_overweight_bl",
-                    "description": "Has the patient a secondary diagnosis of obesity/overweight in the hospital episode (comorbidity) - ",
+                    "description": "History of obesity/overweight disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -595,7 +598,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_obesity_overweight_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_obesity_overweight_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -604,7 +607,7 @@
                 },
                 {
                     "label": "osteoporosis_osteopenia_bl",
-                    "description": "Has the patient a secondary diagnosis of osteoporosis/osteopenia in the hospital episode (comorbidit",
+                    "description": "History of osteoporosis/osteopenia (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -614,7 +617,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_osteoporosis_osteopenia_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_osteoporosis_osteopenia_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -623,7 +626,7 @@
                 },
                 {
                     "label": "dementia_bl",
-                    "description": "Has the patient a secondary diagnosis of dementia in the hospital episode (comorbidity) - or a histo",
+                    "description": "History of dementia (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -633,7 +636,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_dementia_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_dementia_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -642,7 +645,7 @@
                 },
                 {
                     "label": "diabetes_bl",
-                    "description": "Has the patient a secondary diagnosis of diabetes in the hospital episode (comorbidity) - or a histo",
+                    "description": "History of diabetes (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -652,7 +655,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_diabetes_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_diabetes_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -661,7 +664,7 @@
                 },
                 {
                     "label": "liver_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of liver disease in the hospital episode (comorbidity) - or a ",
+                    "description": "History of liver disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -671,7 +674,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_liver_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_liver_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -680,7 +683,7 @@
                 },
                 {
                     "label": "pancreatic_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of pancreatic disease in the hospital episode (comorbidity) - ",
+                    "description": "History of pancreatic disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -690,7 +693,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_pancreatic_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_pancreatic_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -699,7 +702,7 @@
                 },
                 {
                     "label": "inflamatory_bowel_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of inflamatory bowel disease in the hospital episode (comorbid",
+                    "description": "History of inflamatory bowel disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -709,7 +712,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_inflamatory_bowel_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_inflamatory_bowel_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -718,7 +721,7 @@
                 },
                 {
                     "label": "rheumatology_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of rheumatology disease in the hospital episode (comorbidity) ",
+                    "description": "History of rheumatology disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -728,7 +731,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_rheumatology_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_rheumatology_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -737,7 +740,7 @@
                 },
                 {
                     "label": "spinal_cord_disease_injury_bl",
-                    "description": "Has the patient a secondary diagnosis of spinal cord disease injury in the hospital episode (comorbi",
+                    "description": "History of spinal cord disease injury (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -747,7 +750,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_spinal_cord_disease_injury_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_spinal_cord_disease_injury_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -756,7 +759,7 @@
                 },
                 {
                     "label": "serious_neurological_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of serious neurological disease in the hospital episode (comor",
+                    "description": "History of serious neurological disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -766,7 +769,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_serious_neurological_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_serious_neurological_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -775,7 +778,7 @@
                 },
                 {
                     "label": "parkinson_huntington_diseases_bl",
-                    "description": "Has the patient a secondary diagnosis of parkinson huntington diseases in the hospital episode (como",
+                    "description": "History of parkinson huntington diseases (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -785,7 +788,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_parkinson_huntington_diseases_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_parkinson_huntington_diseases_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -794,7 +797,7 @@
                 },
                 {
                     "label": "seizure_disorder_convulsions_bl",
-                    "description": "Has the patient a secondary diagnosis of seizure disorder convulsions in the hospital episode (comor",
+                    "description": "History of seizure disorder convulsions (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -804,7 +807,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_seizure_disorder_convulsions_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_seizure_disorder_convulsions_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -813,7 +816,7 @@
                 },
                 {
                     "label": "congestive_heart_failure_bl",
-                    "description": "Has the patient a secondary diagnosis of congestive heart failure in the hospital episode (comorbidi",
+                    "description": "History of congestive heart failure (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -823,7 +826,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_congestive_heart_failure_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_congestive_heart_failure_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -832,7 +835,7 @@
                 },
                 {
                     "label": "coronary_artery_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of coronary artery disease in the hospital episode (comorbidit",
+                    "description": "History of coronary artery disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -842,7 +845,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_coronary_artery_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_coronary_artery_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -851,7 +854,7 @@
                 },
                 {
                     "label": "cerebrovascular_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of cerebrovascular disease in the hospital episode (comorbidit",
+                    "description": "History of cerebrovascular disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -861,7 +864,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_cerebrovascular_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_cerebrovascular_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -870,7 +873,7 @@
                 },
                 {
                     "label": "peripheral_vascular_disease_bl",
-                    "description": "Has the patient a secondary diagnosis of peripheral vascular disease in the hospital episode (comorb",
+                    "description": "History of peripheral vascular disease (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -880,7 +883,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_peripheral_vascular_disease_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_peripheral_vascular_disease_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -889,7 +892,7 @@
                 },
                 {
                     "label": "traumatic_brain_injury_bl",
-                    "description": "Has the patient a secondary diagnosis of traumatic brain injury in the hospital episode (comorbidity",
+                    "description": "History of traumatic brain injury (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -899,7 +902,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_trumatic_brain_injury_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_traumatic_brain_injury_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -908,7 +911,7 @@
                 },
                 {
                     "label": "amputee_bl",
-                    "description": "Has the patient a secondary diagnosis of being an 'amputee' in the hospital episode (comorbidity) - ",
+                    "description": "History of being an 'amputee' (comorbidity)",
                     "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -918,7 +921,7 @@
                     "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see 'def_amputee_bl' tab for further information on how to calculate if there is a secondary diagnosis codes of osteoporosis",
+                    "observations_comments": "see definition in 'patient_cohort_amputee_bl' tab, but, as a boolean variable it can only have the values: TRUE/FALSE. Value is TRUE if any of the codes present in the above-mentioned tab are found.",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
@@ -938,6 +941,22 @@
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
                     "observations_comments": "Captures any precedent of a hospital admission due to any cause in the 6 months previous to the hospital index",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
+                    "label": "hospital_admission_type_cd\t",
+                    "description": "Provenance/type hospital admission related to hospitalization episode",
+                    "standard_classification": "",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Recommended",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "(0 = 'Home', 1 = 'Long-term Hospital', 2 = 'Other acute hospital', 3 = 'Other social care (or similar institutions), 4 = 'Nursing care facility', 5 = 'Assisted home care')",
+                    "possible_data_source": "Hospital inpatient episodes (claims)",
+                    "observations_comments": "From where the patient is admitted (e.g. home, other hospital, long-term care facility, home care facility, nursing home, etc.)",
                     "examples": "",
                     "catalog": null
                 }
@@ -979,9 +998,14 @@
                     "description": "Rule for column hospital_discharge_dt"
                 },
                 {
-                    "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4')",
+                    "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4', '5', '6')",
                     "name": "hospital_discharge_type_cd",
                     "description": "Rule for column hospital_discharge_type_cd"
+                },
+                {
+                    "expression": "hospital_admission_type_cd IN ('0', '1', '2', '3', '4','5')",
+                    "name": "hospital_admission_type_cd",
+                    "description": "Rule for column hospital_admission_type_cd"
                 },
                 {
                     "expression": "icu_admission_dt >= '2017-01-01'",
@@ -1001,7 +1025,7 @@
             ]
         },
         {
-            "uuid": "56f3da38-7543-43e3-9279-ce0970aa5bbe",
+            "uuid": "ab73a66f-0f79-40ff-8b8c-1a953edbc8ee",
             "name": "outpatient_prescription",
             "time_varying": false,
             "variables": [
@@ -1087,7 +1111,7 @@
             ]
         },
         {
-            "uuid": "d0330328-9dc0-4e9c-902c-17760b2c2dc6",
+            "uuid": "302a2ca6-47d5-44c7-b40d-1af1632dfca6",
             "name": "post_index_hospital_episode",
             "time_varying": false,
             "variables": [
@@ -1148,12 +1172,15 @@
                     "units": "",
                     "requirement_level": "Required",
                     "characteristic": "Observed",
-                    "catalog_bl": false,
+                    "catalog_bl": true,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "",
+                    "observations_comments": "see more information in 'patient_cohort_main_diagnosis_cd' tab",
                     "examples": "",
-                    "catalog": null
+                    "catalog": {
+                        "column_name": "code",
+                        "filename": "main_diagnosis_cd.csv"
+                    }
                 },
                 {
                     "label": "post_index_hospital_discharge_dt",
@@ -1172,7 +1199,18 @@
                     "catalog": null
                 }
             ],
-            "rules": []
+            "rules": [
+                {
+                    "expression": "post_index_hospital_admission_dt >= '2017-01-01'",
+                    "name": "post_index_hospital_admission_dt",
+                    "description": "Rule for column post_index_hospital_admission_dt"
+                },
+                {
+                    "expression": "post_index_hospital_discharge_dt >= post_index_hospital_admission_dt",
+                    "name": "post_index_hospital_discharge_dt",
+                    "description": "Rule for column post_index_hospital_discharge_dt"
+                }
+            ]
         }
     ],
     "relationships": [

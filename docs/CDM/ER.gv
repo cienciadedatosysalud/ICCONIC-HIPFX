@@ -100,6 +100,8 @@ graph ER {
 	patient_cohort_amputee_bl -- patient_cohort [len=1.5]
 	patient_cohort_previous_hospital_admission_bl [label=previous_hospital_admission_bl fontsize="8pt"]
 	patient_cohort_previous_hospital_admission_bl -- patient_cohort [len=2.1]
+	"patient_cohort_hospital_admission_type_cd	" [label="hospital_admission_type_cd	" fontsize="8pt"]
+	"patient_cohort_hospital_admission_type_cd	" -- patient_cohort [len=2.1]
 	node [shape=box]
 	outpatient_prescription [fontsize="10pt"]
 	node [shape=ellipse]

@@ -37,9 +37,14 @@
             "description": "Rule for column hospital_discharge_dt"
         },
         {
-            "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4')",
+            "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4', '5', '6')",
             "name": "hospital_discharge_type_cd",
             "description": "Rule for column hospital_discharge_type_cd"
+        },
+        {
+            "expression": "hospital_admission_type_cd IN ('0', '1', '2', '3', '4','5')",
+            "name": "hospital_admission_type_cd",
+            "description": "Rule for column hospital_admission_type_cd"
         },
         {
             "expression": "icu_admission_dt >= '2017-01-01'",
