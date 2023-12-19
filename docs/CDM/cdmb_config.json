@@ -945,7 +945,7 @@
                     "catalog": null
                 },
                 {
-                    "label": "hospital_admission_type_cd\t",
+                    "label": "hospital_admission_type_cd",
                     "description": "Provenance/type hospital admission related to hospitalization episode",
                     "standard_classification": "",
                     "format": "String",
@@ -1166,21 +1166,18 @@
                 {
                     "label": "post_index_main_diagnosis_cd",
                     "description": "Code of main diagnosis at hospital admissions",
-                    "standard_classification": "crosswalks (ICD-10, ICD-9, SNOMED-CT)",
+                    "standard_classification": "",
                     "format": "String",
                     "type": "Categorical",
                     "units": "",
                     "requirement_level": "Required",
                     "characteristic": "Observed",
-                    "catalog_bl": true,
+                    "catalog_bl": false,
                     "transformations_from_origin": "",
                     "possible_data_source": "Hospital inpatient episodes (claims)",
-                    "observations_comments": "see more information in 'patient_cohort_main_diagnosis_cd' tab",
+                    "observations_comments": "",
                     "examples": "",
-                    "catalog": {
-                        "column_name": "code",
-                        "filename": "main_diagnosis_cd.csv"
-                    }
+                    "catalog": null
                 },
                 {
                     "label": "post_index_hospital_discharge_dt",
