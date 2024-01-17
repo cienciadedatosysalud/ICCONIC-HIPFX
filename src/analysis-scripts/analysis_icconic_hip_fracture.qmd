@@ -44,9 +44,20 @@ library(reshape2)
 library(htmltools)
 library(ggridges)
 library(performance)
+library(logger)
 # library(ggplotify)
+
+#new
+library(mlmhelpr)
+library(lme4)
+
+s <- Sys.getenv("PIPELINE_VERSION")
+
+log_info(paste0("Versión de los análisis: ",s))
+
 ```
 
+<p> Versión de los análisis: `r paste0(s)` </p>
 
 
 ```{r, echo=FALSE,warning=FALSE, output = FALSE}
@@ -145,7 +156,7 @@ SELECT
 	rheumatology_disease_bl::int,
 	spinal_cord_disease_injury_bl::int,
 	serious_neurological_disease_bl::int,
-	parkinson_huntintong_diseases_bl::int,
+	parkinson_huntington_diseases_bl::int,
 	seizure_disorder_convulsions_bl::int,
 	congestive_heart_failure_bl::int,
 	coronary_artery_disease_bl::int,
@@ -326,7 +337,7 @@ table <- descriptive_values_ %>% gt(rowname_col = 'variable') %>%
 
 div(style='height:400px; overflow-y: scroll', table)
 
-table <- socecon_lvl %>% gt(rowname_col = 'variable') %>% 
+socecon_lvl %>% gt(rowname_col = 'variable') %>% 
   tab_header(
     title = "Socioeconomic level table input"
   ) %>% 
@@ -421,10 +432,10 @@ table <- variables_in_hospital %>% gt() %>%
   columns = everything()) %>%
       tab_style(
     style = cell_text(align = "center"),
-    locations = cells_row_groups()) %>% 
-  opt_interactive(use_filters = TRUE,
-                  use_compact_mode = TRUE,
-                  use_resizers = TRUE)
+    locations = cells_row_groups()) #%>% 
+  # opt_interactive(use_filters = TRUE,
+  #                 use_compact_mode = TRUE,
+  #                 use_resizers = TRUE)
 
 table
 rm(table)
@@ -488,10 +499,8 @@ dbDisconnect(con, shutdown=TRUE)
 df_patient <- df_patient %>% mutate_if(is.logical,as.numeric)
 
 
-
-
 start_study <- as.Date('2017-01-01')
-end_study <- as.Date('2023-12-31') #TODO: Change before going for real data!
+end_study <- as.Date('2021-12-31') 
 
 ```
 
@@ -548,40 +557,50 @@ df_patient_filter <- df_patient_filter %>%
       TRUE ~ 0),
     exitus_hosp_bl = case_when(
       hospital_discharge_dt<=exitus_dt ~ 1,
-      TRUE ~ 0)
+      TRUE ~ 0),
+    futime_adm_surg_cd = case_when(
+      futime_adm_surg <= 1 ~ 1,
+      futime_adm_surg > 1 & futime_adm_surg <= 2 ~ 2,
+      futime_adm_surg > 2 & futime_adm_surg <= 3 ~ 3,
+      TRUE ~ 4)
   )
 
 df_patient_filter <- df_patient_filter %>% mutate(
-  period = (12*(year(surgical_procedure_dt)-year(start_study)) + month(surgical_procedure_dt)),
+  year = year(surgical_procedure_dt),
+  month = month(surgical_procedure_dt),
   weekday = weekdays(as.POSIXlt(surgical_procedure_dt),abbreviate = FALSE),
   day_month = day(surgical_procedure_dt)
 )
 
 
-df_model <- df_patient_filter %>% dplyr::select(exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,futime_adm_surg,age_nm,sex_cd,hospital_st,
-                      socecon_lvl_cd,surgical_procedure_cd,anesthesia_type_cd,icu_admission_bl,anticoagulant_status_bl,antiagregant_status_bl,
+df_model <- df_patient_filter %>% dplyr::select(exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,futime_adm_surg,futime_adm_surg_cd,age_nm,sex_cd,hospital_st,
+                      socecon_lvl_cd,surgical_procedure_cd,anesthesia_type_cd,icu_admission_bl,anticoagulant_status_bl,antiaggregant_status_bl,
                                               chronic_kidney_disease_bl,tobacco_copd_bl,
                                               depression_bl,serious_mental_illness_bl,alcohol_abuse_bl,             
                                               obesity_overweight_bl,osteoporosis_osteopenia_bl,dementia_bl,diabetes_bl,
                                               liver_disease_bl,pancreatic_disease_bl,inflamatory_bowel_disease_bl,rheumatology_disease_bl,
                                               spinal_cord_disease_injury_bl,serious_neurological_disease_bl,
-                                              parkinson_huntintong_diseases_bl,seizure_disorder_convulsions_bl,congestive_heart_failure_bl,
+                                              parkinson_huntington_diseases_bl,seizure_disorder_convulsions_bl,congestive_heart_failure_bl,
                                               coronary_artery_disease_bl,cerebrovascular_disease_bl,peripheral_vascular_disease_bl,
-                                              traumatic_brain_injury_bl,amputee_bl,period,weekday,day_month,age_group)
+                      traumatic_brain_injury_bl,amputee_bl,year,month,weekday,day_month,age_group,hospital_admission_type_cd,previous_hospital_admission_bl)
 
 df_model$sex_cd <- factor(df_model$sex_cd,
 levels = c(0,1,2,9),
 labels = c("unknown", "male", "female",'not_applicable')) 
+df_model$surgical_procedure_cd <- as.integer(df_model$surgical_procedure_cd)
 df_model$surgical_procedure_cd <- factor(df_model$surgical_procedure_cd,
                                          levels = c(0,1,2,3),
-labels = c("Total", "Partial", "Pinning",'Other')) #TODO: !Add labels
+labels = c("Total", "Partial", "Pinning",'Other')) 
 df_model$hospital_st <- as.factor(df_model$hospital_st)
 df_model$age_group <- as.factor(df_model$age_group)
-
-
+df_model$futime_adm_surg_cd <- factor(df_model$futime_adm_surg_cd,
+                                         levels = c(1,2,3,4),labels = c("x <=24h", "24h-48h", "48h-72h",">=72h"))
+df_model$year <- as.factor(df_model$year)
+df_model$month <- as.factor(df_model$month)
+df_model$day_month <- as.factor(df_model$day_month)
 ### select variables for model with 20% or less of missings
 miss_threshold = 0.2
-df_model_aux <- df_model %>% select(!c(age_nm,exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,period,day_month,futime_adm_surg,hospital_st))
+df_model_aux <- df_model %>% select(!c(age_nm,exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,futime_adm_surg,futime_adm_surg_cd,hospital_st))
 a <- names(df_model_aux)[sapply(df_model_aux, function(x) (sum(is.na(x))/nrow(df_model_aux)) <= miss_threshold)]
 df_model_aux <- df_model_aux %>% select(a)
 formula_model <- paste0(colnames(df_model_aux), collapse = ' + ')
@@ -592,116 +611,60 @@ rm(df_model_aux)
 
 #### Models
 
-In order to study whether there is a relationship between mortality and the time elapsed between the date of admission and the date of surgery, three Generalized Additive Mixed Models (GAMM) will be built following the same methodology but varying the dependent variable (y):
 
-- Model 1: y = inpatient mortality due to any cause
-
-- Model 2: y = mortality 7-days after surgery (any cause)
-
-- Model 3: y = mortality 30-days after surgery (any cause)
+In order to study whether there is a relationship between mortality and the time elapsed between the date of admission and the date of surgery, two different groups of models depending on the number of independent variables are carried out. On the one hand, several reference univariate models. On the other hand, several multivariate models.
 
 
-##### Adjusted mortality by time to surgery (univariate GAM model)
+##### Adjusted mortality by time to surgery (univariate models)
 
-Two panels are shown for each of the three simple models according to the variable to be predicted (y):
+Four different univariate models are built:
 
-- The first corresponds to the model plot with the y-axis being the model prediction with mean centred at zero and x-axis the main predictor variable, time from admission to surgery. 
+1. Generalized Linear Model (GLM): three GLM models following the same methodology but varying the dependent variable (y):
 
-<!-- - The second corresponds to the summary of the model. -->
+    - Model 1: y = inpatient mortality due to any cause
 
-- The second is an interactive summary table shows whether the probability of death is higher (red) or lower than average depending on the day after surgery. Thus, day 0-1 indicates that the patient is on the first day after surgery (first 24 hours), day 1-2 indicates that the patient is on the second day after surgery (between the first 24-48 hours), and so on. 
+    - Model 2: y = mortality 7-days after surgery (any cause)
+
+    - Model 3: y = mortality 30-days after surgery (any cause)
+  
+  In this model, the independent variable (x) is the time elapsed between the date of admission and the date of surgery categorized as:
+  
+    - 1: x <= 24 hours 
+
+    - 2: 24 hours < x <= 48 hours
+
+    - 3: 48 hours < x <= 72 hours
+
+    - 4: 72 hours < x
+  
+
+2. Generalized Linear Mixed Model (GLMM): a single GLMM model is constructed following the GLM model methodology, but only for the independent variable *y = mortality 30-days after surgery (any cause)* and including the hospital as the second level.
+
+3. Generalized Additive Model (GAM): three GAM models following the same methodology but varying the dependent variable (y) as in the GLM models, but in this case, the dependent variable is not categorized but introduced as a spline.
+
+4. Generalized Additive Mixed Model (GAMM): a single GAMM model is constructed following the GAM model methodology, but only for the independent variable *y = mortality 30-days after surgery (any cause)* and including the hospital as the second level.
+
+
+###### Generalized Linear Model (GLM)
+
 
 ::: {.panel-tabset}
 
 ###### Model with variable to predict: exitus in hospital
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus in hospital simple plot
+#| label: GLM exitus in hospital simple plot
 
 ###### exitus in hospital #####
 
 
-model_exitus_hosp_bl_simple <- mgcv::gam(exitus_hosp_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model, family = nb(), method = "REML")
+model_exitus_hosp_bl_simple <- glm(exitus_hosp_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
 
 df_model[c('predict_model_exitus_hosp_bl_simple','se_predict_model_exitus_hosp_bl_simple')] <- model_exitus_hosp_bl_simple %>% predict(df_model, type = "response",se.fit=TRUE)
-# 
-# 
-# 
-# ggplot(data = df_model, aes(x=futime_adm_surg, y=predict_model_exitus_hosp_bl_simple - (mean(predict_model_exitus_hosp_bl_simple,na.rm=TRUE)))) +
-#   geom_line() +
-#   labs(title = '',
-#            x = 'Time from admission to surgery',
-#            y = 'Prediction to death in hospital') +
-#   scale_x_continuous(breaks=seq(min(df_model$futime_adm_surg,na.rm=TRUE), max(df_model$futime_adm_surg,na.rm=TRUE), 2)) +
-#   theme(panel.background = element_blank(), axis.line = element_line(color='black'))
 
 summary(model_exitus_hosp_bl_simple)
-plot(model_exitus_hosp_bl_simple, xlab = 'Time from admission to surgery (days)')
+#plot(model_exitus_hosp_bl_simple, xlab = 'Time from admission to surgery (days)')
 # abline(h = 0.0)
 
-# plot_smooths(model_exitus_hosp_bl_simple, series = futime_adm_surg) 
-
-
-# p <- plot(model_exitus_hosp_bl_simple, xlab = 'Time from admission to surgery (days)', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)') 
-# 
-# p1 <- data.frame(x=p[[1]][["x"]], y= p[[1]][["fit"]])
-# p1 <- p1 %>% 
-#   mutate(
-#     more_than_mean = ifelse(y>0,TRUE,FALSE),
-#     day = ceiling(x)
-#   )
-# 
-# p2_exitus_hosp_bl <- p1[!duplicated(p1$day),]
-
-```
-
-
-<!-- To annex -->
-
-<!-- ##### Summary model with variable to predict: exitus in hospital -->
-
-<!-- ```{r, echo=FALSE,warning=FALSE} -->
-<!-- #| label: exitus in hospital simple summary -->
-
-<!-- summary(model_exitus_hosp_bl_simple) -->
-
-
-<!-- ``` -->
-
-
-<!-- ##### Summary table: More or less probability of exitus (depending on the day after surgery) -->
-
-```{r, echo=FALSE,warning=FALSE}
-#| label: exitus in hospital simple summary table
-# p2_exitus_hosp_bl$more_than_mean_descrp[p2_exitus_hosp_bl$more_than_mean == TRUE] <- 'More than mean'
-# p2_exitus_hosp_bl$more_than_mean_descrp[p2_exitus_hosp_bl$more_than_mean == FALSE] <- 'Less or equal than mean'
-# 
-# 
-# p2_exitus_hosp_bl$interval <- as.numeric(p2_exitus_hosp_bl$day) - 1
-# p2_exitus_hosp_bl <- p2_exitus_hosp_bl %>% filter(interval >= 0)
-# p2_exitus_hosp_bl$interval <- paste0(p2_exitus_hosp_bl$interval,' - ', p2_exitus_hosp_bl$day)
-# 
-# p2_exitus_hosp_bl %>% dplyr::select(interval,more_than_mean_descrp) %>% gt() %>%
-#   tab_header(
-#     title = ""
-#   ) %>%
-#      cols_label(
-#       interval = 'Day',
-#       more_than_mean_descrp = 'Difference with mean'
-#        ) %>%
-#   tab_style(
-#     style = cell_fill(color = "#F1553C"),
-#     locations = cells_body(
-#       columns = more_than_mean_descrp,
-#       rows = more_than_mean_descrp %in% 'More than mean'
-#     )) %>% 
-#         cols_align(
-#   align =  "center",
-#   columns = everything()) %>% 
-#     opt_interactive(use_filters = TRUE,
-#                   use_compact_mode = TRUE,
-#                   use_resizers = TRUE)
-
-  
 
 ```
 
@@ -710,89 +673,13 @@ plot(model_exitus_hosp_bl_simple, xlab = 'Time from admission to surgery (days)'
 
 
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 7 days simple plot
+#| label: GLM exitus 7 days simple plot
 
 ###### exitus 7 days #####
 
-model_exitus_7days_bl_simple <- mgcv::gam(exitus_7days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = nb(), method = "REML")
-
-# df_model[c('predict_model_exitus_7days_bl_simple','se_predict_model_exitus_7days_bl_simple')] <- model_exitus_7days_bl_simple %>% predict(df_model, type = "response",se.fit=TRUE)
-#
-#
-# ggplot(data = df_model,  aes(x=futime_adm_surg, y=predict_model_exitus_7days_bl_simple)) +
-#   geom_line() +
-#   labs(title = '',
-#            x = 'Time from admission to surgery',
-#            y = 'Prediction to death in 7 days after surgery') +
-#     geom_hline(data=df_model, mapping=aes(yintercept=mean(predict_model_exitus_7days_bl_simple,na.rm = TRUE)), color="red") +
-#     geom_vline(data=df_model, )
-#   theme(panel.background = element_blank(), axis.line = element_rect(color='black'))
+model_exitus_7days_bl_simple <- glm(exitus_7days_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
 
 summary(model_exitus_7days_bl_simple)
-
-plot(model_exitus_7days_bl_simple, xlab = 'Time from admission to surgery (days)')
-
-# p <- plot(model_exitus_7days_bl_simple, xlab = 'Time from admission to surgery (days)', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)')
-# p1 <- data.frame(x=p[[1]][["x"]], y= p[[1]][["fit"]])
-# p1 <- p1 %>%
-#   mutate(
-#     more_than_mean = ifelse(y>0,TRUE,FALSE),
-#     day = ceiling(x)
-#   )
-# 
-# p2_exitus_7days_bl <- p1[!duplicated(p1$day),]
-
-
-
-```
-
-<!-- To annex -->
-
-<!-- ##### Summary model with variable to predict: exitus in hospital -->
-
-<!-- ```{r, echo=FALSE,warning=FALSE} -->
-<!-- #| label: exitus 7 days simple summary -->
-
-<!-- summary(model_exitus_7days_bl_simple) -->
-
-
-<!-- ``` -->
-
-
-<!-- ##### Summary table: More or less probability of exitus (depending on the day after surgery) -->
-
-```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 7 days simple summary table
-# p2_exitus_7days_bl$more_than_mean_descrp[p2_exitus_7days_bl$more_than_mean == TRUE] <- 'More than mean'
-# p2_exitus_7days_bl$more_than_mean_descrp[p2_exitus_7days_bl$more_than_mean == FALSE] <- 'Less or equal than mean'
-# 
-# 
-# p2_exitus_7days_bl$interval <- as.numeric(p2_exitus_7days_bl$day) - 1
-# p2_exitus_7days_bl <- p2_exitus_7days_bl %>% filter(interval >= 0)
-# p2_exitus_7days_bl$interval <- paste0(p2_exitus_7days_bl$interval,' - ', p2_exitus_7days_bl$day)
-# 
-# p2_exitus_7days_bl %>% dplyr::select(interval,more_than_mean_descrp) %>% gt() %>%
-#   tab_header(
-#     title = ""
-#   ) %>%
-#      cols_label(
-#       interval = 'Day',
-#       more_than_mean_descrp = 'Difference with mean'
-#        ) %>%
-#   tab_style(
-#     style = cell_fill(color = "#F1553C"),
-#     locations = cells_body(
-#       columns = more_than_mean_descrp,
-#       rows = more_than_mean_descrp %in% 'More than mean'
-#     )) %>% 
-#         cols_align(
-#   align =  "center",
-#   columns = everything()) %>% 
-#     opt_interactive(use_filters = TRUE,
-#                   use_compact_mode = TRUE,
-#                   use_resizers = TRUE)
-# 
-#   
 
 ```
 
@@ -801,94 +688,151 @@ plot(model_exitus_7days_bl_simple, xlab = 'Time from admission to surgery (days)
 
 
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 30 days simple plot
+#| label: GLM exitus 30 days simple plot
 ###### exitus 30 days #####
 
-#
-# formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~ s(futime_adm_surg) + s(futime_adm_surg, by = hospital_st) + s(period) + s(period, by = hospital_st) + s(day_month) + s(day_month, by = hospital_st) + ',formula_model))
-#
-#
-# model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model, method = "REML")
-# tab_model(model_exitus_30days_bl)
 
-model_exitus_30days_bl_simple <- mgcv::gam(exitus_30days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = nb(), method = "REML")
-
-
-# ggplot(data = df_model,  aes(x=futime_adm_surg, y=predict_model_exitus_30days_bl_simple)) +
-#   geom_line() +
-#   labs(title = '',
-#            x = 'Time from admission to surgery',
-#            y = 'Prediction to death in 30 days after surgery') +
-#   theme(panel.background = element_blank(), axis.line = element_rect(color='black')) +
-#   geom_hline(data=df_model, mapping=aes(yintercept=mean(predict_model_exitus_30days_bl_simple,na.rm = TRUE)), color="red")
-
+model_exitus_30days_bl_simple <- glm(exitus_30days_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
 
 summary(model_exitus_30days_bl_simple)
-plot(model_exitus_30days_bl_simple, xlab = 'Time from admission to surgery (days)')
 
-# p <- plot(model_exitus_30days_bl_simple, xlab = 'Time from admission to surgery (days)', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)')
-# p1 <- data.frame(x=p[[1]][["x"]], y= p[[1]][["fit"]])
-# p1 <- p1 %>%
-#   mutate(
-#     more_than_mean = ifelse(y>0,TRUE,FALSE),
-#     day = ceiling(x)
-#   )
-# 
-# p2_exitus_30days_bl <- p1[!duplicated(p1$day),]
+```
+
+:::
+
+###### Generalized Linear Mixed Model (GLMM)
+
+::: {.panel-tabset}
+
+
+
+###### Model with variable to predict: exitus in hospital
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus in hospital simple plot
+
+###### exitus in hospital #####
+
+### Filter by n_patient >=500
+
+variables_in_hospital_filter <- variables_in_hospital %>% filter(n_patient >= 500)
+df_model_filter <- df_model %>% filter(hospital_st %in% variables_in_hospital_filter$hospital_st)
+df_model_filter <- na.omit(df_model_filter)
+
+# model_exitus_hosp_bl_simple <- glmm::glmm(exitus_hosp_bl ~ futime_adm_surg_cd, random = list(exitus_hosp_bl ~ 1|hospital_st), data = df_model, family.glmm = binomial.glmm())
+
+model_exitus_hosp_bl_simple <- glmer(exitus_hosp_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_hosp_bl_simple)
+
+icc <- icc(model_exitus_hosp_bl_simple)
+print(paste0('ICC Model with variable to predict: exitus in hospital: ', icc))
+#plot(model_exitus_hosp_bl_simple, xlab = 'Time from admission to surgery (days)')
+# abline(h = 0.0)
+
+
+```
+
+
+###### Model with variable to predict: exitus in 7 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus 7 days simple plot
+
+###### exitus 7 days #####
+# model_exitus_7days_bl_simple <- glmm::glmm(exitus_7days_bl ~ futime_adm_surg_cd , random = list(exitus_7days_bl ~ 0 + hospital_st), data = df_model, family.glmm = binomial.glmm(), varcomps.names = c("hospital_st"), m=10)
+
+
+model_exitus_7days_bl_simple <- glmer(exitus_7days_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_7days_bl_simple)
+
+icc <- icc(model_exitus_7days_bl_simple)
+print(paste0('ICC Model with variable to predict: exitus in 7 days after surgery: ', icc))
+
+
+```
+
+
+###### Model with variable to predict: exitus in 30 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus 30 days simple plot categorised
+###### exitus 30 days #####
+
+
+# model_exitus_30days_bl_simple <- glmm::glmm(exitus_30days_bl ~ futime_adm_surg_cd, random = list(exitus_30days_bl ~ 1|hospital_st), data = df_model, family.glmm = binomial.glmm())
+model_exitus_30days_bl_simple <- glmer(exitus_30days_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_30days_bl_simple)
+
+icc <- icc(model_exitus_30days_bl_simple)
+print(paste0('ICC Model with variable to predict: exitus in 30 days after surgery: ', icc))
+
+
+
+```
+
+
+:::
+
+###### Generalized Additive Model (GAM)
+
+::: {.panel-tabset}
+
+###### Model with variable to predict: exitus in hospital
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAM exitus in hospital simple plot
+
+###### exitus in hospital #####
+
+
+model_exitus_hosp_bl_simple <- mgcv::gam(exitus_hosp_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model, family = nb(), method = "REML")
+
+df_model[c('predict_model_exitus_hosp_bl_simple','se_predict_model_exitus_hosp_bl_simple')] <- model_exitus_hosp_bl_simple %>% predict(df_model, type = "response",se.fit=TRUE)
+
+summary(model_exitus_hosp_bl_simple)
+plot(model_exitus_hosp_bl_simple, xlab = 'Time from admission to surgery (days)')
+
+
+```
+
+###### Model with variable to predict: exitus in 7 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAM exitus 7 days simple plot
+
+###### exitus 7 days #####
+
+model_exitus_7days_bl_simple <- mgcv::gam(exitus_7days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = nb(), method = "REML")
+
+
+summary(model_exitus_7days_bl_simple)
+
+plot(model_exitus_7days_bl_simple, xlab = 'Time from admission to surgery (days)')
+
 
 
 ```
 
 
 
+###### Model with variable to predict: exitus in 30 days after surgery
 
-<!-- To annex -->
-
-<!-- ##### Summary model with variable to predict: exitus in hospital -->
-
-<!-- ```{r, echo=FALSE,warning=FALSE} -->
-<!-- #| label: exitus 30 days simple summary -->
-
-<!-- summary(model_exitus_30days_bl_simple) -->
-
-
-<!-- ``` -->
-
-
-<!-- ##### Summary table: More or less probability of exitus (depending on the day after surgery) -->
 
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 30 days simple summary table
-# p2_exitus_30days_bl$more_than_mean_descrp[p2_exitus_30days_bl$more_than_mean == TRUE] <- 'More than mean'
-# p2_exitus_30days_bl$more_than_mean_descrp[p2_exitus_30days_bl$more_than_mean == FALSE] <- 'Less or equal than mean'
-# 
-# 
-# p2_exitus_30days_bl$interval <- as.numeric(p2_exitus_30days_bl$day) - 1
-# p2_exitus_30days_bl <- p2_exitus_30days_bl %>% filter(interval >= 0)
-# p2_exitus_30days_bl$interval <- paste0(p2_exitus_30days_bl$interval,' - ', p2_exitus_30days_bl$day)
-# 
-# p2_exitus_30days_bl %>% dplyr::select(interval,more_than_mean_descrp) %>% gt() %>%
-#   tab_header(
-#     title = ""
-#   ) %>%
-#      cols_label(
-#       interval = 'Day',
-#       more_than_mean_descrp = 'Difference with mean'
-#        ) %>%
-#   tab_style(
-#     style = cell_fill(color = "#F1553C"),
-#     locations = cells_body(
-#       columns = more_than_mean_descrp,
-#       rows = more_than_mean_descrp %in% 'More than mean'
-#     )) %>% 
-#         cols_align(
-#   align =  "center",
-#   columns = everything()) %>% 
-#     opt_interactive(use_filters = TRUE,
-#                   use_compact_mode = TRUE,
-#                   use_resizers = TRUE)
-# 
-#   
+#| label: GAM exitus 30 days simple plot
+###### exitus 30 days #####
+
+
+model_exitus_30days_bl_simple <- mgcv::gam(exitus_30days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = nb(), method = "REML")
+
+
+summary(model_exitus_30days_bl_simple)
+plot(model_exitus_30days_bl_simple, xlab = 'Time from admission to surgery (days)')
+
+
 
 ```
 
@@ -896,7 +840,71 @@ plot(model_exitus_30days_bl_simple, xlab = 'Time from admission to surgery (days
 :::
 
 
-##### Adjusted mortality (multivariate GAMM model) 
+
+###### Generalized Additive Mixed Model (GAMM)
+
+
+::: {.panel-tabset}
+
+###### Model with variable to predict: exitus in hospital
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus in hospital simple plot
+
+###### exitus in hospital #####
+
+
+model_exitus_hosp_bl_simple <- mgcv::gamm(exitus_hosp_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
+
+
+summary(model_exitus_hosp_bl_simple$gam)
+
+plot(model_exitus_hosp_bl_simple$gam, select = 1, xlab = 'Time from admission to surgery (days)')
+
+```
+
+###### Model with variable to predict: exitus in 7 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 7 days simple plot
+
+###### exitus 7 days #####
+
+model_exitus_7days_bl_simple <- mgcv::gamm(exitus_7days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
+
+summary(model_exitus_7days_bl_simple$gam)
+
+plot(model_exitus_7days_bl_simple$gam, select = 1, xlab = 'Time from admission to surgery (days)')
+
+```
+
+
+
+###### Model with variable to predict: exitus in 30 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 30 days simple plot
+###### exitus 30 days #####
+
+
+model_exitus_30days_bl_simple <- mgcv::gamm(exitus_30days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
+
+summary(model_exitus_30days_bl_simple$gam)
+
+plot(model_exitus_30days_bl_simple$gam, select = 1, xlab = 'Time from admission to surgery (days)')
+
+```
+
+
+:::
+
+
+
+##### Adjusted mortality by time to surgery (multivariate models)
+
+Three multilevel GLMM models are built depending on the dependent variable to be predicted (y) as previous section. The most relevant independent variable in this case is (as previous section) the time elapsed between the date of admission and the date of surgery categorized but in this case different patient variables that are considered relevant in the study such as age, sex, comorbidities etc. are introduced into the model.  
+
 
 ::: {.panel-tabset}
 
@@ -904,54 +912,29 @@ plot(model_exitus_30days_bl_simple, xlab = 'Time from admission to surgery (days
 
 
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus in hospital complex model plot
-
-# sum_model_exitus_hosp_bl <- summary(model_exitus_hosp_bl)
-# p_valor_nonspline <- as.data.frame(sum_model_exitus_hosp_bl$p.pv)
-# p_valor_nonspline_signif <- p_valor_nonspline %>% filter(p_valor_nonspline$`sum_model_exitus_hosp_bl$p.pv` <= 0.05)
-#
-# p_valor_spline <- as.data.frame(sum_model_exitus_hosp_bl$s.table)
-# p_valor_spline_signif <- p_valor_spline %>% filter(p_valor_spline$`p-value` <= 0.05)
-#
-# aux1 <- data.frame(variables_df = colnames(df_model))
-# aux2 <- data.frame(variables_model = rownames(p_valor_nonspline_signif))
-# aux3 <- data.frame(var=str_extract(aux2$variables_model,str_c(aux1$variables_df,collapse = '|')))
-# aux3 <- aux3 %>% filter(!is.na(var))
-# aux3 <- unique(aux3$var)
-# formula_model <- paste0(aux3,collapse = '+')
-# rm(aux1,aux2,aux3,p,p1)
-#
+#| label: GLMM exitus in hospital complex model plot
 
 
-### Filter by n_patient >=1200
+#formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ futime_adm_surg_cd + ',formula_model))
 
-variables_in_hospital_filter <- variables_in_hospital %>% filter(n_patient >= 1200)
-df_model_filter <- df_model %>% filter(hospital_st %in% variables_in_hospital_filter$hospital_st)
-df_model_filter <- na.omit(df_model_filter)
+formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ futime_adm_surg_cd + ',formula_model, ' + (1|hospital_st)'))
 
-formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg, bs = "tp") + s(period, bs = "tp") + s(day_month, bs = "tp") + ',formula_model))
+# model_exitus_hosp_bl <- glmm::glmm(formula_model_exitus_hosp_bl, data = df_model_filter,random = list(exitus_hosp_bl ~ 1|hospital_st), family.glmm = binomial.glmm(), varcomps.names=c("hospital_st"))
 
-model_exitus_hosp_bl <- mgcv::gamm(formula_model_exitus_hosp_bl, data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
-
-summary(model_exitus_hosp_bl$gam)
+model_exitus_hosp_bl <- glmer(formula_model_exitus_hosp_bl, data = df_model_filter, family = binomial)
 
 
-plot(model_exitus_hosp_bl$gam, select = 1, xlab = 'Time from admission to surgery (days)')
+summary(model_exitus_hosp_bl)
 
-# p <- plot(model_exitus_hosp_bl, select = 1, xlab = 'Time from admission to surgery (days)', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)')
-# p1 <- data.frame(x=p[[1]][["x"]], y= p[[1]][["fit"]])
-# p1 <- p1 %>%
-#   mutate(
-#     more_than_mean = ifelse(y>0,TRUE,FALSE),
-#     day = ceiling(x)
-#   )
-# 
-# p2 <- p1[!duplicated(p1$day),]
-
-df_model_filter[c('predict_model_exitus_hospital_bl','se_predict_model_exitus_hospital_bl')] <- model_exitus_hosp_bl$gam %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+icc <- icc(model_exitus_hosp_bl)
+print(paste0('ICC Model with variable to predict: exitus in hospital: ', icc))
 
 
-df_model_filter$resid_model_exitus_hospital_bl <- resid(model_exitus_hosp_bl$gam,type='response')
+
+df_model_filter[c('predict_model_exitus_hospital_bl','se_predict_model_exitus_hospital_bl')] <- model_exitus_hosp_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+
+df_model_filter$resid_model_exitus_hospital_bl <- resid(model_exitus_hosp_bl,type='response')
 
 output_model_exitus_hospital_bl <- df_model_filter %>% 
   group_by(hospital_st) %>% 
@@ -985,85 +968,29 @@ ggplot(df_model_filter, aes(x = resid_model_exitus_hospital_bl, y = hospital_st,
 ```
 
 
-<!-- ##### Summary model with variable to predict: exitus in hospital -->
-
-<!-- ```{r, echo=FALSE,warning=FALSE} -->
-<!-- #| label: exitus in hospital complex model summary -->
-
-<!-- summary(model_exitus_hosp_bl) -->
-
-
-<!-- ``` -->
-
-
-<!-- ##### Summary table: More or less probability of exitus (depending on the day after surgery) -->
-
-```{r, echo=FALSE,warning=FALSE}
-#| label: exitus in hospital complex summary table
-# p2_exitus_hosp_bl$more_than_mean_descrp[p2_exitus_hosp_bl$more_than_mean == TRUE] <- 'More than mean'
-# p2_exitus_hosp_bl$more_than_mean_descrp[p2_exitus_hosp_bl$more_than_mean == FALSE] <- 'Less or equal than mean'
-# 
-# 
-# p2_exitus_hosp_bl$interval <- as.numeric(p2_exitus_hosp_bl$day) - 1
-# p2_exitus_hosp_bl <- p2_exitus_hosp_bl %>% filter(interval >= 0)
-# p2_exitus_hosp_bl$interval <- paste0(p2_exitus_hosp_bl$interval,' - ', p2_exitus_hosp_bl$day)
-# 
-# p2_exitus_hosp_bl %>% dplyr::select(interval,more_than_mean_descrp) %>% gt() %>%
-#   tab_header(
-#     title = ""
-#   ) %>%
-#      cols_label(
-#       interval = 'Day',
-#       more_than_mean_descrp = 'Difference with mean'
-#        ) %>%
-#   tab_style(
-#     style = cell_fill(color = "#F1553C"),
-#     locations = cells_body(
-#       columns = more_than_mean_descrp,
-#       rows = more_than_mean_descrp %in% 'More than mean'
-#     )) %>% 
-#         cols_align(
-#   align =  "center",
-#   columns = everything()) %>% 
-#     opt_interactive(use_filters = TRUE,
-#                   use_compact_mode = TRUE,
-#                   use_resizers = TRUE)
-# 
-#   
-
-```
-
 
 ###### Model with variable to predict: exitus in 7 days after surgery
 
 
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 7 days complex model plot
+#| label: GLMM exitus 7 days complex model plot
+
+# formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ s(futime_adm_surg, bs = "tp") + s(period, bs = "tp") + s(day_month, bs = "tp") + ',formula_model))
+
+formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ futime_adm_surg_cd + ',formula_model, ' + (1|hospital_st)'))
+
+#model_exitus_7days_bl <- mgcv::gamm(formula_model_exitus_7days_bl, data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
+model_exitus_7days_bl <- glmer(formula_model_exitus_7days_bl, data = df_model_filter, family = binomial)
+
+summary(model_exitus_7days_bl)
+icc <- icc(model_exitus_7days_bl)
+print(paste0('ICC Model with variable to predict: exitus in 7 days after surgery: ', icc))
 
 
 
-formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ s(futime_adm_surg, bs = "tp") + s(period, bs = "tp") + s(day_month, bs = "tp") + ',formula_model))
+df_model_filter[c('predict_model_exitus_7days_bl','se_predict_model_exitus_7days_bl')] <- model_exitus_7days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
 
-model_exitus_7days_bl <- mgcv::gamm(formula_model_exitus_7days_bl, data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
-
-
-summary(model_exitus_7days_bl$gam)
-
-plot(model_exitus_7days_bl$gam, select = 1, xlab = 'Time from admission to surgery (days)')
-# p <- plot(model_exitus_7days_bl, select = 1, xlab = 'Time from admission to surgery (days)', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)')
-# p1 <- data.frame(x=p[[1]][["x"]], y= p[[1]][["fit"]])
-# p1 <- p1 %>%
-#   mutate(
-#     more_than_mean = ifelse(y>0,TRUE,FALSE),
-#     day = ceiling(x)
-#   )
-# 
-# p2_exitus_7days_bl <- p1[!duplicated(p1$day),]
-
-
-df_model_filter[c('predict_model_exitus_7days_bl','se_predict_model_exitus_7days_bl')] <- model_exitus_7days_bl$gam %>% predict(df_model_filter, type = "response",se.fit=TRUE)
-
-df_model_filter$resid_model_exitus_7days_bl <- resid(model_exitus_7days_bl$gam,type='response')
+df_model_filter$resid_model_exitus_7days_bl <- resid(model_exitus_7days_bl,type='response')
 
 output_model_exitus_7days_bl <- df_model_filter %>% 
   group_by(hospital_st) %>% 
@@ -1097,85 +1024,35 @@ ggplot(df_model_filter, aes(x = resid_model_exitus_7days_bl, y = hospital_st, gr
 
 ```
 
-<!-- To annex -->
-
-<!-- ##### Summary model with variable to predict: exitus in hospital -->
-
-<!-- ```{r, echo=FALSE,warning=FALSE} -->
-<!-- #| label: exitus 7 days simple summary -->
-
-<!-- summary(model_exitus_7days_bl) -->
-
-
-<!-- ``` -->
-
-
-<!-- ##### Summary table: More or less probability of exitus (depending on the day after surgery) -->
-
-```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 7 days complex summary table
-# p2_exitus_7days_bl$more_than_mean_descrp[p2_exitus_7days_bl$more_than_mean == TRUE] <- 'More than mean'
-# p2_exitus_7days_bl$more_than_mean_descrp[p2_exitus_7days_bl$more_than_mean == FALSE] <- 'Less or equal than mean'
-# 
-# 
-# p2_exitus_7days_bl$interval <- as.numeric(p2_exitus_7days_bl$day) - 1
-# p2_exitus_7days_bl <- p2_exitus_7days_bl %>% filter(interval >= 0)
-# p2_exitus_7days_bl$interval <- paste0(p2_exitus_7days_bl$interval,' - ', p2_exitus_7days_bl$day)
-# 
-# p2_exitus_7days_bl %>% dplyr::select(interval,more_than_mean_descrp) %>% gt() %>%
-#   tab_header(
-#     title = ""
-#   ) %>%
-#      cols_label(
-#       interval = 'Day',
-#       more_than_mean_descrp = 'Difference with mean'
-#        ) %>%
-#   tab_style(
-#     style = cell_fill(color = "#F1553C"),
-#     locations = cells_body(
-#       columns = more_than_mean_descrp,
-#       rows = more_than_mean_descrp %in% 'More than mean'
-#     )) %>% 
-#         cols_align(
-#   align =  "center",
-#   columns = everything()) %>% 
-#     opt_interactive(use_filters = TRUE,
-#                   use_compact_mode = TRUE,
-#                   use_resizers = TRUE)
-
-  
-
-```
 
 
 ###### Model with variable to predict: exitus in 30 days after surgery
 
 
 ```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 30 days complex plot
+#| label: GLMM exitus 30 days complex plot
 ###### exitus 30 days #####
 
-formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~  s(futime_adm_surg, bs = "tp") + s(period, bs = "tp") + s(day_month, bs = "tp") + ',formula_model))
-
-model_exitus_30days_bl <- mgcv::gamm(formula_model_exitus_30days_bl, data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
-
-summary(model_exitus_30days_bl$gam)
-
-plot(model_exitus_30days_bl$gam, select = 1, xlab = 'Time from admission to surgery (days)')
-# p <- plot(model_exitus_30days_bl, select = 1, xlab = 'Time from admission to surgery (days)', ylab = 'prediction exitus in hospital - mean(prediction exitus in hospital)')
-# p1 <- data.frame(x=p[[1]][["x"]], y= p[[1]][["fit"]])
-# p1 <- p1 %>%
-#   mutate(
-#     more_than_mean = ifelse(y>0,TRUE,FALSE),
-#     day = ceiling(x)
-#   )
-# 
-# p2_exitus_30days_bl <- p1[!duplicated(p1$day),]
-
-df_model_filter[c('predict_model_exitus_30days_bl','se_predict_model_exitus_30days_bl')] <- model_exitus_30days_bl$gam %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+# formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~  s(futime_adm_surg, bs = "tp") + s(period, bs = "tp") + s(day_month, bs = "tp") + ',formula_model))
 
 
-df_model_filter$resid_model_exitus_30days_bl <- resid(model_exitus_30days_bl$gam,type='response')
+formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~ futime_adm_surg_cd + ',formula_model, ' + (1|hospital_st)'))
+
+
+#model_exitus_30days_bl <- mgcv::gamm(formula_model_exitus_30days_bl, data = df_model_filter, random=list(hospital_st=~1),family=binomial(), method = "REML")
+
+model_exitus_30days_bl <- glmer(formula_model_exitus_30days_bl, data = df_model_filter, family = binomial)
+
+
+summary(model_exitus_30days_bl)
+icc <- icc(model_exitus_30days_bl)
+print(paste0('ICC Model with variable to predict: exitus in 30 days after surgery: ', icc))
+
+
+df_model_filter[c('predict_model_exitus_30days_bl','se_predict_model_exitus_30days_bl')] <- model_exitus_30days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+
+df_model_filter$resid_model_exitus_30days_bl <- resid(model_exitus_30days_bl,type='response')
 
 output_model_exitus_30days_bl <- df_model_filter %>% 
   group_by(hospital_st) %>% 
@@ -1207,58 +1084,6 @@ ggplot(df_model_filter, aes(x = resid_model_exitus_30days_bl, y = hospital_st, g
 ```
 
 
-
-
-<!-- To annex -->
-
-<!-- ##### Summary model with variable to predict: exitus in hospital -->
-
-<!-- ```{r, echo=FALSE,warning=FALSE} -->
-<!-- #| label: exitus 30 days simple summary -->
-
-<!-- summary(model_exitus_30days_bl) -->
-
-
-<!-- ``` -->
-
-
-<!-- ##### Summary table: More or less probability of exitus (depending on the day after surgery) -->
-
-```{r, echo=FALSE,warning=FALSE}
-#| label: exitus 30 days complex summary table
-# p2_exitus_30days_bl$more_than_mean_descrp[p2_exitus_30days_bl$more_than_mean == TRUE] <- 'More than mean'
-# p2_exitus_30days_bl$more_than_mean_descrp[p2_exitus_30days_bl$more_than_mean == FALSE] <- 'Less or equal than mean'
-# 
-# 
-# p2_exitus_30days_bl$interval <- as.numeric(p2_exitus_30days_bl$day) - 1
-# p2_exitus_30days_bl <- p2_exitus_30days_bl %>% filter(interval >= 0)
-# p2_exitus_30days_bl$interval <- paste0(p2_exitus_30days_bl$interval,' - ', p2_exitus_30days_bl$day)
-# 
-# p2_exitus_30days_bl %>% dplyr::select(interval,more_than_mean_descrp) %>% gt() %>%
-#   tab_header(
-#     title = ""
-#   ) %>%
-#      cols_label(
-#       interval = 'Day',
-#       more_than_mean_descrp = 'Difference with mean'
-#        ) %>%
-#   tab_style(
-#     style = cell_fill(color = "#F1553C"),
-#     locations = cells_body(
-#       columns = more_than_mean_descrp,
-#       rows = more_than_mean_descrp %in% 'More than mean'
-#     )) %>% 
-#         cols_align(
-#   align =  "center",
-#   columns = everything()) %>% 
-#     opt_interactive(use_filters = TRUE,
-#                   use_compact_mode = TRUE,
-#                   use_resizers = TRUE)
-
-  
-
-```
-
 :::
 
 
@@ -1277,4 +1102,4 @@ p$Name[p$Name %in% 'model_exitus_30days_bl'] <- 'Model 3: exitus in 30 days afte
 p
 ```
  
- 
+
