@@ -95,8 +95,10 @@ def check_file(entity_structure):
             pass
         elif f == 'boolean':
             dtype_[c] = pd.BooleanDtype()
-        elif f == 'date' or f == 'datetime':
-            parse_dates.append(c)
+        elif f == 'date':
+            dtype_[c] = pd.StringDtype()
+        elif f == 'datetime':
+            parse_dates.append(c)    
         elif f == 'integer':
             dtype_[c] = pd.Int64Dtype()
         elif f == 'double':

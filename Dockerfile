@@ -1,4 +1,6 @@
 FROM ghcr.io/cienciadedatosysalud/aspire:latest
+ARG pipeline_version="Non-versioned"
+ENV PIPELINE_VERSION=$pipeline_version
 
 USER root
 RUN apt update && apt install -y --no-install-recommends \
@@ -20,6 +22,7 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER env_project.yaml /tmp/env_project.yaml
 
 # Installing dependencies
 RUN micromamba install -y -n aspire -f /tmp/env_project.yaml \
+    && micromamba run -n aspire Rscript -e 'remotes::install_github("lrocconi/mlmhelpr")' \
     && micromamba clean --all --yes \
     && rm -rf /opt/conda/conda-meta /tmp/env_project.yaml
 
