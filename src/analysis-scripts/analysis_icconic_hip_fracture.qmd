@@ -53,11 +53,11 @@ library(lme4)
 
 s <- Sys.getenv("PIPELINE_VERSION")
 
-log_info(paste0("Versión de los análisis: ",s))
+log_info(paste0("Analysis version: ",s))
 
 ```
 
-<p> Versión de los análisis: `r paste0(s)` </p>
+<p> Analysis version: `r paste0(s)` </p>
 
 
 ```{r, echo=FALSE,warning=FALSE, output = FALSE}
