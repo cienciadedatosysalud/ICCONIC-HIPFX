@@ -1,61 +1,71 @@
 
 
-processing file: analysis_icconic_hip_fracture.qmd
-1/47                                           
-2/47 [unnamed-chunk-1]                         
-3/47                                           
-4/47 [load r packages]                         
-5/47                                           
-6/47 [query descriptive]                       
-7/47                                           
-8/47 [unnamed-chunk-4]                         
-9/47                                           
-10/47 [unnamed-chunk-5]                         
-11/47                                           
-12/47 [descriptive tables inputs1]              
-13/47                                           
-14/47 [descriptive tables inputs2]              
-15/47                                           
-16/47 [analysis]                                
-17/47                                           
-18/47 [survival plot]                           
-19/47                                           
-20/47 [analysis cont]                           
-21/47                                           
-22/47 [exitus in hospital simple plot]          
-23/47                                           
-24/47 [exitus in hospital simple summary table] 
-25/47                                           
-26/47 [exitus 7 days simple plot]               
-27/47                                           
-28/47 [exitus 7 days simple summary table]      
-29/47                                           
-30/47 [exitus 30 days simple plot]              
-31/47                                           
-32/47 [exitus 30 days simple summary table]     
-33/47                                           
-34/47 [exitus in hospital complex model plot]   
-35/47                                           
-36/47 [exitus in hospital complex summary table]
-37/47                                           
-38/47 [exitus 7 days complex model plot]        
-39/47                                           
-40/47 [exitus 7 days complex summary table]     
-41/47                                           
-42/47 [exitus 30 days complex plot]             
-43/47                                           
-44/47 [exitus 30 days complex summary table]    
-45/47                                           
-46/47 [performance model]                       
-47/47                                           
-output file: analysis_icconic_hip_fracture.knit.md
+processing file: analysis_icconic_hipfx_polypharmacy.qmd
+1/57                      
+2/57 [unnamed-chunk-1]    
+3/57                      
+4/57 [r_library]          
+INFO [2024-02-02 10:51:14] Analysis version: 1.1.0
+5/57                      
+6/57 [python_pkg]         
+7/57                      
+8/57 [drug_class_desc]    
+9/57                      
+10/57 [Data_Preprocessing] 
+11/57                      
+12/57 [exitus_filtering]   
+13/57                      
+14/57 [Final_cohort_size]  
+15/57                      
+16/57 [descriptives]       
+17/57                      
+18/57 [table_1]            
+19/57                      
+20/57 [table_2]            
+21/57                      
+22/57 [table_3]            
+23/57                      
+24/57 [figure_1a]          
+25/57                      
+26/57 [figure_1b]          
+27/57                      
+28/57 [figure_1c]          
+29/57                      
+30/57 [figure_2a]          
+31/57                      
+32/57 [figure_2b]          
+33/57                      
+34/57 [figure_2c]          
+35/57                      
+36/57 [figure_3a]          
+37/57                      
+38/57 [figure_3b]          
+39/57                      
+40/57 [figure_3c]          
+41/57                      
+42/57 [figure_4a]          
+43/57                      
+44/57 [figure_4b]          
+45/57                      
+46/57 [figure_4c]          
+47/57                      
+48/57 [file_saving_desc]   
+49/57                      
+50/57 [ps_model]           
+51/57                      
+52/57 [model_outcome_1]    
+53/57                      
+54/57 [model_outcome_2]    
+55/57                      
+56/57 [result_saving_model]
+57/57                      
+output file: analysis_icconic_hipfx_polypharmacy.knit.md
 
-Warning messages:
-1: Database is garbage-collected, use dbDisconnect(con, shutdown=TRUE) or duckdb::duckdb_shutdown(drv) to avoid this. 
-2: Database is garbage-collected, use dbDisconnect(con, shutdown=TRUE) or duckdb::duckdb_shutdown(drv) to avoid this. 
+Warning message:
+Database is garbage-collected, use dbDisconnect(con, shutdown=TRUE) or duckdb::duckdb_shutdown(drv) to avoid this. 
 pandoc 
   to: html
-  output-file: analysis_icconic_hip_fracture.html
+  output-file: analysis_icconic_hipfx_polypharmacy.html
   standalone: true
   embed-resources: true
   section-divs: true
@@ -63,7 +73,7 @@ pandoc
   wrap: none
   default-image-extension: png
   toc: true
-  toc-depth: 6
+  toc-depth: 7
   highlight-style: pygments
   
 metadata
@@ -71,9 +81,9 @@ metadata
   link-citations: true
   date-format: long
   lang: en
-  title: 'ICCONIC hip fracture: Analytical pipeline'
-  author: Data Science for Health Services and Policy Research (IACS)
+  title: 'ICCONIC HipFX Polypharmacy: Analytical pipeline'
+  author: 'Center for Health System Sustainability (CHeSS), Brown University School of Public Health'
   editor: source
   
-Output created: ../../outputs/analysis_icconic_hip_fracture.html
+Output created: ../../outputs/analysis_icconic_hipfx_polypharmacy.html
 

@@ -1,0 +1,49 @@
+
+Call:
+glm(formula = refracture_outcome ~ Length_of_stay + Fall_increase_moderate_Patterns + 
+    Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + 
+    Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), 
+    data = matched_refracture)
+
+Coefficients:
+                                                   Estimate Std. Error z value
+(Intercept)                                       3.172e-01  1.406e-01   2.256
+Length_of_stay                                   -1.577e-05  4.127e-03  -0.004
+Fall_increase_moderate_PatternsDeprescribing     -3.260e-01  6.472e-02  -5.037
+Fall_increase_moderate_PatternsInitiating         9.589e-02  1.364e-01   0.703
+Fall_increase_moderate_PatternsNo_Treat          -4.213e-01  1.833e-01  -2.298
+Fall_increase_high_PatternsDeprescribing         -2.756e-01  6.286e-02  -4.383
+Fall_increase_high_PatternsInitiating             9.030e-02  1.214e-01   0.743
+Fall_increase_high_PatternsNo_Treat              -4.028e-01  1.590e-01  -2.533
+Bone_mass_decrese_high_PatternsDeprescribing     -1.051e-01  1.176e-01  -0.894
+Bone_mass_decrese_high_PatternsInitiating         6.072e-02  1.318e-01   0.461
+Bone_mass_decrese_high_PatternsNo_Treat          -2.755e-02  1.112e-01  -0.248
+Bone_mass_decrese_moderate_PatternsDeprescribing -1.459e-01  9.381e-02  -1.556
+Bone_mass_decrese_moderate_PatternsInitiating    -2.004e-01  1.097e-01  -1.826
+Bone_mass_decrese_moderate_PatternsNo_Treat      -1.193e-01  9.017e-02  -1.323
+                                                 Pr(>|z|)    
+(Intercept)                                        0.0241 *  
+Length_of_stay                                     0.9970    
+Fall_increase_moderate_PatternsDeprescribing     4.73e-07 ***
+Fall_increase_moderate_PatternsInitiating          0.4820    
+Fall_increase_moderate_PatternsNo_Treat            0.0216 *  
+Fall_increase_high_PatternsDeprescribing         1.17e-05 ***
+Fall_increase_high_PatternsInitiating              0.4572    
+Fall_increase_high_PatternsNo_Treat                0.0113 *  
+Bone_mass_decrese_high_PatternsDeprescribing       0.3713    
+Bone_mass_decrese_high_PatternsInitiating          0.6449    
+Bone_mass_decrese_high_PatternsNo_Treat            0.8044    
+Bone_mass_decrese_moderate_PatternsDeprescribing   0.1198    
+Bone_mass_decrese_moderate_PatternsInitiating      0.0678 .  
+Bone_mass_decrese_moderate_PatternsNo_Treat        0.1858    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 8120.9  on 5857  degrees of freedom
+Residual deviance: 8044.9  on 5844  degrees of freedom
+AIC: 8072.9
+
+Number of Fisher Scoring iterations: 4
+

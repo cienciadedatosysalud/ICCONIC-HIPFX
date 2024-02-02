@@ -1,0 +1,89 @@
+
+Call:
+glm(formula = refracture_outcome ~ Length_of_stay + Opioids_Patterns + 
+    centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + 
+    sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + 
+    firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + 
+    sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + 
+    antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + 
+    inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), 
+    data = matched_refracture)
+
+Coefficients:
+                                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                        2.2005860  0.8538717   2.577 0.009961 ** 
+Length_of_stay                     0.0001589  0.0041440   0.038 0.969412    
+Opioids_PatternsDeprescribing     -0.1947994  0.0631656  -3.084 0.002043 ** 
+Opioids_PatternsInitiating        -0.0314185  0.0910281  -0.345 0.729981    
+Opioids_PatternsNo_Treat          -0.2285624  0.0805085  -2.839 0.004526 ** 
+centrAntiHT_PatternsDeprescribing -0.1638609  0.2708648  -0.605 0.545209    
+centrAntiHT_PatternsInitiating    -0.0500689  0.2833506  -0.177 0.859742    
+centrAntiHT_PatternsNo_Treat      -0.1331802  0.2617846  -0.509 0.610935    
+oralSter_PatternsDeprescribing    -0.0852190  0.1778927  -0.479 0.631905    
+oralSter_PatternsInitiating        0.0812274  0.1927303   0.421 0.673422    
+oralSter_PatternsNo_Treat         -0.0463861  0.1698060  -0.273 0.784722    
+barbs_PatternsDeprescribing       -0.3431981  0.3101483  -1.107 0.268484    
+barbs_PatternsInitiating          -0.2582549  0.3204603  -0.806 0.420308    
+barbs_PatternsNo_Treat            -0.3064511  0.2999518  -1.022 0.306938    
+sedHyp_PatternsDeprescribing       0.0877440  0.1046033   0.839 0.401567    
+sedHyp_PatternsInitiating          0.0709783  0.1198780   0.592 0.553792    
+sedHyp_PatternsNo_Treat            0.0375178  0.1004795   0.373 0.708860    
+benzos_PatternsDeprescribing      -0.0801447  0.1325283  -0.605 0.545354    
+benzos_PatternsInitiating          0.0264298  0.1451759   0.182 0.855541    
+benzos_PatternsNo_Treat           -0.1520433  0.1261450  -1.205 0.228085    
+gabaN02BF_PatternsDeprescribing    0.0647891  0.1430198   0.453 0.650543    
+gabaN02BF_PatternsInitiating       0.2189764  0.1566065   1.398 0.162035    
+gabaN02BF_PatternsNo_Treat         0.0535369  0.1364229   0.392 0.694738    
+firstGenAH_PatternsDeprescribing  -0.1694757  0.0816459  -2.076 0.037918 *  
+firstGenAH_PatternsInitiating      0.0954560  0.0995087   0.959 0.337422    
+firstGenAH_PatternsNo_Treat       -0.1048372  0.0826074  -1.269 0.204405    
+anticonv_PatternsDeprescribing    -0.1769369  0.1558409  -1.135 0.256221    
+anticonv_PatternsInitiating       -0.0698006  0.1698205  -0.411 0.681054    
+anticonv_PatternsNo_Treat         -0.1720161  0.1485181  -1.158 0.246776    
+thiazDiur_PatternsDeprescribing   -0.2169851  0.0939688  -2.309 0.020937 *  
+thiazDiur_PatternsInitiating      -0.1321624  0.1098751  -1.203 0.229038    
+thiazDiur_PatternsNo_Treat        -0.3345674  0.0919628  -3.638 0.000275 ***
+sgap_PatternsDeprescribing         0.0914413  0.1522228   0.601 0.548035    
+sgap_PatternsInitiating            0.0833416  0.1646233   0.506 0.612676    
+sgap_PatternsNo_Treat              0.1164080  0.1453041   0.801 0.423054    
+tca_PatternsDeprescribing         -0.2092524  0.1633169  -1.281 0.200100    
+tca_PatternsInitiating            -0.0546148  0.1768720  -0.309 0.757488    
+tca_PatternsNo_Treat              -0.1288233  0.1548482  -0.832 0.405447    
+ssriSnri_PatternsDeprescribing    -0.4339177  0.2309397  -1.879 0.060255 .  
+ssriSnri_PatternsInitiating       -0.2388774  0.2424466  -0.985 0.324487    
+ssriSnri_PatternsNo_Treat         -0.3577505  0.2233233  -1.602 0.109169    
+nitrates_PatternsDeprescribing    -0.0843902  0.3890214  -0.217 0.828263    
+nitrates_PatternsInitiating        0.2192861  0.4031162   0.544 0.586457    
+nitrates_PatternsNo_Treat         -0.0629989  0.3806004  -0.166 0.868531    
+antiPark_PatternsDeprescribing    -0.0127117  0.0987311  -0.129 0.897555    
+antiPark_PatternsInitiating        0.0943589  0.1144738   0.824 0.409778    
+antiPark_PatternsNo_Treat          0.0891501  0.0958150   0.930 0.352144    
+ppi_PatternsDeprescribing         -0.1422084  0.2476146  -0.574 0.565756    
+ppi_PatternsInitiating             0.0040167  0.2572624   0.016 0.987543    
+ppi_PatternsNo_Treat              -0.0196381  0.2389359  -0.082 0.934496    
+loopDiur_PatternsDeprescribing     0.0410015  0.2504239   0.164 0.869945    
+loopDiur_PatternsInitiating        0.0837696  0.2636724   0.318 0.750710    
+loopDiur_PatternsNo_Treat          0.0212606  0.2400579   0.089 0.929428    
+h2Antags_PatternsDeprescribing    -0.3257804  0.2490514  -1.308 0.190844    
+h2Antags_PatternsInitiating       -0.4673622  0.2596885  -1.800 0.071908 .  
+h2Antags_PatternsNo_Treat         -0.3952354  0.2397229  -1.649 0.099205 .  
+inhSteroids_PatternsDeprescribing -0.5830372  0.1937914  -3.009 0.002625 ** 
+inhSteroids_PatternsInitiating    -0.5320216  0.2071529  -2.568 0.010221 *  
+inhSteroids_PatternsNo_Treat      -0.5283458  0.1860015  -2.841 0.004504 ** 
+fgap_PatternsDeprescribing         0.0903658  0.1466098   0.616 0.537651    
+fgap_PatternsInitiating            0.1875862  0.1600450   1.172 0.241163    
+fgap_PatternsNo_Treat              0.1322852  0.1387629   0.953 0.340429    
+tzd_PatternsDeprescribing         -0.0113788  0.2319256  -0.049 0.960869    
+tzd_PatternsInitiating             0.0058266  0.2446810   0.024 0.981002    
+tzd_PatternsNo_Treat               0.0475820  0.2229914   0.213 0.831030    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 8120.9  on 5857  degrees of freedom
+Residual deviance: 8019.4  on 5793  degrees of freedom
+AIC: 8149.4
+
+Number of Fisher Scoring iterations: 4
+

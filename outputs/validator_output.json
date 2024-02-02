@@ -2,7 +2,7 @@
     "info": [
         {
             "entity": "patient_cohort",
-            "total_registries": 12000,
+            "total_registries": 10000,
             "na_count_list": [
                 {
                     "label": "patient_id",
@@ -26,11 +26,11 @@
                 },
                 {
                     "label": "residence_area_cd",
-                    "na_count": 239
+                    "na_count": 214
                 },
                 {
                     "label": "country_cd",
-                    "na_count": 369
+                    "na_count": 321
                 },
                 {
                     "label": "hospital_st",
@@ -50,11 +50,11 @@
                 },
                 {
                     "label": "surgical_procedure_dt",
-                    "na_count": 7886
+                    "na_count": 2503
                 },
                 {
                     "label": "surgical_procedure_cd",
-                    "na_count": 7886
+                    "na_count": 2503
                 },
                 {
                     "label": "hospital_discharge_dt",
@@ -66,7 +66,7 @@
                 },
                 {
                     "label": "anesthesia_type_cd",
-                    "na_count": 1213
+                    "na_count": 948
                 },
                 {
                     "label": "icu_admission_bl",
@@ -74,18 +74,18 @@
                 },
                 {
                     "label": "icu_admission_dt",
-                    "na_count": 7891
+                    "na_count": 6498
                 },
                 {
                     "label": "icu_discharge_dt",
-                    "na_count": 7891
+                    "na_count": 6498
                 },
                 {
                     "label": "anticoagulant_status_bl",
                     "na_count": 0
                 },
                 {
-                    "label": "antiagregant_status_bl",
+                    "label": "antiaggregant_status_bl",
                     "na_count": 0
                 },
                 {
@@ -102,7 +102,7 @@
                 },
                 {
                     "label": "exitus_dt",
-                    "na_count": 10265
+                    "na_count": 8587
                 },
                 {
                     "label": "chronic_kidney_disease_bl",
@@ -165,7 +165,7 @@
                     "na_count": 0
                 },
                 {
-                    "label": "parkinson_huntintong_diseases_bl",
+                    "label": "parkinson_huntington_diseases_bl",
                     "na_count": 0
                 },
                 {
@@ -195,31 +195,45 @@
                 {
                     "label": "amputee_bl",
                     "na_count": 0
+                },
+                {
+                    "label": "previous_hospital_admission_bl",
+                    "na_count": 0
+                },
+                {
+                    "label": "hospital_admission_type_cd",
+                    "na_count": 0
                 }
             ],
             "catalog_checking": [
                 {
+                    "variable": "main_diagnosis_cd",
+                    "wrong_values": [],
+                    "wrong_lines": [],
+                    "total_wrong_lines": 0
+                },
+                {
                     "variable": "surgical_procedure_cd",
                     "wrong_values": [
-                        "3",
-                        "2",
-                        "1",
-                        "0"
+                        "3.0",
+                        "0.0",
+                        "2.0",
+                        "1.0"
                     ],
                     "wrong_lines": [
+                        "1",
+                        "2",
+                        "3",
                         "4",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
                         "10",
                         "11",
-                        "12",
-                        "15",
-                        "17",
-                        "21",
-                        "26",
-                        "33",
-                        "37",
-                        "+4104 lines"
+                        "+7487 lines"
                     ],
-                    "total_wrong_lines": 4114
+                    "total_wrong_lines": 7497
                 },
                 {
                     "variable": "anesthesia_type_cd",
@@ -230,144 +244,150 @@
                     ],
                     "wrong_lines": [
                         "1",
+                        "2",
+                        "3",
                         "4",
                         "5",
                         "6",
-                        "8",
+                        "7",
+                        "9",
                         "10",
                         "11",
-                        "12",
-                        "13",
-                        "15",
-                        "+10777 lines"
+                        "+9042 lines"
                     ],
-                    "total_wrong_lines": 10787
+                    "total_wrong_lines": 9052
                 }
             ],
             "rules": [
                 {
                     "expression": "age_nm BETWEEN 5 AND 115",
-                    "passed_rule": 11895,
+                    "passed_rule": 9895,
                     "wrong_lines": [
-                        "251",
-                        "301",
-                        "407",
-                        "505",
-                        "519",
-                        "553",
-                        "637",
-                        "741",
-                        "810",
-                        "959",
+                        "318",
+                        "375",
+                        "501",
+                        "624",
+                        "639",
+                        "681",
+                        "772",
+                        "904",
+                        "982",
+                        "1158",
                         "+95 lines"
                     ],
                     "total_wrong_lines": 105
                 },
                 {
                     "expression": "sex_cd IN ('0', '1', '2', '9')",
-                    "passed_rule": 12000,
+                    "passed_rule": 10000,
                     "wrong_lines": [],
                     "total_wrong_lines": 0
                 },
                 {
                     "expression": "socecon_lvl_cd IN ('0', '1', '2', '3', '4', '5', '6', '7', '8')",
-                    "passed_rule": 12000,
+                    "passed_rule": 10000,
                     "wrong_lines": [],
                     "total_wrong_lines": 0
                 },
                 {
                     "expression": "hospital_admission_dt >= '2017-01-01'",
-                    "passed_rule": 12000,
+                    "passed_rule": 10000,
                     "wrong_lines": [],
                     "total_wrong_lines": 0
                 },
                 {
                     "expression": "surgical_procedure_dt >= '2017-01-01'",
-                    "passed_rule": 4114,
+                    "passed_rule": 7497,
                     "wrong_lines": [
-                        "1",
-                        "2",
-                        "3",
                         "5",
-                        "6",
-                        "7",
-                        "8",
-                        "9",
-                        "13",
-                        "14",
-                        "+7876 lines"
+                        "23",
+                        "27",
+                        "31",
+                        "33",
+                        "37",
+                        "38",
+                        "44",
+                        "47",
+                        "50",
+                        "+2493 lines"
                     ],
-                    "total_wrong_lines": 7886
+                    "total_wrong_lines": 2503
                 },
                 {
                     "expression": "surgical_procedure_cd IN ('0', '1', '2', '3')",
-                    "passed_rule": 4114,
+                    "passed_rule": 0,
                     "wrong_lines": [
                         "1",
                         "2",
                         "3",
+                        "4",
                         "5",
                         "6",
                         "7",
                         "8",
                         "9",
-                        "13",
-                        "14",
-                        "+7876 lines"
+                        "10",
+                        "+9990 lines"
                     ],
-                    "total_wrong_lines": 7886
+                    "total_wrong_lines": 10000
                 },
                 {
                     "expression": "hospital_discharge_dt >= hospital_admission_dt",
-                    "passed_rule": 12000,
+                    "passed_rule": 10000,
                     "wrong_lines": [],
                     "total_wrong_lines": 0
                 },
                 {
-                    "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4')",
-                    "passed_rule": 12000,
+                    "expression": "hospital_discharge_type_cd IN ('0', '1', '2', '3', '4', '5', '6')",
+                    "passed_rule": 10000,
+                    "wrong_lines": [],
+                    "total_wrong_lines": 0
+                },
+                {
+                    "expression": "hospital_admission_type_cd IN ('0', '1', '2', '3', '4', '5')",
+                    "passed_rule": 10000,
                     "wrong_lines": [],
                     "total_wrong_lines": 0
                 },
                 {
                     "expression": "icu_admission_dt >= '2017-01-01'",
-                    "passed_rule": 4109,
+                    "passed_rule": 3502,
                     "wrong_lines": [
-                        "1",
-                        "2",
-                        "3",
-                        "4",
                         "5",
-                        "6",
+                        "7",
                         "8",
                         "9",
                         "10",
+                        "11",
                         "12",
-                        "+7881 lines"
+                        "13",
+                        "14",
+                        "15",
+                        "+6488 lines"
                     ],
-                    "total_wrong_lines": 7891
+                    "total_wrong_lines": 6498
                 },
                 {
                     "expression": "icu_discharge_dt >= '2017-01-01'",
-                    "passed_rule": 4109,
+                    "passed_rule": 3502,
                     "wrong_lines": [
-                        "1",
-                        "2",
-                        "3",
-                        "4",
                         "5",
-                        "6",
+                        "7",
                         "8",
                         "9",
                         "10",
+                        "11",
                         "12",
-                        "+7881 lines"
+                        "13",
+                        "14",
+                        "15",
+                        "+6488 lines"
                     ],
-                    "total_wrong_lines": 7891
+                    "total_wrong_lines": 6498
                 },
                 {
                     "expression": "exitus_dt >= '2017-01-01'",
-                    "passed_rule": 1735,
+                    "passed_rule": 1413,
                     "wrong_lines": [
                         "1",
                         "2",
@@ -378,16 +398,16 @@
                         "7",
                         "8",
                         "9",
-                        "10",
-                        "+10255 lines"
+                        "11",
+                        "+8577 lines"
                     ],
-                    "total_wrong_lines": 10265
+                    "total_wrong_lines": 8587
                 }
             ]
         },
         {
             "entity": "outpatient_prescription",
-            "total_registries": 211549,
+            "total_registries": 175196,
             "na_count_list": [
                 {
                     "label": "patient_id",
@@ -403,76 +423,117 @@
                 },
                 {
                     "label": "prescription_end_dt",
-                    "na_count": 9617
+                    "na_count": 9454
                 }
             ],
             "catalog_checking": [
                 {
                     "variable": "prescription_atc_cd",
                     "wrong_values": [
-                        "A07EA04",
-                        "A02BC53",
-                        "A02BC06",
+                        "A01AC03",
+                        "A02BC03",
                         "H02AB10",
                         "A02BC01",
-                        "A01AC03",
                         "H02AA02",
                         "H02AB01",
                         "A02BC02",
-                        "A02BC03"
+                        "A02BC06",
+                        "A02BC53",
+                        "A07EA04"
                     ],
                     "wrong_lines": [
-                        "21",
-                        "108",
-                        "147",
-                        "158",
-                        "216",
-                        "226",
-                        "239",
-                        "306",
-                        "397",
-                        "428",
-                        "+4865 lines"
+                        "89",
+                        "105",
+                        "140",
+                        "222",
+                        "320",
+                        "369",
+                        "457",
+                        "483",
+                        "657",
+                        "658",
+                        "+4053 lines"
                     ],
-                    "total_wrong_lines": 4875
+                    "total_wrong_lines": 4063
                 }
             ],
             "rules": [
                 {
                     "expression": "prescription_start_dt >= '2017-01-01'",
-                    "passed_rule": 207246,
+                    "passed_rule": 170839,
                     "wrong_lines": [
-                        "76",
-                        "82",
-                        "86",
+                        "45",
+                        "50",
+                        "60",
+                        "61",
                         "89",
-                        "109",
-                        "110",
-                        "111",
+                        "103",
+                        "112",
+                        "113",
                         "114",
-                        "115",
-                        "216",
-                        "+4293 lines"
+                        "117",
+                        "+4347 lines"
                     ],
-                    "total_wrong_lines": 4303
+                    "total_wrong_lines": 4357
                 },
                 {
                     "expression": "prescription_end_dt >= prescription_start_dt",
-                    "passed_rule": 201932,
+                    "passed_rule": 165742,
                     "wrong_lines": [
-                        "39057",
-                        "39059",
-                        "39062",
-                        "39066",
-                        "39067",
-                        "39070",
-                        "39071",
-                        "39075",
-                        "39076",
-                        "39077",
-                        "+9607 lines"
+                        "16552",
+                        "16559",
+                        "16590",
+                        "16596",
+                        "16599",
+                        "16611",
+                        "16613",
+                        "16658",
+                        "16659",
+                        "16660",
+                        "+9444 lines"
                     ],
-                    "total_wrong_lines": 9617
+                    "total_wrong_lines": 9454
+                }
+            ]
+        },
+        {
+            "entity": "post_index_hospital_episode",
+            "total_registries": 34704,
+            "na_count_list": [
+                {
+                    "label": "patient_id",
+                    "na_count": 0
+                },
+                {
+                    "label": "post_index_hospitalization_episode_id",
+                    "na_count": 0
+                },
+                {
+                    "label": "post_index_hospital_admission_dt",
+                    "na_count": 0
+                },
+                {
+                    "label": "post_index_main_diagnosis_cd",
+                    "na_count": 0
+                },
+                {
+                    "label": "post_index_hospital_discharge_dt",
+                    "na_count": 0
+                }
+            ],
+            "catalog_checking": [],
+            "rules": [
+                {
+                    "expression": "post_index_hospital_admission_dt >= '2017-01-01'",
+                    "passed_rule": 34704,
+                    "wrong_lines": [],
+                    "total_wrong_lines": 0
+                },
+                {
+                    "expression": "post_index_hospital_discharge_dt >= post_index_hospital_admission_dt",
+                    "passed_rule": 34704,
+                    "wrong_lines": [],
+                    "total_wrong_lines": 0
                 }
             ]
         }

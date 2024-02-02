@@ -2,7 +2,7 @@ classification_system,code,code_clean,description
 icd-09-mc,733.81,73381,Malunion of fracture
 icd-09-mc,733.82,73382,Nonunion of fracture
 icd-09-mc,V54.13,V5413,Aftercare for healing traumatic fracture of hip
-icd-09-mc,V54.15,V5414,Aftercare for healing traumatic fracture of upper leg
+icd-09-mc,V54.15,V5415,Aftercare for healing traumatic fracture of upper leg
 icd-09-mc,905.3,9053,Late effect of fracture of neck of femur
 icd-09-mc,820.00,82000,"Closed fracture of intracapsular section of neck of femur, unspecified"
 icd-09-mc,820.01,82001,Closed fracture of epiphysis (separation) (upper) of neck of femur

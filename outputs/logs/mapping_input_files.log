@@ -1,4 +1,6 @@
 
- synthetic_patient_cohort.csv - size 4321999 bytes --> OK 
+ synthetic_outpatient_prescription.csv - size 7261436 bytes --> OK 
 
- synthetic_outpatient_prescription.csv - size 8574532 bytes --> OK 
+ synthetic_patient_cohort.csv - size 2907422 bytes --> OK 
+
+ synthetic_post_index_hospital_episode.csv - size 1872698 bytes --> OK 

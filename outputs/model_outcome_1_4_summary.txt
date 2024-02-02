@@ -1,0 +1,68 @@
+
+Call:
+glm(formula = exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + 
+    Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + 
+    Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + 
+    Respiratory_agents_Patterns + Metabolic_agents_Patterns, 
+    family = binomial(link = "logit"), data = hip_poly)
+
+Coefficients:
+                                                     Estimate Std. Error
+(Intercept)                                          0.317052   0.306817
+Length_of_stay                                       0.002552   0.003618
+Central_nervous_system_agents_PatternsDeprescribing -0.449669   0.064530
+Central_nervous_system_agents_PatternsInitiating    -0.172239   0.149962
+Central_nervous_system_agents_PatternsNo_Treat      -0.363685   0.242582
+Cardiovascular_agents_PatternsDeprescribing         -0.155869   0.061553
+Cardiovascular_agents_PatternsInitiating            -0.006329   0.079044
+Cardiovascular_agents_PatternsNo_Treat              -0.204572   0.067133
+Hormones_hormone_modifiers_PatternsDeprescribing    -0.143139   0.155629
+Hormones_hormone_modifiers_PatternsInitiating       -0.061529   0.167590
+Hormones_hormone_modifiers_PatternsNo_Treat         -0.094601   0.148520
+Psychotherapeutic_agents_PatternsDeprescribing      -0.131936   0.060313
+Psychotherapeutic_agents_PatternsInitiating          0.011928   0.078019
+Psychotherapeutic_agents_PatternsNo_Treat           -0.076643   0.066343
+Gastrointestinal_agents_PatternsDeprescribing       -0.205295   0.118240
+Gastrointestinal_agents_PatternsInitiating          -0.092754   0.129410
+Gastrointestinal_agents_PatternsNo_Treat            -0.180861   0.111585
+Respiratory_agents_PatternsDeprescribing            -0.402472   0.156795
+Respiratory_agents_PatternsInitiating               -0.325314   0.169250
+Respiratory_agents_PatternsNo_Treat                 -0.308485   0.149542
+Metabolic_agents_PatternsDeprescribing              -0.179237   0.205785
+Metabolic_agents_PatternsInitiating                 -0.182150   0.216584
+Metabolic_agents_PatternsNo_Treat                   -0.114798   0.198112
+                                                    z value Pr(>|z|)    
+(Intercept)                                           1.033  0.30144    
+Length_of_stay                                        0.705  0.48050    
+Central_nervous_system_agents_PatternsDeprescribing  -6.968 3.21e-12 ***
+Central_nervous_system_agents_PatternsInitiating     -1.149  0.25074    
+Central_nervous_system_agents_PatternsNo_Treat       -1.499  0.13382    
+Cardiovascular_agents_PatternsDeprescribing          -2.532  0.01133 *  
+Cardiovascular_agents_PatternsInitiating             -0.080  0.93618    
+Cardiovascular_agents_PatternsNo_Treat               -3.047  0.00231 ** 
+Hormones_hormone_modifiers_PatternsDeprescribing     -0.920  0.35770    
+Hormones_hormone_modifiers_PatternsInitiating        -0.367  0.71352    
+Hormones_hormone_modifiers_PatternsNo_Treat          -0.637  0.52415    
+Psychotherapeutic_agents_PatternsDeprescribing       -2.188  0.02871 *  
+Psychotherapeutic_agents_PatternsInitiating           0.153  0.87848    
+Psychotherapeutic_agents_PatternsNo_Treat            -1.155  0.24799    
+Gastrointestinal_agents_PatternsDeprescribing        -1.736  0.08252 .  
+Gastrointestinal_agents_PatternsInitiating           -0.717  0.47353    
+Gastrointestinal_agents_PatternsNo_Treat             -1.621  0.10505    
+Respiratory_agents_PatternsDeprescribing             -2.567  0.01026 *  
+Respiratory_agents_PatternsInitiating                -1.922  0.05459 .  
+Respiratory_agents_PatternsNo_Treat                  -2.063  0.03913 *  
+Metabolic_agents_PatternsDeprescribing               -0.871  0.38376    
+Metabolic_agents_PatternsInitiating                  -0.841  0.40034    
+Metabolic_agents_PatternsNo_Treat                    -0.579  0.56228    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 10874  on 8411  degrees of freedom
+Residual deviance: 10771  on 8389  degrees of freedom
+AIC: 10817
+
+Number of Fisher Scoring iterations: 4
+

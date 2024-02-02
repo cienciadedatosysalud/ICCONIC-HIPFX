@@ -1,6 +1,13 @@
 INFO:: Starting Checking data syntax process
 INFO:: Configuration file loaded
-INFO:: -Found 2 uploaded files to check and map!
+
+INFO:: #########################################
+INFO:: # CDMB version: 1.3.6
+INFO:: # ASPIRE version: 1.2.3
+INFO:: # PIPELINE version: 1.1.0
+INFO:: #########################################
+
+INFO:: -Found 3 uploaded files to check and map!
 INFO:: Trying to detect the encoding of the file './inputs/synthetic_outpatient_prescription.csv'
 INFO:: The file './inputs/synthetic_outpatient_prescription.csv' follows an encoding format 'ascii' at 1.0 confidence.
 INFO:: Header for the file './inputs/synthetic_outpatient_prescription.csv':
@@ -8,18 +15,25 @@ INFO:: Header for the file './inputs/synthetic_outpatient_prescription.csv':
 patient_id|prescription_atc_cd|prescription_start_dt|prescription_end_dt 
 
 INFO:: Inferred separator "|" for "./inputs/synthetic_outpatient_prescription.csv" file 
+INFO:: Trying to detect the encoding of the file './inputs/synthetic_post_index_hospital_episode.csv'
+INFO:: The file './inputs/synthetic_post_index_hospital_episode.csv' follows an encoding format 'ascii' at 1.0 confidence.
+INFO:: Header for the file './inputs/synthetic_post_index_hospital_episode.csv':
+
+patient_id|post_index_hospitalization_episode_id|post_index_hospital_admission_dt|post_index_main_diagnosis_cd|post_index_hospital_discharge_dt 
+
+INFO:: Inferred separator "|" for "./inputs/synthetic_post_index_hospital_episode.csv" file 
 INFO:: Trying to detect the encoding of the file './inputs/synthetic_patient_cohort.csv'
 INFO:: The file './inputs/synthetic_patient_cohort.csv' follows an encoding format 'ascii' at 1.0 confidence.
 INFO:: Header for the file './inputs/synthetic_patient_cohort.csv':
 
-"patient_id"|"hospitalization_episode_id"|"age_nm"|"sex_cd"|"socecon_lvl_cd"|"residence_area_cd"|"country_cd"|"hospital_st"|"hospital_admission_dt"|"main_diagnosis_cd"|"surgical_procedure_bl"|"surgical_procedure_dt"|"surgical_procedure_cd"|"hospital_discharge_dt"|"hospital_discharge_type_cd"|"anesthesia_type_cd"|"icu_admission_bl"|"icu_admission_dt"|"icu_discharge_dt"|"anticoagulant_status_bl"|"antiagregant_status_bl"|"unplanned_readmission_7d_bl"|"unplanned_readmission_30d_bl"|"exitus_bl"|"exitus_dt"|"chronic_kidney_disease_bl"|"tobacco_copd_bl"|"depression_bl"|"serious_mental_illness_bl"|"alcohol_abuse_bl"|"obesity_overweight_bl"|"osteoporosis_osteopenia_bl"|"dementia_bl"|"diabetes_bl"|"liver_disease_bl"|"pancreatic_disease_bl"|"inflamatory_bowel_disease_bl"|"rheumatology_disease_bl"|"spinal_cord_disease_injury_bl"|"serious_neurological_disease_bl"|"parkinson_huntintong_diseases_bl"|"seizure_disorder_convulsions_bl"|"congestive_heart_failure_bl"|"coronary_artery_disease_bl"|"cerebrovascular_disease_bl"|"peripheral_vascular_disease_bl"|"traumatic_brain_injury_bl"|"amputee_bl" 
+patient_id|hospitalization_episode_id|age_nm|sex_cd|socecon_lvl_cd|residence_area_cd|country_cd|hospital_st|hospital_admission_dt|main_diagnosis_cd|surgical_procedure_bl|surgical_procedure_dt|surgical_procedure_cd|hospital_discharge_dt|hospital_discharge_type_cd|anesthesia_type_cd|icu_admission_bl|icu_admission_dt|icu_discharge_dt|anticoagulant_status_bl|antiaggregant_status_bl|unplanned_readmission_7d_bl|unplanned_readmission_30d_bl|exitus_bl|exitus_dt|chronic_kidney_disease_bl|tobacco_copd_bl|depression_bl|serious_mental_illness_bl|alcohol_abuse_bl|obesity_overweight_bl|osteoporosis_osteopenia_bl|dementia_bl|diabetes_bl|liver_disease_bl|pancreatic_disease_bl|inflamatory_bowel_disease_bl|rheumatology_disease_bl|spinal_cord_disease_injury_bl|serious_neurological_disease_bl|parkinson_huntington_diseases_bl|seizure_disorder_convulsions_bl|congestive_heart_failure_bl|coronary_artery_disease_bl|cerebrovascular_disease_bl|peripheral_vascular_disease_bl|traumatic_brain_injury_bl|amputee_bl|previous_hospital_admission_bl|hospital_admission_type_cd 
 
 INFO:: Inferred separator "|" for "./inputs/synthetic_patient_cohort.csv" file 
 INFO:: Processing entity "patient_cohort"...
 INFO:: Trying to connect to the database ...
 INFO:: Trying to create the table for entity "patient_cohort"
 INFO:: Table structure:
- CREATE TABLE IF NOT EXISTS patient_cohort(patient_id VARCHAR, hospitalization_episode_id VARCHAR, age_nm BIGINT, sex_cd BIGINT, socecon_lvl_cd VARCHAR, residence_area_cd VARCHAR, country_cd VARCHAR, hospital_st VARCHAR, hospital_admission_dt DATE, main_diagnosis_cd VARCHAR, surgical_procedure_bl BOOLEAN, surgical_procedure_dt DATE, surgical_procedure_cd VARCHAR, hospital_discharge_dt DATE, hospital_discharge_type_cd VARCHAR, anesthesia_type_cd VARCHAR, icu_admission_bl BOOLEAN, icu_admission_dt DATE, icu_discharge_dt DATE, anticoagulant_status_bl BOOLEAN, antiagregant_status_bl BOOLEAN, unplanned_readmission_7d_bl BOOLEAN, unplanned_readmission_30d_bl BOOLEAN, exitus_bl BOOLEAN, exitus_dt DATE, chronic_kidney_disease_bl BOOLEAN, tobacco_copd_bl BOOLEAN, depression_bl BOOLEAN, serious_mental_illness_bl BOOLEAN, alcohol_abuse_bl BOOLEAN, obesity_overweight_bl BOOLEAN, osteoporosis_osteopenia_bl BOOLEAN, dementia_bl BOOLEAN, diabetes_bl BOOLEAN, liver_disease_bl BOOLEAN, pancreatic_disease_bl BOOLEAN, inflamatory_bowel_disease_bl BOOLEAN, rheumatology_disease_bl BOOLEAN, spinal_cord_disease_injury_bl BOOLEAN, serious_neurological_disease_bl BOOLEAN, parkinson_huntintong_diseases_bl BOOLEAN, seizure_disorder_convulsions_bl BOOLEAN, congestive_heart_failure_bl BOOLEAN, coronary_artery_disease_bl BOOLEAN, cerebrovascular_disease_bl BOOLEAN, peripheral_vascular_disease_bl BOOLEAN, traumatic_brain_injury_bl BOOLEAN, amputee_bl BOOLEAN);
+ CREATE TABLE IF NOT EXISTS patient_cohort(patient_id VARCHAR, hospitalization_episode_id VARCHAR, age_nm BIGINT, sex_cd BIGINT, socecon_lvl_cd VARCHAR, residence_area_cd VARCHAR, country_cd VARCHAR, hospital_st VARCHAR, hospital_admission_dt DATE, main_diagnosis_cd VARCHAR, surgical_procedure_bl BOOLEAN, surgical_procedure_dt DATE, surgical_procedure_cd VARCHAR, hospital_discharge_dt DATE, hospital_discharge_type_cd VARCHAR, anesthesia_type_cd VARCHAR, icu_admission_bl BOOLEAN, icu_admission_dt DATE, icu_discharge_dt DATE, anticoagulant_status_bl BOOLEAN, antiaggregant_status_bl BOOLEAN, unplanned_readmission_7d_bl BOOLEAN, unplanned_readmission_30d_bl BOOLEAN, exitus_bl BOOLEAN, exitus_dt DATE, chronic_kidney_disease_bl BOOLEAN, tobacco_copd_bl BOOLEAN, depression_bl BOOLEAN, serious_mental_illness_bl BOOLEAN, alcohol_abuse_bl BOOLEAN, obesity_overweight_bl BOOLEAN, osteoporosis_osteopenia_bl BOOLEAN, dementia_bl BOOLEAN, diabetes_bl BOOLEAN, liver_disease_bl BOOLEAN, pancreatic_disease_bl BOOLEAN, inflamatory_bowel_disease_bl BOOLEAN, rheumatology_disease_bl BOOLEAN, spinal_cord_disease_injury_bl BOOLEAN, serious_neurological_disease_bl BOOLEAN, parkinson_huntington_diseases_bl BOOLEAN, seizure_disorder_convulsions_bl BOOLEAN, congestive_heart_failure_bl BOOLEAN, coronary_artery_disease_bl BOOLEAN, cerebrovascular_disease_bl BOOLEAN, peripheral_vascular_disease_bl BOOLEAN, traumatic_brain_injury_bl BOOLEAN, amputee_bl BOOLEAN, previous_hospital_admission_bl BOOLEAN, hospital_admission_type_cd VARCHAR);
 INFO:: Table successfully created!
 INFO:: One of the uploaded files has been found that matches the entity's configuration.
 INFO:: "patient_cohort" with ./inputs/synthetic_patient_cohort.csv file
@@ -27,7 +41,7 @@ INFO:: Creating table for entity "patient_cohort".
 INFO:: Trying to connect to the database ...
 INFO:: Trying to create the table for entity "patient_cohort"
 INFO:: Table structure:
- CREATE OR REPLACE TABLE patient_cohort(patient_id VARCHAR, hospitalization_episode_id VARCHAR, age_nm BIGINT, sex_cd BIGINT, socecon_lvl_cd VARCHAR, residence_area_cd VARCHAR, country_cd VARCHAR, hospital_st VARCHAR, hospital_admission_dt DATE, main_diagnosis_cd VARCHAR, surgical_procedure_bl BOOLEAN, surgical_procedure_dt DATE, surgical_procedure_cd VARCHAR, hospital_discharge_dt DATE, hospital_discharge_type_cd VARCHAR, anesthesia_type_cd VARCHAR, icu_admission_bl BOOLEAN, icu_admission_dt DATE, icu_discharge_dt DATE, anticoagulant_status_bl BOOLEAN, antiagregant_status_bl BOOLEAN, unplanned_readmission_7d_bl BOOLEAN, unplanned_readmission_30d_bl BOOLEAN, exitus_bl BOOLEAN, exitus_dt DATE, chronic_kidney_disease_bl BOOLEAN, tobacco_copd_bl BOOLEAN, depression_bl BOOLEAN, serious_mental_illness_bl BOOLEAN, alcohol_abuse_bl BOOLEAN, obesity_overweight_bl BOOLEAN, osteoporosis_osteopenia_bl BOOLEAN, dementia_bl BOOLEAN, diabetes_bl BOOLEAN, liver_disease_bl BOOLEAN, pancreatic_disease_bl BOOLEAN, inflamatory_bowel_disease_bl BOOLEAN, rheumatology_disease_bl BOOLEAN, spinal_cord_disease_injury_bl BOOLEAN, serious_neurological_disease_bl BOOLEAN, parkinson_huntintong_diseases_bl BOOLEAN, seizure_disorder_convulsions_bl BOOLEAN, congestive_heart_failure_bl BOOLEAN, coronary_artery_disease_bl BOOLEAN, cerebrovascular_disease_bl BOOLEAN, peripheral_vascular_disease_bl BOOLEAN, traumatic_brain_injury_bl BOOLEAN, amputee_bl BOOLEAN);
+ CREATE OR REPLACE TABLE patient_cohort(patient_id VARCHAR, hospitalization_episode_id VARCHAR, age_nm BIGINT, sex_cd BIGINT, socecon_lvl_cd VARCHAR, residence_area_cd VARCHAR, country_cd VARCHAR, hospital_st VARCHAR, hospital_admission_dt DATE, main_diagnosis_cd VARCHAR, surgical_procedure_bl BOOLEAN, surgical_procedure_dt DATE, surgical_procedure_cd VARCHAR, hospital_discharge_dt DATE, hospital_discharge_type_cd VARCHAR, anesthesia_type_cd VARCHAR, icu_admission_bl BOOLEAN, icu_admission_dt DATE, icu_discharge_dt DATE, anticoagulant_status_bl BOOLEAN, antiaggregant_status_bl BOOLEAN, unplanned_readmission_7d_bl BOOLEAN, unplanned_readmission_30d_bl BOOLEAN, exitus_bl BOOLEAN, exitus_dt DATE, chronic_kidney_disease_bl BOOLEAN, tobacco_copd_bl BOOLEAN, depression_bl BOOLEAN, serious_mental_illness_bl BOOLEAN, alcohol_abuse_bl BOOLEAN, obesity_overweight_bl BOOLEAN, osteoporosis_osteopenia_bl BOOLEAN, dementia_bl BOOLEAN, diabetes_bl BOOLEAN, liver_disease_bl BOOLEAN, pancreatic_disease_bl BOOLEAN, inflamatory_bowel_disease_bl BOOLEAN, rheumatology_disease_bl BOOLEAN, spinal_cord_disease_injury_bl BOOLEAN, serious_neurological_disease_bl BOOLEAN, parkinson_huntington_diseases_bl BOOLEAN, seizure_disorder_convulsions_bl BOOLEAN, congestive_heart_failure_bl BOOLEAN, coronary_artery_disease_bl BOOLEAN, cerebrovascular_disease_bl BOOLEAN, peripheral_vascular_disease_bl BOOLEAN, traumatic_brain_injury_bl BOOLEAN, amputee_bl BOOLEAN, previous_hospital_admission_bl BOOLEAN, hospital_admission_type_cd VARCHAR);
 INFO:: Table successfully created!
 INFO:: Processing entity "outpatient_prescription"...
 INFO:: Trying to connect to the database ...
@@ -43,23 +57,44 @@ INFO:: Trying to create the table for entity "outpatient_prescription"
 INFO:: Table structure:
  CREATE OR REPLACE TABLE outpatient_prescription(patient_id VARCHAR, prescription_atc_cd VARCHAR, prescription_start_dt DATE, prescription_end_dt DATE);
 INFO:: Table successfully created!
+INFO:: Processing entity "post_index_hospital_episode"...
+INFO:: Trying to connect to the database ...
+INFO:: Trying to create the table for entity "post_index_hospital_episode"
+INFO:: Table structure:
+ CREATE TABLE IF NOT EXISTS post_index_hospital_episode(patient_id VARCHAR, post_index_hospitalization_episode_id VARCHAR, post_index_hospital_admission_dt DATE, post_index_main_diagnosis_cd VARCHAR, post_index_hospital_discharge_dt DATE);
+INFO:: Table successfully created!
+INFO:: One of the uploaded files has been found that matches the entity's configuration.
+INFO:: "post_index_hospital_episode" with ./inputs/synthetic_post_index_hospital_episode.csv file
+INFO:: Creating table for entity "post_index_hospital_episode".
+INFO:: Trying to connect to the database ...
+INFO:: Trying to create the table for entity "post_index_hospital_episode"
+INFO:: Table structure:
+ CREATE OR REPLACE TABLE post_index_hospital_episode(patient_id VARCHAR, post_index_hospitalization_episode_id VARCHAR, post_index_hospital_admission_dt DATE, post_index_main_diagnosis_cd VARCHAR, post_index_hospital_discharge_dt DATE);
+INFO:: Table successfully created!
 INFO:: Starting the check of the files that do match an entity.
-INFO:: [{'entity_name': 'patient_cohort', 'entity_variables': ['patient_id', 'hospitalization_episode_id', 'age_nm', 'sex_cd', 'socecon_lvl_cd', 'residence_area_cd', 'country_cd', 'hospital_st', 'hospital_admission_dt', 'main_diagnosis_cd', 'surgical_procedure_bl', 'surgical_procedure_dt', 'surgical_procedure_cd', 'hospital_discharge_dt', 'hospital_discharge_type_cd', 'anesthesia_type_cd', 'icu_admission_bl', 'icu_admission_dt', 'icu_discharge_dt', 'anticoagulant_status_bl', 'antiagregant_status_bl', 'unplanned_readmission_7d_bl', 'unplanned_readmission_30d_bl', 'exitus_bl', 'exitus_dt', 'chronic_kidney_disease_bl', 'tobacco_copd_bl', 'depression_bl', 'serious_mental_illness_bl', 'alcohol_abuse_bl', 'obesity_overweight_bl', 'osteoporosis_osteopenia_bl', 'dementia_bl', 'diabetes_bl', 'liver_disease_bl', 'pancreatic_disease_bl', 'inflamatory_bowel_disease_bl', 'rheumatology_disease_bl', 'spinal_cord_disease_injury_bl', 'serious_neurological_disease_bl', 'parkinson_huntintong_diseases_bl', 'seizure_disorder_convulsions_bl', 'congestive_heart_failure_bl', 'coronary_artery_disease_bl', 'cerebrovascular_disease_bl', 'peripheral_vascular_disease_bl', 'traumatic_brain_injury_bl', 'amputee_bl'], 'entity_formats': ['string', 'string', 'integer', 'integer', 'string', 'string', 'string', 'string', 'date', 'string', 'boolean', 'date', 'string', 'date', 'string', 'string', 'boolean', 'date', 'date', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'date', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean'], 'uploaded_filename_clean': ['synthetic_patient_cohort.csv'], 'uploaded_filename': ['./inputs/synthetic_patient_cohort.csv'], 'separator': ['|'], 'encoding': ['ascii']}, {'entity_name': 'outpatient_prescription', 'entity_variables': ['patient_id', 'prescription_atc_cd', 'prescription_start_dt', 'prescription_end_dt'], 'entity_formats': ['string', 'string', 'date', 'date'], 'uploaded_filename_clean': ['synthetic_outpatient_prescription.csv'], 'uploaded_filename': ['./inputs/synthetic_outpatient_prescription.csv'], 'separator': ['|'], 'encoding': ['ascii']}]
+INFO:: [{'entity_name': 'patient_cohort', 'entity_variables': ['patient_id', 'hospitalization_episode_id', 'age_nm', 'sex_cd', 'socecon_lvl_cd', 'residence_area_cd', 'country_cd', 'hospital_st', 'hospital_admission_dt', 'main_diagnosis_cd', 'surgical_procedure_bl', 'surgical_procedure_dt', 'surgical_procedure_cd', 'hospital_discharge_dt', 'hospital_discharge_type_cd', 'anesthesia_type_cd', 'icu_admission_bl', 'icu_admission_dt', 'icu_discharge_dt', 'anticoagulant_status_bl', 'antiaggregant_status_bl', 'unplanned_readmission_7d_bl', 'unplanned_readmission_30d_bl', 'exitus_bl', 'exitus_dt', 'chronic_kidney_disease_bl', 'tobacco_copd_bl', 'depression_bl', 'serious_mental_illness_bl', 'alcohol_abuse_bl', 'obesity_overweight_bl', 'osteoporosis_osteopenia_bl', 'dementia_bl', 'diabetes_bl', 'liver_disease_bl', 'pancreatic_disease_bl', 'inflamatory_bowel_disease_bl', 'rheumatology_disease_bl', 'spinal_cord_disease_injury_bl', 'serious_neurological_disease_bl', 'parkinson_huntington_diseases_bl', 'seizure_disorder_convulsions_bl', 'congestive_heart_failure_bl', 'coronary_artery_disease_bl', 'cerebrovascular_disease_bl', 'peripheral_vascular_disease_bl', 'traumatic_brain_injury_bl', 'amputee_bl', 'previous_hospital_admission_bl', 'hospital_admission_type_cd'], 'entity_formats': ['string', 'string', 'integer', 'integer', 'string', 'string', 'string', 'string', 'date', 'string', 'boolean', 'date', 'string', 'date', 'string', 'string', 'boolean', 'date', 'date', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'date', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'boolean', 'string'], 'uploaded_filename_clean': ['synthetic_patient_cohort.csv'], 'uploaded_filename': ['./inputs/synthetic_patient_cohort.csv'], 'separator': ['|'], 'encoding': ['ascii']}, {'entity_name': 'outpatient_prescription', 'entity_variables': ['patient_id', 'prescription_atc_cd', 'prescription_start_dt', 'prescription_end_dt'], 'entity_formats': ['string', 'string', 'date', 'date'], 'uploaded_filename_clean': ['synthetic_outpatient_prescription.csv'], 'uploaded_filename': ['./inputs/synthetic_outpatient_prescription.csv'], 'separator': ['|'], 'encoding': ['ascii']}, {'entity_name': 'post_index_hospital_episode', 'entity_variables': ['patient_id', 'post_index_hospitalization_episode_id', 'post_index_hospital_admission_dt', 'post_index_main_diagnosis_cd', 'post_index_hospital_discharge_dt'], 'entity_formats': ['string', 'string', 'date', 'string', 'date'], 'uploaded_filename_clean': ['synthetic_post_index_hospital_episode.csv'], 'uploaded_filename': ['./inputs/synthetic_post_index_hospital_episode.csv'], 'separator': ['|'], 'encoding': ['ascii']}]
 INFO:: Trying to read the file with the configuration provided.
-INFO:: 12000 records read.
+INFO:: 10000 records read.
 INFO:: Trying to connect to the database ...
 INFO:: Connected!
 INFO:: Trying to load records in the table "patient_cohort"
 INFO:: ./inputs/synthetic_patient_cohort.csv -> LOADED!
 INFO:: Trying to read the file with the configuration provided.
-INFO:: 211549 records read.
+INFO:: 175196 records read.
 INFO:: Trying to connect to the database ...
 INFO:: Connected!
 INFO:: Trying to load records in the table "outpatient_prescription"
 INFO:: ./inputs/synthetic_outpatient_prescription.csv -> LOADED!
+INFO:: Trying to read the file with the configuration provided.
+INFO:: 34704 records read.
+INFO:: Trying to connect to the database ...
+INFO:: Connected!
+INFO:: Trying to load records in the table "post_index_hospital_episode"
+INFO:: ./inputs/synthetic_post_index_hospital_episode.csv -> LOADED!
 The information from the files has been loaded into the embedded database in case of success of the check process.
 Proceeding to delete the csv files uploaded by the user.
 
  /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/readme.txt deleted!
  /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/synthetic_outpatient_prescription.csv deleted!
+ /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/synthetic_post_index_hospital_episode.csv deleted!
  /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/synthetic_patient_cohort.csv deleted!

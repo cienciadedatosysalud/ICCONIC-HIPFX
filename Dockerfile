@@ -22,9 +22,12 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER env_project.yaml /tmp/env_project.yaml
 
 # Installing dependencies
 RUN micromamba install -y -n aspire -f /tmp/env_project.yaml \
-    && micromamba run -n aspire Rscript -e 'remotes::install_github("lrocconi/mlmhelpr")' \
+    && micromamba run -n aspire Rscript -e 'remotes::install_github("gavinsimpson/gratia@v0.8.1")' \
+    && micromamba run -n aspire Rscript -e 'remotes::install_github("kosukeimai/MatchIt")' \
     && micromamba clean --all --yes \
     && rm -rf /opt/conda/conda-meta /tmp/env_project.yaml
+
+ENV RETICULATE_PYTHON=/opt/conda/envs/aspire/bin/python
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER . /home/$MAMBA_USER/projects/icconic-hipfx
 COPY --chown=$MAMBA_USER:$MAMBA_USER main_logo.png /temp/main_logo.png
