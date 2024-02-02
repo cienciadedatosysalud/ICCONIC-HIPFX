@@ -1,0 +1,259 @@
+variable,value,outcome,count,percentage,count_S720,percentage_S720,count_S721,percentage_S721,count_S722,percentage_S722
+Opioids_Patterns_outcome,Continuing,exitus_readm,1123,13.35%,562.0,12.99%,441.0,13.72%,93.0,13.56%
+Opioids_Patterns_outcome,Deprescribing,exitus_readm,1005,11.95%,507.0,11.72%,396.0,12.32%,81.0,11.81%
+Opioids_Patterns_outcome,Initiating,exitus_readm,343,4.08%,174.0,4.02%,132.0,4.11%,25.0,3.64%
+Opioids_Patterns_outcome,No_Treat,exitus_readm,458,5.44%,235.0,5.43%,173.0,5.38%,35.0,5.10%
+centrAntiHT_Patterns_outcome,Continuing,exitus_readm,34,0.40%,15.0,0.35%,16.0,0.50%,2.0,0.29%
+centrAntiHT_Patterns_outcome,Deprescribing,exitus_readm,352,4.18%,187.0,4.32%,120.0,3.73%,39.0,5.69%
+centrAntiHT_Patterns_outcome,Initiating,exitus_readm,171,2.03%,94.0,2.17%,64.0,1.99%,11.0,1.60%
+centrAntiHT_Patterns_outcome,No_Treat,exitus_readm,2372,28.20%,1182.0,27.33%,942.0,29.30%,182.0,26.53%
+oralSter_Patterns_outcome,Continuing,exitus_readm,78,0.93%,36.0,0.83%,33.0,1.03%,7.0,1.02%
+oralSter_Patterns_outcome,Deprescribing,exitus_readm,517,6.15%,259.0,5.99%,205.0,6.38%,37.0,5.39%
+oralSter_Patterns_outcome,Initiating,exitus_readm,232,2.76%,115.0,2.66%,91.0,2.83%,18.0,2.62%
+oralSter_Patterns_outcome,No_Treat,exitus_readm,2102,24.99%,1068.0,24.69%,813.0,25.29%,172.0,25.07%
+barbs_Patterns_outcome,Continuing,exitus_readm,27,0.32%,12.0,0.28%,8.0,0.25%,7.0,1.02%
+barbs_Patterns_outcome,Deprescribing,exitus_readm,287,3.41%,149.0,3.45%,104.0,3.23%,31.0,4.52%
+barbs_Patterns_outcome,Initiating,exitus_readm,156,1.85%,74.0,1.71%,65.0,2.02%,11.0,1.60%
+barbs_Patterns_outcome,No_Treat,exitus_readm,2459,29.23%,1243.0,28.74%,965.0,30.02%,185.0,26.97%
+sedHyp_Patterns_outcome,Continuing,exitus_readm,239,2.84%,116.0,2.68%,99.0,3.08%,17.0,2.48%
+sedHyp_Patterns_outcome,Deprescribing,exitus_readm,885,10.52%,441.0,10.20%,349.0,10.86%,69.0,10.06%
+sedHyp_Patterns_outcome,Initiating,exitus_readm,358,4.26%,184.0,4.25%,133.0,4.14%,33.0,4.81%
+sedHyp_Patterns_outcome,No_Treat,exitus_readm,1447,17.20%,737.0,17.04%,561.0,17.45%,115.0,16.76%
+benzos_Patterns_outcome,Continuing,exitus_readm,152,1.81%,80.0,1.85%,55.0,1.71%,13.0,1.90%
+benzos_Patterns_outcome,Deprescribing,exitus_readm,707,8.40%,356.0,8.23%,282.0,8.77%,49.0,7.14%
+benzos_Patterns_outcome,Initiating,exitus_readm,347,4.13%,177.0,4.09%,129.0,4.01%,24.0,3.50%
+benzos_Patterns_outcome,No_Treat,exitus_readm,1723,20.48%,865.0,20.00%,676.0,21.03%,148.0,21.57%
+gabaN02BF_Patterns_outcome,Continuing,exitus_readm,117,1.39%,58.0,1.34%,41.0,1.28%,16.0,2.33%
+gabaN02BF_Patterns_outcome,Deprescribing,exitus_readm,669,7.95%,344.0,7.95%,263.0,8.18%,44.0,6.41%
+gabaN02BF_Patterns_outcome,Initiating,exitus_readm,313,3.72%,151.0,3.49%,128.0,3.98%,22.0,3.21%
+gabaN02BF_Patterns_outcome,No_Treat,exitus_readm,1830,21.75%,925.0,21.39%,710.0,22.08%,152.0,22.16%
+firstGenAH_Patterns_outcome,Continuing,exitus_readm,470,5.59%,233.0,5.39%,187.0,5.82%,38.0,5.54%
+firstGenAH_Patterns_outcome,Deprescribing,exitus_readm,995,11.83%,499.0,11.54%,393.0,12.22%,79.0,11.52%
+firstGenAH_Patterns_outcome,Initiating,exitus_readm,436,5.18%,236.0,5.46%,164.0,5.10%,28.0,4.08%
+firstGenAH_Patterns_outcome,No_Treat,exitus_readm,1028,12.22%,510.0,11.79%,398.0,12.38%,89.0,12.97%
+anticonv_Patterns_outcome,Continuing,exitus_readm,108,1.28%,49.0,1.13%,54.0,1.68%,5.0,0.73%
+anticonv_Patterns_outcome,Deprescribing,exitus_readm,615,7.31%,307.0,7.10%,231.0,7.19%,61.0,8.89%
+anticonv_Patterns_outcome,Initiating,exitus_readm,273,3.25%,129.0,2.98%,124.0,3.86%,14.0,2.04%
+anticonv_Patterns_outcome,No_Treat,exitus_readm,1933,22.98%,993.0,22.96%,733.0,22.80%,154.0,22.45%
+thiazDiur_Patterns_outcome,Continuing,exitus_readm,358,4.26%,184.0,4.25%,138.0,4.29%,28.0,4.08%
+thiazDiur_Patterns_outcome,Deprescribing,exitus_readm,948,11.27%,478.0,11.05%,373.0,11.60%,77.0,11.22%
+thiazDiur_Patterns_outcome,Initiating,exitus_readm,404,4.80%,197.0,4.55%,164.0,5.10%,26.0,3.79%
+thiazDiur_Patterns_outcome,No_Treat,exitus_readm,1219,14.49%,619.0,14.31%,467.0,14.53%,103.0,15.01%
+sgap_Patterns_outcome,Continuing,exitus_readm,102,1.21%,43.0,0.99%,45.0,1.40%,12.0,1.75%
+sgap_Patterns_outcome,Deprescribing,exitus_readm,628,7.47%,323.0,7.47%,245.0,7.62%,40.0,5.83%
+sgap_Patterns_outcome,Initiating,exitus_readm,287,3.41%,153.0,3.54%,102.0,3.17%,22.0,3.21%
+sgap_Patterns_outcome,No_Treat,exitus_readm,1912,22.73%,959.0,22.17%,750.0,23.33%,160.0,23.32%
+tca_Patterns_outcome,Continuing,exitus_readm,99,1.18%,51.0,1.18%,39.0,1.21%,9.0,1.31%
+tca_Patterns_outcome,Deprescribing,exitus_readm,536,6.37%,255.0,5.90%,217.0,6.75%,48.0,7.00%
+tca_Patterns_outcome,Initiating,exitus_readm,261,3.10%,141.0,3.26%,99.0,3.08%,16.0,2.33%
+tca_Patterns_outcome,No_Treat,exitus_readm,2033,24.17%,1031.0,23.84%,787.0,24.48%,161.0,23.47%
+ssriSnri_Patterns_outcome,Continuing,exitus_readm,52,0.62%,30.0,0.69%,20.0,0.62%,2.0,0.29%
+ssriSnri_Patterns_outcome,Deprescribing,exitus_readm,439,5.22%,234.0,5.41%,165.0,5.13%,31.0,4.52%
+ssriSnri_Patterns_outcome,Initiating,exitus_readm,223,2.65%,127.0,2.94%,78.0,2.43%,13.0,1.90%
+ssriSnri_Patterns_outcome,No_Treat,exitus_readm,2215,26.33%,1087.0,25.13%,879.0,27.34%,188.0,27.41%
+nitrates_Patterns_outcome,Continuing,exitus_readm,16,0.19%,8.0,0.18%,6.0,0.19%,1.0,0.15%
+nitrates_Patterns_outcome,Deprescribing,exitus_readm,274,3.26%,140.0,3.24%,102.0,3.17%,28.0,4.08%
+nitrates_Patterns_outcome,Initiating,exitus_readm,127,1.51%,64.0,1.48%,48.0,1.49%,12.0,1.75%
+nitrates_Patterns_outcome,No_Treat,exitus_readm,2512,29.86%,1266.0,29.27%,986.0,30.67%,193.0,28.13%
+antiPark_Patterns_outcome,Continuing,exitus_readm,281,3.34%,136.0,3.14%,115.0,3.58%,23.0,3.35%
+antiPark_Patterns_outcome,Deprescribing,exitus_readm,884,10.51%,433.0,10.01%,354.0,11.01%,71.0,10.35%
+antiPark_Patterns_outcome,Initiating,exitus_readm,380,4.52%,185.0,4.28%,158.0,4.91%,34.0,4.96%
+antiPark_Patterns_outcome,No_Treat,exitus_readm,1384,16.45%,724.0,16.74%,515.0,16.02%,106.0,15.45%
+ppi_Patterns_outcome,Continuing,exitus_readm,39,0.46%,23.0,0.53%,12.0,0.37%,2.0,0.29%
+ppi_Patterns_outcome,Deprescribing,exitus_readm,381,4.53%,186.0,4.30%,152.0,4.73%,35.0,5.10%
+ppi_Patterns_outcome,Initiating,exitus_readm,208,2.47%,97.0,2.24%,83.0,2.58%,20.0,2.92%
+ppi_Patterns_outcome,No_Treat,exitus_readm,2301,27.35%,1172.0,27.10%,895.0,27.84%,177.0,25.80%
+loopDiur_Patterns_outcome,Continuing,exitus_readm,38,0.45%,19.0,0.44%,11.0,0.34%,5.0,0.73%
+loopDiur_Patterns_outcome,Deprescribing,exitus_readm,350,4.16%,183.0,4.23%,126.0,3.92%,35.0,5.10%
+loopDiur_Patterns_outcome,Initiating,exitus_readm,166,1.97%,78.0,1.80%,72.0,2.24%,13.0,1.90%
+loopDiur_Patterns_outcome,No_Treat,exitus_readm,2375,28.23%,1198.0,27.70%,933.0,29.02%,181.0,26.38%
+h2Antags_Patterns_outcome,Continuing,exitus_readm,46,0.55%,28.0,0.65%,14.0,0.44%,4.0,0.58%
+h2Antags_Patterns_outcome,Deprescribing,exitus_readm,385,4.58%,189.0,4.37%,147.0,4.57%,36.0,5.25%
+h2Antags_Patterns_outcome,Initiating,exitus_readm,182,2.16%,93.0,2.15%,65.0,2.02%,17.0,2.48%
+h2Antags_Patterns_outcome,No_Treat,exitus_readm,2316,27.53%,1168.0,27.01%,916.0,28.49%,177.0,25.80%
+inhSteroids_Patterns_outcome,Continuing,exitus_readm,83,0.99%,38.0,0.88%,33.0,1.03%,10.0,1.46%
+inhSteroids_Patterns_outcome,Deprescribing,exitus_readm,504,5.99%,243.0,5.62%,199.0,6.19%,51.0,7.43%
+inhSteroids_Patterns_outcome,Initiating,exitus_readm,222,2.64%,123.0,2.84%,71.0,2.21%,19.0,2.77%
+inhSteroids_Patterns_outcome,No_Treat,exitus_readm,2120,25.20%,1074.0,24.83%,839.0,26.10%,154.0,22.45%
+fgap_Patterns_outcome,Continuing,exitus_readm,109,1.30%,54.0,1.25%,49.0,1.52%,4.0,0.58%
+fgap_Patterns_outcome,Deprescribing,exitus_readm,613,7.29%,318.0,7.35%,233.0,7.25%,47.0,6.85%
+fgap_Patterns_outcome,Initiating,exitus_readm,291,3.46%,151.0,3.49%,109.0,3.39%,22.0,3.21%
+fgap_Patterns_outcome,No_Treat,exitus_readm,1916,22.78%,955.0,22.08%,751.0,23.36%,161.0,23.47%
+tzd_Patterns_outcome,Continuing,exitus_readm,43,0.51%,19.0,0.44%,19.0,0.59%,4.0,0.58%
+tzd_Patterns_outcome,Deprescribing,exitus_readm,400,4.76%,211.0,4.88%,154.0,4.79%,27.0,3.94%
+tzd_Patterns_outcome,Initiating,exitus_readm,185,2.20%,93.0,2.15%,74.0,2.30%,12.0,1.75%
+tzd_Patterns_outcome,No_Treat,exitus_readm,2301,27.35%,1155.0,26.71%,895.0,27.84%,191.0,27.84%
+Opioids_Patterns_outcome,Continuing,refracture,1123,13.35%,562.0,12.99%,441.0,13.72%,93.0,13.56%
+Opioids_Patterns_outcome,Deprescribing,refracture,1005,11.95%,507.0,11.72%,396.0,12.32%,81.0,11.81%
+Opioids_Patterns_outcome,Initiating,refracture,343,4.08%,174.0,4.02%,132.0,4.11%,25.0,3.64%
+Opioids_Patterns_outcome,No_Treat,refracture,458,5.44%,235.0,5.43%,173.0,5.38%,35.0,5.10%
+centrAntiHT_Patterns_outcome,Continuing,refracture,34,0.40%,15.0,0.35%,16.0,0.50%,2.0,0.29%
+centrAntiHT_Patterns_outcome,Deprescribing,refracture,352,4.18%,187.0,4.32%,120.0,3.73%,39.0,5.69%
+centrAntiHT_Patterns_outcome,Initiating,refracture,171,2.03%,94.0,2.17%,64.0,1.99%,11.0,1.60%
+centrAntiHT_Patterns_outcome,No_Treat,refracture,2372,28.20%,1182.0,27.33%,942.0,29.30%,182.0,26.53%
+oralSter_Patterns_outcome,Continuing,refracture,78,0.93%,36.0,0.83%,33.0,1.03%,7.0,1.02%
+oralSter_Patterns_outcome,Deprescribing,refracture,517,6.15%,259.0,5.99%,205.0,6.38%,37.0,5.39%
+oralSter_Patterns_outcome,Initiating,refracture,232,2.76%,115.0,2.66%,91.0,2.83%,18.0,2.62%
+oralSter_Patterns_outcome,No_Treat,refracture,2102,24.99%,1068.0,24.69%,813.0,25.29%,172.0,25.07%
+barbs_Patterns_outcome,Continuing,refracture,27,0.32%,12.0,0.28%,8.0,0.25%,7.0,1.02%
+barbs_Patterns_outcome,Deprescribing,refracture,287,3.41%,149.0,3.45%,104.0,3.23%,31.0,4.52%
+barbs_Patterns_outcome,Initiating,refracture,156,1.85%,74.0,1.71%,65.0,2.02%,11.0,1.60%
+barbs_Patterns_outcome,No_Treat,refracture,2459,29.23%,1243.0,28.74%,965.0,30.02%,185.0,26.97%
+sedHyp_Patterns_outcome,Continuing,refracture,239,2.84%,116.0,2.68%,99.0,3.08%,17.0,2.48%
+sedHyp_Patterns_outcome,Deprescribing,refracture,885,10.52%,441.0,10.20%,349.0,10.86%,69.0,10.06%
+sedHyp_Patterns_outcome,Initiating,refracture,358,4.26%,184.0,4.25%,133.0,4.14%,33.0,4.81%
+sedHyp_Patterns_outcome,No_Treat,refracture,1447,17.20%,737.0,17.04%,561.0,17.45%,115.0,16.76%
+benzos_Patterns_outcome,Continuing,refracture,152,1.81%,80.0,1.85%,55.0,1.71%,13.0,1.90%
+benzos_Patterns_outcome,Deprescribing,refracture,707,8.40%,356.0,8.23%,282.0,8.77%,49.0,7.14%
+benzos_Patterns_outcome,Initiating,refracture,347,4.13%,177.0,4.09%,129.0,4.01%,24.0,3.50%
+benzos_Patterns_outcome,No_Treat,refracture,1723,20.48%,865.0,20.00%,676.0,21.03%,148.0,21.57%
+gabaN02BF_Patterns_outcome,Continuing,refracture,117,1.39%,58.0,1.34%,41.0,1.28%,16.0,2.33%
+gabaN02BF_Patterns_outcome,Deprescribing,refracture,669,7.95%,344.0,7.95%,263.0,8.18%,44.0,6.41%
+gabaN02BF_Patterns_outcome,Initiating,refracture,313,3.72%,151.0,3.49%,128.0,3.98%,22.0,3.21%
+gabaN02BF_Patterns_outcome,No_Treat,refracture,1830,21.75%,925.0,21.39%,710.0,22.08%,152.0,22.16%
+firstGenAH_Patterns_outcome,Continuing,refracture,470,5.59%,233.0,5.39%,187.0,5.82%,38.0,5.54%
+firstGenAH_Patterns_outcome,Deprescribing,refracture,995,11.83%,499.0,11.54%,393.0,12.22%,79.0,11.52%
+firstGenAH_Patterns_outcome,Initiating,refracture,436,5.18%,236.0,5.46%,164.0,5.10%,28.0,4.08%
+firstGenAH_Patterns_outcome,No_Treat,refracture,1028,12.22%,510.0,11.79%,398.0,12.38%,89.0,12.97%
+anticonv_Patterns_outcome,Continuing,refracture,108,1.28%,49.0,1.13%,54.0,1.68%,5.0,0.73%
+anticonv_Patterns_outcome,Deprescribing,refracture,615,7.31%,307.0,7.10%,231.0,7.19%,61.0,8.89%
+anticonv_Patterns_outcome,Initiating,refracture,273,3.25%,129.0,2.98%,124.0,3.86%,14.0,2.04%
+anticonv_Patterns_outcome,No_Treat,refracture,1933,22.98%,993.0,22.96%,733.0,22.80%,154.0,22.45%
+thiazDiur_Patterns_outcome,Continuing,refracture,358,4.26%,184.0,4.25%,138.0,4.29%,28.0,4.08%
+thiazDiur_Patterns_outcome,Deprescribing,refracture,948,11.27%,478.0,11.05%,373.0,11.60%,77.0,11.22%
+thiazDiur_Patterns_outcome,Initiating,refracture,404,4.80%,197.0,4.55%,164.0,5.10%,26.0,3.79%
+thiazDiur_Patterns_outcome,No_Treat,refracture,1219,14.49%,619.0,14.31%,467.0,14.53%,103.0,15.01%
+sgap_Patterns_outcome,Continuing,refracture,102,1.21%,43.0,0.99%,45.0,1.40%,12.0,1.75%
+sgap_Patterns_outcome,Deprescribing,refracture,628,7.47%,323.0,7.47%,245.0,7.62%,40.0,5.83%
+sgap_Patterns_outcome,Initiating,refracture,287,3.41%,153.0,3.54%,102.0,3.17%,22.0,3.21%
+sgap_Patterns_outcome,No_Treat,refracture,1912,22.73%,959.0,22.17%,750.0,23.33%,160.0,23.32%
+tca_Patterns_outcome,Continuing,refracture,99,1.18%,51.0,1.18%,39.0,1.21%,9.0,1.31%
+tca_Patterns_outcome,Deprescribing,refracture,536,6.37%,255.0,5.90%,217.0,6.75%,48.0,7.00%
+tca_Patterns_outcome,Initiating,refracture,261,3.10%,141.0,3.26%,99.0,3.08%,16.0,2.33%
+tca_Patterns_outcome,No_Treat,refracture,2033,24.17%,1031.0,23.84%,787.0,24.48%,161.0,23.47%
+ssriSnri_Patterns_outcome,Continuing,refracture,52,0.62%,30.0,0.69%,20.0,0.62%,2.0,0.29%
+ssriSnri_Patterns_outcome,Deprescribing,refracture,439,5.22%,234.0,5.41%,165.0,5.13%,31.0,4.52%
+ssriSnri_Patterns_outcome,Initiating,refracture,223,2.65%,127.0,2.94%,78.0,2.43%,13.0,1.90%
+ssriSnri_Patterns_outcome,No_Treat,refracture,2215,26.33%,1087.0,25.13%,879.0,27.34%,188.0,27.41%
+nitrates_Patterns_outcome,Continuing,refracture,16,0.19%,8.0,0.18%,6.0,0.19%,1.0,0.15%
+nitrates_Patterns_outcome,Deprescribing,refracture,274,3.26%,140.0,3.24%,102.0,3.17%,28.0,4.08%
+nitrates_Patterns_outcome,Initiating,refracture,127,1.51%,64.0,1.48%,48.0,1.49%,12.0,1.75%
+nitrates_Patterns_outcome,No_Treat,refracture,2512,29.86%,1266.0,29.27%,986.0,30.67%,193.0,28.13%
+antiPark_Patterns_outcome,Continuing,refracture,281,3.34%,136.0,3.14%,115.0,3.58%,23.0,3.35%
+antiPark_Patterns_outcome,Deprescribing,refracture,884,10.51%,433.0,10.01%,354.0,11.01%,71.0,10.35%
+antiPark_Patterns_outcome,Initiating,refracture,380,4.52%,185.0,4.28%,158.0,4.91%,34.0,4.96%
+antiPark_Patterns_outcome,No_Treat,refracture,1384,16.45%,724.0,16.74%,515.0,16.02%,106.0,15.45%
+ppi_Patterns_outcome,Continuing,refracture,39,0.46%,23.0,0.53%,12.0,0.37%,2.0,0.29%
+ppi_Patterns_outcome,Deprescribing,refracture,381,4.53%,186.0,4.30%,152.0,4.73%,35.0,5.10%
+ppi_Patterns_outcome,Initiating,refracture,208,2.47%,97.0,2.24%,83.0,2.58%,20.0,2.92%
+ppi_Patterns_outcome,No_Treat,refracture,2301,27.35%,1172.0,27.10%,895.0,27.84%,177.0,25.80%
+loopDiur_Patterns_outcome,Continuing,refracture,38,0.45%,19.0,0.44%,11.0,0.34%,5.0,0.73%
+loopDiur_Patterns_outcome,Deprescribing,refracture,350,4.16%,183.0,4.23%,126.0,3.92%,35.0,5.10%
+loopDiur_Patterns_outcome,Initiating,refracture,166,1.97%,78.0,1.80%,72.0,2.24%,13.0,1.90%
+loopDiur_Patterns_outcome,No_Treat,refracture,2375,28.23%,1198.0,27.70%,933.0,29.02%,181.0,26.38%
+h2Antags_Patterns_outcome,Continuing,refracture,46,0.55%,28.0,0.65%,14.0,0.44%,4.0,0.58%
+h2Antags_Patterns_outcome,Deprescribing,refracture,385,4.58%,189.0,4.37%,147.0,4.57%,36.0,5.25%
+h2Antags_Patterns_outcome,Initiating,refracture,182,2.16%,93.0,2.15%,65.0,2.02%,17.0,2.48%
+h2Antags_Patterns_outcome,No_Treat,refracture,2316,27.53%,1168.0,27.01%,916.0,28.49%,177.0,25.80%
+inhSteroids_Patterns_outcome,Continuing,refracture,83,0.99%,38.0,0.88%,33.0,1.03%,10.0,1.46%
+inhSteroids_Patterns_outcome,Deprescribing,refracture,504,5.99%,243.0,5.62%,199.0,6.19%,51.0,7.43%
+inhSteroids_Patterns_outcome,Initiating,refracture,222,2.64%,123.0,2.84%,71.0,2.21%,19.0,2.77%
+inhSteroids_Patterns_outcome,No_Treat,refracture,2120,25.20%,1074.0,24.83%,839.0,26.10%,154.0,22.45%
+fgap_Patterns_outcome,Continuing,refracture,109,1.30%,54.0,1.25%,49.0,1.52%,4.0,0.58%
+fgap_Patterns_outcome,Deprescribing,refracture,613,7.29%,318.0,7.35%,233.0,7.25%,47.0,6.85%
+fgap_Patterns_outcome,Initiating,refracture,291,3.46%,151.0,3.49%,109.0,3.39%,22.0,3.21%
+fgap_Patterns_outcome,No_Treat,refracture,1916,22.78%,955.0,22.08%,751.0,23.36%,161.0,23.47%
+tzd_Patterns_outcome,Continuing,refracture,43,0.51%,19.0,0.44%,19.0,0.59%,4.0,0.58%
+tzd_Patterns_outcome,Deprescribing,refracture,400,4.76%,211.0,4.88%,154.0,4.79%,27.0,3.94%
+tzd_Patterns_outcome,Initiating,refracture,185,2.20%,93.0,2.15%,74.0,2.30%,12.0,1.75%
+tzd_Patterns_outcome,No_Treat,refracture,2301,27.35%,1155.0,26.71%,895.0,27.84%,191.0,27.84%
+,,,,,,,,,,
+Central nervous system agents_Patterns_outcome,Continuing,exitus_readm,2430,28.89%,1232.0,28.49%,944.0,29.36%,192.0,27.99%
+Central nervous system agents_Patterns_outcome,Deprescribing,exitus_readm,406,4.83%,207.0,4.79%,153.0,4.76%,36.0,5.25%
+Central nervous system agents_Patterns_outcome,Initiating,exitus_readm,69,0.82%,26.0,0.60%,36.0,1.12%,5.0,0.73%
+Central nervous system agents_Patterns_outcome,No_Treat,exitus_readm,24,0.29%,13.0,0.30%,9.0,0.28%,1.0,0.15%
+Cardiovascular agents_Patterns_outcome,Continuing,exitus_readm,709,8.43%,363.0,8.39%,275.0,8.55%,54.0,7.87%
+Cardiovascular agents_Patterns_outcome,Deprescribing,exitus_readm,1064,12.65%,536.0,12.39%,408.0,12.69%,100.0,14.58%
+Cardiovascular agents_Patterns_outcome,Initiating,exitus_readm,416,4.95%,208.0,4.81%,167.0,5.19%,26.0,3.79%
+Cardiovascular agents_Patterns_outcome,No_Treat,exitus_readm,740,8.80%,371.0,8.58%,292.0,9.08%,54.0,7.87%
+Hormones/hormone modifiers_Patterns_outcome,Continuing,exitus_readm,78,0.93%,36.0,0.83%,33.0,1.03%,7.0,1.02%
+Hormones/hormone modifiers_Patterns_outcome,Deprescribing,exitus_readm,517,6.15%,259.0,5.99%,205.0,6.38%,37.0,5.39%
+Hormones/hormone modifiers_Patterns_outcome,Initiating,exitus_readm,232,2.76%,115.0,2.66%,91.0,2.83%,18.0,2.62%
+Hormones/hormone modifiers_Patterns_outcome,No_Treat,exitus_readm,2102,24.99%,1068.0,24.69%,813.0,25.29%,172.0,25.07%
+Psychotherapeutic agents_Patterns_outcome,Continuing,exitus_readm,758,9.01%,411.0,9.50%,273.0,8.49%,53.0,7.73%
+Psychotherapeutic agents_Patterns_outcome,Deprescribing,exitus_readm,1040,12.36%,514.0,11.88%,418.0,13.00%,78.0,11.37%
+Psychotherapeutic agents_Patterns_outcome,Initiating,exitus_readm,409,4.86%,212.0,4.90%,160.0,4.98%,31.0,4.52%
+Psychotherapeutic agents_Patterns_outcome,No_Treat,exitus_readm,722,8.58%,341.0,7.88%,291.0,9.05%,72.0,10.50%
+Gastrointestinal agents_Patterns_outcome,Continuing,exitus_readm,148,1.76%,73.0,1.69%,57.0,1.77%,12.0,1.75%
+Gastrointestinal agents_Patterns_outcome,Deprescribing,exitus_readm,633,7.52%,316.0,7.31%,243.0,7.56%,58.0,8.45%
+Gastrointestinal agents_Patterns_outcome,Initiating,exitus_readm,308,3.66%,158.0,3.65%,110.0,3.42%,30.0,4.37%
+Gastrointestinal agents_Patterns_outcome,No_Treat,exitus_readm,1840,21.87%,931.0,21.53%,732.0,22.77%,134.0,19.53%
+Respiratory agents_Patterns_outcome,Continuing,exitus_readm,83,0.99%,38.0,0.88%,33.0,1.03%,10.0,1.46%
+Respiratory agents_Patterns_outcome,Deprescribing,exitus_readm,504,5.99%,243.0,5.62%,199.0,6.19%,51.0,7.43%
+Respiratory agents_Patterns_outcome,Initiating,exitus_readm,222,2.64%,123.0,2.84%,71.0,2.21%,19.0,2.77%
+Respiratory agents_Patterns_outcome,No_Treat,exitus_readm,2120,25.20%,1074.0,24.83%,839.0,26.10%,154.0,22.45%
+Metabolic agents_Patterns_outcome,Continuing,exitus_readm,43,0.51%,19.0,0.44%,19.0,0.59%,4.0,0.58%
+Metabolic agents_Patterns_outcome,Deprescribing,exitus_readm,400,4.76%,211.0,4.88%,154.0,4.79%,27.0,3.94%
+Metabolic agents_Patterns_outcome,Initiating,exitus_readm,185,2.20%,93.0,2.15%,74.0,2.30%,12.0,1.75%
+Metabolic agents_Patterns_outcome,No_Treat,exitus_readm,2301,27.35%,1155.0,26.71%,895.0,27.84%,191.0,27.84%
+Central nervous system agents_Patterns_outcome,Continuing,refracture,2430,28.89%,1232.0,28.49%,944.0,29.36%,192.0,27.99%
+Central nervous system agents_Patterns_outcome,Deprescribing,refracture,406,4.83%,207.0,4.79%,153.0,4.76%,36.0,5.25%
+Central nervous system agents_Patterns_outcome,Initiating,refracture,69,0.82%,26.0,0.60%,36.0,1.12%,5.0,0.73%
+Central nervous system agents_Patterns_outcome,No_Treat,refracture,24,0.29%,13.0,0.30%,9.0,0.28%,1.0,0.15%
+Cardiovascular agents_Patterns_outcome,Continuing,refracture,709,8.43%,363.0,8.39%,275.0,8.55%,54.0,7.87%
+Cardiovascular agents_Patterns_outcome,Deprescribing,refracture,1064,12.65%,536.0,12.39%,408.0,12.69%,100.0,14.58%
+Cardiovascular agents_Patterns_outcome,Initiating,refracture,416,4.95%,208.0,4.81%,167.0,5.19%,26.0,3.79%
+Cardiovascular agents_Patterns_outcome,No_Treat,refracture,740,8.80%,371.0,8.58%,292.0,9.08%,54.0,7.87%
+Hormones/hormone modifiers_Patterns_outcome,Continuing,refracture,78,0.93%,36.0,0.83%,33.0,1.03%,7.0,1.02%
+Hormones/hormone modifiers_Patterns_outcome,Deprescribing,refracture,517,6.15%,259.0,5.99%,205.0,6.38%,37.0,5.39%
+Hormones/hormone modifiers_Patterns_outcome,Initiating,refracture,232,2.76%,115.0,2.66%,91.0,2.83%,18.0,2.62%
+Hormones/hormone modifiers_Patterns_outcome,No_Treat,refracture,2102,24.99%,1068.0,24.69%,813.0,25.29%,172.0,25.07%
+Psychotherapeutic agents_Patterns_outcome,Continuing,refracture,758,9.01%,411.0,9.50%,273.0,8.49%,53.0,7.73%
+Psychotherapeutic agents_Patterns_outcome,Deprescribing,refracture,1040,12.36%,514.0,11.88%,418.0,13.00%,78.0,11.37%
+Psychotherapeutic agents_Patterns_outcome,Initiating,refracture,409,4.86%,212.0,4.90%,160.0,4.98%,31.0,4.52%
+Psychotherapeutic agents_Patterns_outcome,No_Treat,refracture,722,8.58%,341.0,7.88%,291.0,9.05%,72.0,10.50%
+Gastrointestinal agents_Patterns_outcome,Continuing,refracture,148,1.76%,73.0,1.69%,57.0,1.77%,12.0,1.75%
+Gastrointestinal agents_Patterns_outcome,Deprescribing,refracture,633,7.52%,316.0,7.31%,243.0,7.56%,58.0,8.45%
+Gastrointestinal agents_Patterns_outcome,Initiating,refracture,308,3.66%,158.0,3.65%,110.0,3.42%,30.0,4.37%
+Gastrointestinal agents_Patterns_outcome,No_Treat,refracture,1840,21.87%,931.0,21.53%,732.0,22.77%,134.0,19.53%
+Respiratory agents_Patterns_outcome,Continuing,refracture,83,0.99%,38.0,0.88%,33.0,1.03%,10.0,1.46%
+Respiratory agents_Patterns_outcome,Deprescribing,refracture,504,5.99%,243.0,5.62%,199.0,6.19%,51.0,7.43%
+Respiratory agents_Patterns_outcome,Initiating,refracture,222,2.64%,123.0,2.84%,71.0,2.21%,19.0,2.77%
+Respiratory agents_Patterns_outcome,No_Treat,refracture,2120,25.20%,1074.0,24.83%,839.0,26.10%,154.0,22.45%
+Metabolic agents_Patterns_outcome,Continuing,refracture,43,0.51%,19.0,0.44%,19.0,0.59%,4.0,0.58%
+Metabolic agents_Patterns_outcome,Deprescribing,refracture,400,4.76%,211.0,4.88%,154.0,4.79%,27.0,3.94%
+Metabolic agents_Patterns_outcome,Initiating,refracture,185,2.20%,93.0,2.15%,74.0,2.30%,12.0,1.75%
+Metabolic agents_Patterns_outcome,No_Treat,refracture,2301,27.35%,1155.0,26.71%,895.0,27.84%,191.0,27.84%
+,,,,,,,,,,
+Fall_increase_moderate_Patterns_outcome,Continuing,exitus_readm,2175,25.86%,1094.0,25.29%,851.0,26.47%,176.0,25.66%
+Fall_increase_moderate_Patterns_outcome,Deprescribing,exitus_readm,576,6.85%,290.0,6.71%,226.0,7.03%,48.0,7.00%
+Fall_increase_moderate_Patterns_outcome,Initiating,exitus_readm,126,1.50%,64.0,1.48%,47.0,1.46%,7.0,1.02%
+Fall_increase_moderate_Patterns_outcome,No_Treat,exitus_readm,52,0.62%,30.0,0.69%,18.0,0.56%,3.0,0.44%
+Fall_increase_high_Patterns_outcome,Continuing,exitus_readm,2044,24.30%,1031.0,23.84%,807.0,25.10%,154.0,22.45%
+Fall_increase_high_Patterns_outcome,Deprescribing,exitus_readm,653,7.76%,333.0,7.70%,243.0,7.56%,59.0,8.60%
+Fall_increase_high_Patterns_outcome,Initiating,exitus_readm,161,1.91%,75.0,1.73%,68.0,2.12%,15.0,2.19%
+Fall_increase_high_Patterns_outcome,No_Treat,exitus_readm,71,0.84%,39.0,0.90%,24.0,0.75%,6.0,0.87%
+Bone_mass_decrese_high_Patterns_outcome,Continuing,exitus_readm,190,2.26%,92.0,2.13%,73.0,2.27%,20.0,2.92%
+Bone_mass_decrese_high_Patterns_outcome,Deprescribing,exitus_readm,724,8.61%,363.0,8.39%,288.0,8.96%,53.0,7.73%
+Bone_mass_decrese_high_Patterns_outcome,Initiating,exitus_readm,343,4.08%,167.0,3.86%,137.0,4.26%,26.0,3.79%
+Bone_mass_decrese_high_Patterns_outcome,No_Treat,exitus_readm,1672,19.88%,856.0,19.79%,644.0,20.03%,135.0,19.68%
+Bone_mass_decrese_moderate_Patterns_outcome,Continuing,exitus_readm,340,4.04%,172.0,3.98%,126.0,3.92%,33.0,4.81%
+Bone_mass_decrese_moderate_Patterns_outcome,Deprescribing,exitus_readm,884,10.51%,437.0,10.10%,349.0,10.86%,76.0,11.08%
+Bone_mass_decrese_moderate_Patterns_outcome,Initiating,exitus_readm,356,4.23%,194.0,4.49%,122.0,3.79%,27.0,3.94%
+Bone_mass_decrese_moderate_Patterns_outcome,No_Treat,exitus_readm,1349,16.04%,675.0,15.61%,545.0,16.95%,98.0,14.29%
+Fall_increase_moderate_Patterns_outcome,Continuing,refracture,2175,25.86%,1094.0,25.29%,851.0,26.47%,176.0,25.66%
+Fall_increase_moderate_Patterns_outcome,Deprescribing,refracture,576,6.85%,290.0,6.71%,226.0,7.03%,48.0,7.00%
+Fall_increase_moderate_Patterns_outcome,Initiating,refracture,126,1.50%,64.0,1.48%,47.0,1.46%,7.0,1.02%
+Fall_increase_moderate_Patterns_outcome,No_Treat,refracture,52,0.62%,30.0,0.69%,18.0,0.56%,3.0,0.44%
+Fall_increase_high_Patterns_outcome,Continuing,refracture,2044,24.30%,1031.0,23.84%,807.0,25.10%,154.0,22.45%
+Fall_increase_high_Patterns_outcome,Deprescribing,refracture,653,7.76%,333.0,7.70%,243.0,7.56%,59.0,8.60%
+Fall_increase_high_Patterns_outcome,Initiating,refracture,161,1.91%,75.0,1.73%,68.0,2.12%,15.0,2.19%
+Fall_increase_high_Patterns_outcome,No_Treat,refracture,71,0.84%,39.0,0.90%,24.0,0.75%,6.0,0.87%
+Bone_mass_decrese_high_Patterns_outcome,Continuing,refracture,190,2.26%,92.0,2.13%,73.0,2.27%,20.0,2.92%
+Bone_mass_decrese_high_Patterns_outcome,Deprescribing,refracture,724,8.61%,363.0,8.39%,288.0,8.96%,53.0,7.73%
+Bone_mass_decrese_high_Patterns_outcome,Initiating,refracture,343,4.08%,167.0,3.86%,137.0,4.26%,26.0,3.79%
+Bone_mass_decrese_high_Patterns_outcome,No_Treat,refracture,1672,19.88%,856.0,19.79%,644.0,20.03%,135.0,19.68%
+Bone_mass_decrese_moderate_Patterns_outcome,Continuing,refracture,340,4.04%,172.0,3.98%,126.0,3.92%,33.0,4.81%
+Bone_mass_decrese_moderate_Patterns_outcome,Deprescribing,refracture,884,10.51%,437.0,10.10%,349.0,10.86%,76.0,11.08%
+Bone_mass_decrese_moderate_Patterns_outcome,Initiating,refracture,356,4.23%,194.0,4.49%,122.0,3.79%,27.0,3.94%
+Bone_mass_decrese_moderate_Patterns_outcome,No_Treat,refracture,1349,16.04%,675.0,15.61%,545.0,16.95%,98.0,14.29%

@@ -18,6 +18,7 @@ def infer_separator(file_, uploaded_file_):
         return '|'
 
 
+
 def infer_encoding(uploaded_file_):
     logging.info(f"Trying to detect the encoding of the file '{uploaded_file_}'")
     detector = chardet.UniversalDetector()
@@ -29,8 +30,11 @@ def infer_encoding(uploaded_file_):
     encoding = detector.result['encoding']
     confidence = detector.result['confidence']
     logging.info(f"The file '{uploaded_file_}' follows an encoding format '{encoding}' at {confidence} confidence.")
-    return encoding
-
+    if confidence < 0.95:
+        logging.warning(f"Confidence value is too low, 'utf-8' encoding will be applied.")
+        return 'utf-8'    
+    else:
+        return encoding
 
 if __name__ == '__main__':
     # Do not modify if you use the deployment container!

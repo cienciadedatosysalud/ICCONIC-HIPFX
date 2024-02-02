@@ -1,0 +1,108 @@
+
+Family: binomial 
+Link function: logit 
+
+Formula:
+exitus_7days_bl ~ s(futime_adm_surg, bs = "tp") + sex_cd + socecon_lvl_cd + 
+    surgical_procedure_cd + anesthesia_type_cd + icu_admission_bl + 
+    anticoagulant_status_bl + antiaggregant_status_bl + chronic_kidney_disease_bl + 
+    tobacco_copd_bl + depression_bl + serious_mental_illness_bl + 
+    alcohol_abuse_bl + obesity_overweight_bl + osteoporosis_osteopenia_bl + 
+    dementia_bl + diabetes_bl + liver_disease_bl + pancreatic_disease_bl + 
+    inflamatory_bowel_disease_bl + rheumatology_disease_bl + 
+    spinal_cord_disease_injury_bl + serious_neurological_disease_bl + 
+    parkinson_huntington_diseases_bl + seizure_disorder_convulsions_bl + 
+    congestive_heart_failure_bl + coronary_artery_disease_bl + 
+    cerebrovascular_disease_bl + peripheral_vascular_disease_bl + 
+    traumatic_brain_injury_bl + amputee_bl + year + month + weekday + 
+    age_group + hospital_admission_type_cd + previous_hospital_admission_bl + 
+    s(hospital_st, bs = "re")
+
+Parametric coefficients:
+                                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                      -4.542e+00  1.331e+00  -3.413 0.000643 ***
+sex_cdmale                        6.082e-01  7.254e-01   0.838 0.401766    
+sex_cdfemale                      7.193e-01  7.247e-01   0.993 0.320899    
+socecon_lvl_cd2                   1.256e+00  1.029e+00   1.221 0.222055    
+socecon_lvl_cd3                   1.495e+00  1.013e+00   1.476 0.140055    
+socecon_lvl_cd4                   1.538e+00  1.013e+00   1.518 0.128985    
+socecon_lvl_cd5                   1.443e+00  1.024e+00   1.408 0.159001    
+surgical_procedure_cdPartial     -3.049e-01  4.269e-01  -0.714 0.475094    
+surgical_procedure_cdPinning     -5.091e-01  3.642e-01  -1.398 0.162191    
+surgical_procedure_cdOther       -2.617e-01  2.640e-01  -0.991 0.321527    
+anesthesia_type_cd1              -1.556e-01  1.744e-01  -0.892 0.372523    
+anesthesia_type_cd2              -1.209e-01  1.747e-01  -0.692 0.489040    
+icu_admission_bl                 -7.845e-01  1.798e-01  -4.363 1.28e-05 ***
+anticoagulant_status_bl           2.523e-01  3.089e-01   0.817 0.413987    
+antiaggregant_status_bl           6.233e-03  3.194e-01   0.020 0.984429    
+chronic_kidney_disease_bl        -3.437e-01  2.836e-01  -1.212 0.225573    
+tobacco_copd_bl                   2.045e-01  2.251e-01   0.909 0.363476    
+depression_bl                    -2.286e-01  2.529e-01  -0.904 0.366061    
+serious_mental_illness_bl         1.536e-01  2.290e-01   0.671 0.502422    
+alcohol_abuse_bl                  5.789e-02  2.380e-01   0.243 0.807873    
+obesity_overweight_bl             2.473e-01  2.176e-01   1.136 0.255867    
+osteoporosis_osteopenia_bl        8.778e-02  2.330e-01   0.377 0.706417    
+dementia_bl                       1.351e-01  2.245e-01   0.602 0.547141    
+diabetes_bl                       1.558e-01  2.286e-01   0.682 0.495425    
+liver_disease_bl                  1.258e-01  2.379e-01   0.529 0.597119    
+pancreatic_disease_bl            -2.673e-01  2.668e-01  -1.002 0.316390    
+inflamatory_bowel_disease_bl     -2.446e-01  2.596e-01  -0.942 0.345995    
+rheumatology_disease_bl           3.170e-01  2.214e-01   1.432 0.152271    
+spinal_cord_disease_injury_bl    -7.459e-01  3.292e-01  -2.266 0.023465 *  
+serious_neurological_disease_bl   2.885e-04  2.425e-01   0.001 0.999051    
+parkinson_huntington_diseases_bl  1.903e-01  2.252e-01   0.845 0.398088    
+seizure_disorder_convulsions_bl  -1.259e-01  2.537e-01  -0.496 0.619640    
+congestive_heart_failure_bl       1.371e-01  2.328e-01   0.589 0.556089    
+coronary_artery_disease_bl       -1.938e-01  2.600e-01  -0.745 0.456006    
+cerebrovascular_disease_bl        2.668e-01  2.211e-01   1.207 0.227564    
+peripheral_vascular_disease_bl   -2.986e-01  2.667e-01  -1.120 0.262878    
+traumatic_brain_injury_bl         2.480e-01  2.206e-01   1.124 0.260945    
+amputee_bl                       -4.409e-01  2.927e-01  -1.506 0.131953    
+year2018                         -6.978e-01  2.495e-01  -2.797 0.005154 ** 
+year2019                         -3.941e-02  2.121e-01  -0.186 0.852577    
+year2020                         -1.181e-02  2.108e-01  -0.056 0.955317    
+year2021                         -3.342e-01  2.283e-01  -1.464 0.143180    
+year2022                         -5.301e+01  1.794e+07   0.000 0.999998    
+month2                           -1.906e-03  3.636e-01  -0.005 0.995818    
+month3                            1.839e-01  3.458e-01   0.532 0.594844    
+month4                            3.392e-02  3.636e-01   0.093 0.925674    
+month5                            3.438e-01  3.366e-01   1.021 0.307113    
+month6                            2.050e-01  3.456e-01   0.593 0.553012    
+month7                           -2.133e-01  3.750e-01  -0.569 0.569480    
+month8                            1.956e-01  3.389e-01   0.577 0.563810    
+month9                           -2.521e-01  3.910e-01  -0.645 0.519016    
+month10                          -1.521e-01  3.686e-01  -0.413 0.679770    
+month11                          -8.849e-02  3.689e-01  -0.240 0.810426    
+month12                          -7.887e-02  3.687e-01  -0.214 0.830612    
+weekdayMonday                    -1.849e-01  2.686e-01  -0.688 0.491148    
+weekdaySaturday                   8.242e-02  2.563e-01   0.322 0.747752    
+weekdaySunday                    -2.946e-02  2.617e-01  -0.113 0.910364    
+weekdayThursday                  -2.224e-01  2.711e-01  -0.821 0.411902    
+weekdayTuesday                    2.246e-03  2.578e-01   0.009 0.993050    
+weekdayWednesday                 -2.990e-01  2.774e-01  -1.078 0.281066    
+age_group15                      -2.322e-01  2.730e-01  -0.850 0.395071    
+age_group16                       2.915e-02  2.682e-01   0.109 0.913460    
+age_group17                      -1.308e-01  2.810e-01  -0.465 0.641643    
+age_group18                       1.490e-01  2.708e-01   0.550 0.582113    
+age_group19                      -3.049e-01  2.422e-01  -1.259 0.207975    
+hospital_admission_type_cd1       2.564e-02  2.018e-01   0.127 0.898885    
+hospital_admission_type_cd2      -1.489e-03  2.239e-01  -0.007 0.994696    
+hospital_admission_type_cd3      -8.460e-02  2.307e-01  -0.367 0.713809    
+hospital_admission_type_cd4       9.269e-03  2.557e-01   0.036 0.971084    
+hospital_admission_type_cd5      -4.620e-01  3.114e-01  -1.484 0.137910    
+previous_hospital_admission_bl   -1.682e-01  1.453e-01  -1.158 0.247050    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Approximate significance of smooth terms:
+                        edf Ref.df Chi.sq p-value
+s(futime_adm_surg) 1.001348  1.003  0.376   0.542
+s(hospital_st)     0.002891  9.000  0.003   0.500
+
+R-sq.(adj) =  0.00446   Deviance explained = 4.92%
+-REML = 890.21  Scale est. = 1         n = 6777
+[1] "For component hospital_st, variance is: 2e-05 with lower_ci95=0 and upper_ci95=9.82026736423442e+38"
+[1] "ICC ajusted: 1e-05 with lower_ci95=-0.00124 and upper_ci95=0.00125"
+[1] "Median odds ratio (MOR): 1.00391"
+[1] "MOR with bootsrapping: 1.00808 with lower_ci95=1.00427 and upper_ci95=1.013"
+[1] "Summary for country_cd: ESP"

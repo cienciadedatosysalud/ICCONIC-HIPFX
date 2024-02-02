@@ -1,0 +1,131 @@
+variable,value,count,percentage,count_S720,percentage_S720,count_S721,percentage_S721,count_S722,percentage_S722
+Opioids_Patterns,Continuing,2934,34.88%,1485.0,34.34%,1122.0,34.90%,259.0,37.76%
+Opioids_Patterns,Deprescribing,3108,36.95%,1608.0,37.18%,1186.0,36.89%,242.0,35.28%
+Opioids_Patterns,Initiating,972,11.55%,514.0,11.88%,368.0,11.45%,72.0,10.50%
+Opioids_Patterns,No_Treat,1398,16.62%,718.0,16.60%,539.0,16.77%,113.0,16.47%
+centrAntiHT_Patterns,Continuing,85,1.01%,43.0,0.99%,36.0,1.12%,4.0,0.58%
+centrAntiHT_Patterns,Deprescribing,1025,12.18%,552.0,12.76%,353.0,10.98%,102.0,14.87%
+centrAntiHT_Patterns,Initiating,457,5.43%,236.0,5.46%,179.0,5.57%,34.0,4.96%
+centrAntiHT_Patterns,No_Treat,6845,81.37%,3494.0,80.79%,2647.0,82.33%,546.0,79.59%
+oralSter_Patterns,Continuing,200,2.38%,102.0,2.36%,78.0,2.43%,14.0,2.04%
+oralSter_Patterns,Deprescribing,1505,17.89%,792.0,18.31%,549.0,17.08%,135.0,19.68%
+oralSter_Patterns,Initiating,642,7.63%,332.0,7.68%,248.0,7.71%,48.0,7.00%
+oralSter_Patterns,No_Treat,6065,72.10%,3099.0,71.65%,2340.0,72.78%,489.0,71.28%
+barbs_Patterns,Continuing,61,0.73%,28.0,0.65%,20.0,0.62%,12.0,1.75%
+barbs_Patterns,Deprescribing,838,9.96%,458.0,10.59%,294.0,9.14%,73.0,10.64%
+barbs_Patterns,Initiating,417,4.96%,210.0,4.86%,158.0,4.91%,38.0,5.54%
+barbs_Patterns,No_Treat,7096,84.36%,3629.0,83.91%,2743.0,85.32%,563.0,82.07%
+sedHyp_Patterns,Continuing,671,7.98%,341.0,7.88%,262.0,8.15%,53.0,7.73%
+sedHyp_Patterns,Deprescribing,2484,29.53%,1277.0,29.53%,971.0,30.20%,187.0,27.26%
+sedHyp_Patterns,Initiating,1034,12.29%,536.0,12.39%,379.0,11.79%,99.0,14.43%
+sedHyp_Patterns,No_Treat,4223,50.20%,2171.0,50.20%,1603.0,49.86%,347.0,50.58%
+benzos_Patterns,Continuing,406,4.83%,208.0,4.81%,148.0,4.60%,44.0,6.41%
+benzos_Patterns,Deprescribing,2010,23.89%,1034.0,23.91%,784.0,24.39%,140.0,20.41%
+benzos_Patterns,Initiating,913,10.85%,450.0,10.40%,356.0,11.07%,83.0,12.10%
+benzos_Patterns,No_Treat,5083,60.43%,2633.0,60.88%,1927.0,59.94%,419.0,61.08%
+gabaN02BF_Patterns,Continuing,319,3.79%,166.0,3.84%,118.0,3.67%,30.0,4.37%
+gabaN02BF_Patterns,Deprescribing,1886,22.42%,970.0,22.43%,724.0,22.52%,150.0,21.87%
+gabaN02BF_Patterns,Initiating,817,9.71%,398.0,9.20%,337.0,10.48%,62.0,9.04%
+gabaN02BF_Patterns,No_Treat,5390,64.08%,2791.0,64.53%,2036.0,63.33%,444.0,64.72%
+firstGenAH_Patterns,Continuing,1270,15.10%,659.0,15.24%,494.0,15.37%,92.0,13.41%
+firstGenAH_Patterns,Deprescribing,2963,35.22%,1503.0,34.75%,1159.0,36.05%,243.0,35.42%
+firstGenAH_Patterns,Initiating,1096,13.03%,563.0,13.02%,413.0,12.85%,95.0,13.85%
+firstGenAH_Patterns,No_Treat,3083,36.65%,1600.0,36.99%,1149.0,35.74%,256.0,37.32%
+anticonv_Patterns,Continuing,282,3.35%,147.0,3.40%,109.0,3.39%,23.0,3.35%
+anticonv_Patterns,Deprescribing,1745,20.74%,891.0,20.60%,664.0,20.65%,153.0,22.30%
+anticonv_Patterns,Initiating,724,8.61%,353.0,8.16%,299.0,9.30%,56.0,8.16%
+anticonv_Patterns,No_Treat,5661,67.30%,2934.0,67.84%,2143.0,66.66%,454.0,66.18%
+thiazDiur_Patterns,Continuing,886,10.53%,467.0,10.80%,331.0,10.30%,69.0,10.06%
+thiazDiur_Patterns,Deprescribing,2663,31.66%,1346.0,31.12%,1049.0,32.63%,216.0,31.49%
+thiazDiur_Patterns,Initiating,1064,12.65%,547.0,12.65%,415.0,12.91%,70.0,10.20%
+thiazDiur_Patterns,No_Treat,3799,45.16%,1965.0,45.43%,1420.0,44.17%,331.0,48.25%
+sgap_Patterns,Continuing,281,3.34%,130.0,3.01%,119.0,3.70%,27.0,3.94%
+sgap_Patterns,Deprescribing,1803,21.43%,941.0,21.76%,690.0,21.46%,132.0,19.24%
+sgap_Patterns,Initiating,812,9.65%,438.0,10.13%,295.0,9.18%,60.0,8.75%
+sgap_Patterns,No_Treat,5516,65.57%,2816.0,65.11%,2111.0,65.66%,467.0,68.08%
+tca_Patterns,Continuing,243,2.89%,121.0,2.80%,98.0,3.05%,21.0,3.06%
+tca_Patterns,Deprescribing,1588,18.88%,805.0,18.61%,617.0,19.19%,134.0,19.53%
+tca_Patterns,Initiating,682,8.11%,361.0,8.35%,255.0,7.93%,53.0,7.73%
+tca_Patterns,No_Treat,5899,70.13%,3038.0,70.24%,2245.0,69.83%,478.0,69.68%
+ssriSnri_Patterns,Continuing,130,1.55%,72.0,1.66%,49.0,1.52%,7.0,1.02%
+ssriSnri_Patterns,Deprescribing,1268,15.07%,663.0,15.33%,482.0,14.99%,95.0,13.85%
+ssriSnri_Patterns,Initiating,587,6.98%,324.0,7.49%,207.0,6.44%,46.0,6.71%
+ssriSnri_Patterns,No_Treat,6427,76.40%,3266.0,75.51%,2477.0,77.05%,538.0,78.43%
+nitrates_Patterns,Continuing,41,0.49%,24.0,0.55%,13.0,0.40%,2.0,0.29%
+nitrates_Patterns,Deprescribing,777,9.24%,397.0,9.18%,301.0,9.36%,64.0,9.33%
+nitrates_Patterns,Initiating,341,4.05%,172.0,3.98%,120.0,3.73%,37.0,5.39%
+nitrates_Patterns,No_Treat,7253,86.22%,3732.0,86.29%,2781.0,86.50%,583.0,84.99%
+antiPark_Patterns,Continuing,820,9.75%,412.0,9.53%,326.0,10.14%,60.0,8.75%
+antiPark_Patterns,Deprescribing,2538,30.17%,1264.0,29.23%,1015.0,31.57%,205.0,29.88%
+antiPark_Patterns,Initiating,1038,12.34%,518.0,11.98%,402.0,12.50%,97.0,14.14%
+antiPark_Patterns,No_Treat,4016,47.74%,2131.0,49.27%,1472.0,45.79%,324.0,47.23%
+ppi_Patterns,Continuing,103,1.22%,56.0,1.29%,35.0,1.09%,8.0,1.17%
+ppi_Patterns,Deprescribing,1153,13.71%,581.0,13.43%,453.0,14.09%,98.0,14.29%
+ppi_Patterns,Initiating,543,6.46%,260.0,6.01%,220.0,6.84%,52.0,7.58%
+ppi_Patterns,No_Treat,6613,78.61%,3428.0,79.26%,2507.0,77.98%,528.0,76.97%
+loopDiur_Patterns,Continuing,102,1.21%,47.0,1.09%,38.0,1.18%,13.0,1.90%
+loopDiur_Patterns,Deprescribing,1027,12.21%,560.0,12.95%,351.0,10.92%,102.0,14.87%
+loopDiur_Patterns,Initiating,458,5.44%,202.0,4.67%,200.0,6.22%,40.0,5.83%
+loopDiur_Patterns,No_Treat,6825,81.13%,3516.0,81.29%,2626.0,81.68%,531.0,77.41%
+h2Antags_Patterns,Continuing,103,1.22%,59.0,1.36%,33.0,1.03%,10.0,1.46%
+h2Antags_Patterns,Deprescribing,1058,12.58%,531.0,12.28%,400.0,12.44%,101.0,14.72%
+h2Antags_Patterns,Initiating,495,5.88%,254.0,5.87%,182.0,5.66%,44.0,6.41%
+h2Antags_Patterns,No_Treat,6756,80.31%,3481.0,80.49%,2600.0,80.87%,531.0,77.41%
+inhSteroids_Patterns,Continuing,191,2.27%,102.0,2.36%,69.0,2.15%,15.0,2.19%
+inhSteroids_Patterns,Deprescribing,1502,17.86%,754.0,17.43%,579.0,18.01%,139.0,20.26%
+inhSteroids_Patterns,Initiating,625,7.43%,326.0,7.54%,230.0,7.15%,52.0,7.58%
+inhSteroids_Patterns,No_Treat,6094,72.44%,3143.0,72.67%,2337.0,72.69%,480.0,69.97%
+fgap_Patterns,Continuing,312,3.71%,166.0,3.84%,119.0,3.70%,21.0,3.06%
+fgap_Patterns,Deprescribing,1762,20.95%,930.0,21.50%,650.0,20.22%,148.0,21.57%
+fgap_Patterns,Initiating,777,9.24%,385.0,8.90%,307.0,9.55%,62.0,9.04%
+fgap_Patterns,No_Treat,5561,66.11%,2844.0,65.76%,2139.0,66.53%,455.0,66.33%
+tzd_Patterns,Continuing,111,1.32%,56.0,1.29%,45.0,1.40%,9.0,1.31%
+tzd_Patterns,Deprescribing,1170,13.91%,596.0,13.78%,464.0,14.43%,86.0,12.54%
+tzd_Patterns,Initiating,535,6.36%,280.0,6.47%,201.0,6.25%,40.0,5.83%
+tzd_Patterns,No_Treat,6596,78.41%,3393.0,78.45%,2505.0,77.92%,551.0,80.32%
+,,,,,,,,,
+Central nervous system agents_Patterns,Continuing,6573,78.14%,3375.0,78.03%,2517.0,78.29%,533.0,77.70%
+Central nervous system agents_Patterns,Deprescribing,1541,18.32%,803.0,18.57%,574.0,17.85%,132.0,19.24%
+Central nervous system agents_Patterns,Initiating,212,2.52%,98.0,2.27%,94.0,2.92%,17.0,2.48%
+Central nervous system agents_Patterns,No_Treat,86,1.02%,49.0,1.13%,30.0,0.93%,4.0,0.58%
+Cardiovascular agents_Patterns,Continuing,1843,21.91%,949.0,21.94%,700.0,21.77%,147.0,21.43%
+Cardiovascular agents_Patterns,Deprescribing,3146,37.40%,1631.0,37.71%,1177.0,36.61%,280.0,40.82%
+Cardiovascular agents_Patterns,Initiating,1109,13.18%,565.0,13.06%,435.0,13.53%,77.0,11.22%
+Cardiovascular agents_Patterns,No_Treat,2314,27.51%,1180.0,27.28%,903.0,28.09%,182.0,26.53%
+Hormones/hormone modifiers_Patterns,Continuing,200,2.38%,102.0,2.36%,78.0,2.43%,14.0,2.04%
+Hormones/hormone modifiers_Patterns,Deprescribing,1505,17.89%,792.0,18.31%,549.0,17.08%,135.0,19.68%
+Hormones/hormone modifiers_Patterns,Initiating,642,7.63%,332.0,7.68%,248.0,7.71%,48.0,7.00%
+Hormones/hormone modifiers_Patterns,No_Treat,6065,72.10%,3099.0,71.65%,2340.0,72.78%,489.0,71.28%
+Psychotherapeutic agents_Patterns,Continuing,2032,24.16%,1060.0,24.51%,765.0,23.79%,155.0,22.59%
+Psychotherapeutic agents_Patterns,Deprescribing,3136,37.28%,1619.0,37.43%,1197.0,37.23%,253.0,36.88%
+Psychotherapeutic agents_Patterns,Initiating,1102,13.10%,578.0,13.36%,421.0,13.09%,88.0,12.83%
+Psychotherapeutic agents_Patterns,No_Treat,2142,25.46%,1068.0,24.69%,832.0,25.88%,190.0,27.70%
+Gastrointestinal agents_Patterns,Continuing,365,4.34%,179.0,4.14%,145.0,4.51%,32.0,4.66%
+Gastrointestinal agents_Patterns,Deprescribing,1854,22.04%,933.0,21.57%,713.0,22.18%,167.0,24.34%
+Gastrointestinal agents_Patterns,Initiating,826,9.82%,419.0,9.69%,310.0,9.64%,76.0,11.08%
+Gastrointestinal agents_Patterns,No_Treat,5367,63.80%,2794.0,64.60%,2047.0,63.67%,411.0,59.91%
+Respiratory agents_Patterns,Continuing,191,2.27%,102.0,2.36%,69.0,2.15%,15.0,2.19%
+Respiratory agents_Patterns,Deprescribing,1502,17.86%,754.0,17.43%,579.0,18.01%,139.0,20.26%
+Respiratory agents_Patterns,Initiating,625,7.43%,326.0,7.54%,230.0,7.15%,52.0,7.58%
+Respiratory agents_Patterns,No_Treat,6094,72.44%,3143.0,72.67%,2337.0,72.69%,480.0,69.97%
+Metabolic agents_Patterns,Continuing,111,1.32%,56.0,1.29%,45.0,1.40%,9.0,1.31%
+Metabolic agents_Patterns,Deprescribing,1170,13.91%,596.0,13.78%,464.0,14.43%,86.0,12.54%
+Metabolic agents_Patterns,Initiating,535,6.36%,280.0,6.47%,201.0,6.25%,40.0,5.83%
+Metabolic agents_Patterns,No_Treat,6596,78.41%,3393.0,78.45%,2505.0,77.92%,551.0,80.32%
+,,,,,,,,,
+Fall_increase_moderate_Patterns,Continuing,5886,69.97%,3052.0,70.57%,2231.0,69.39%,466.0,67.93%
+Fall_increase_moderate_Patterns,Deprescribing,1978,23.51%,1003.0,23.19%,764.0,23.76%,174.0,25.36%
+Fall_increase_moderate_Patterns,Initiating,346,4.11%,167.0,3.86%,142.0,4.42%,27.0,3.94%
+Fall_increase_moderate_Patterns,No_Treat,202,2.40%,103.0,2.38%,78.0,2.43%,19.0,2.77%
+Fall_increase_high_Patterns,Continuing,5501,65.39%,2812.0,65.02%,2123.0,66.03%,448.0,65.31%
+Fall_increase_high_Patterns,Deprescribing,2201,26.17%,1147.0,26.52%,834.0,25.94%,171.0,24.93%
+Fall_increase_high_Patterns,Initiating,428,5.09%,206.0,4.76%,164.0,5.10%,47.0,6.85%
+Fall_increase_high_Patterns,No_Treat,282,3.35%,160.0,3.70%,94.0,2.92%,20.0,2.92%
+Bone_mass_decrese_high_Patterns,Continuing,499,5.93%,250.0,5.78%,195.0,6.07%,43.0,6.27%
+Bone_mass_decrese_high_Patterns,Deprescribing,2159,25.67%,1128.0,26.08%,800.0,24.88%,187.0,27.26%
+Bone_mass_decrese_high_Patterns,Initiating,911,10.83%,459.0,10.61%,357.0,11.10%,73.0,10.64%
+Bone_mass_decrese_high_Patterns,No_Treat,4843,57.57%,2488.0,57.53%,1863.0,57.95%,383.0,55.83%
+Bone_mass_decrese_moderate_Patterns,Continuing,865,10.28%,445.0,10.29%,324.0,10.08%,74.0,10.79%
+Bone_mass_decrese_moderate_Patterns,Deprescribing,2592,30.81%,1316.0,30.43%,1004.0,31.23%,215.0,31.34%
+Bone_mass_decrese_moderate_Patterns,Initiating,1031,12.26%,542.0,12.53%,377.0,11.73%,85.0,12.39%
+Bone_mass_decrese_moderate_Patterns,No_Treat,3924,46.65%,2022.0,46.75%,1510.0,46.97%,312.0,45.48%

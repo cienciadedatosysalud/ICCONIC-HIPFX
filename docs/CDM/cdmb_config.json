@@ -10,7 +10,7 @@
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "document": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.2.2",
+        "version_sem": "1.2.3",
         "authors": [
             {
                 "name": "Estupiñán-Romero, Francisco ",
@@ -364,7 +364,7 @@
                     "format": "Date",
                     "type": "Date",
                     "units": "",
-                    "requirement_level": "Required",
+                    "requirement_level": "Recommended",
                     "characteristic": "Observed",
                     "catalog_bl": false,
                     "transformations_from_origin": "compliance with ISO 8601",
@@ -380,7 +380,7 @@
                     "format": "Date",
                     "type": "Date",
                     "units": "",
-                    "requirement_level": "Required",
+                    "requirement_level": "Recommended",
                     "characteristic": "Observed",
                     "catalog_bl": false,
                     "transformations_from_origin": "compliance with ISO 8601",
@@ -429,7 +429,7 @@
                 },
                 {
                     "label": "unplanned_readmission_7d_bl",
-                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 7 days after hospitazation",
+                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 7 days after hospitalization",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -445,7 +445,7 @@
                 },
                 {
                     "label": "unplanned_readmission_30d_bl",
-                    "description": "Have the patient had an unplanned readmission(for any cause) in the next 30 days after hospitazation",
+                    "description": "Have the patient had an unplanned readmission(for any cause) in the next 30 days after hospitalization",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",

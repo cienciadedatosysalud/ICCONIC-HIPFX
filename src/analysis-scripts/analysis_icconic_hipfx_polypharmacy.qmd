@@ -1,0 +1,1241 @@
+---
+title: "ICCONIC HipFX Polypharmacy: Analytical pipeline"
+author: Center for Health System Sustainability (CHeSS), Brown University School of Public Health
+editor: source
+
+#date: 
+# bibliography: 
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 7
+    highlight-style: pygments
+    code-fold: true
+    html-math-method: katex
+execute: 
+  warning: false
+  cache: false
+  echo: false
+params:
+    data_path: '../../inputs/data.duckdb' 
+---
+
+```{css, echo = FALSE}
+.justify {
+  text-align: justify !important
+}
+```
+
+```{r r_library, echo=FALSE, warning=FALSE}
+library(MatchIt)
+library(ggplot2)
+library(duckdb)
+library(logger)
+s <- Sys.getenv("PIPELINE_VERSION")
+
+log_info(paste0("Analysis version: ",s))
+#setwd('G:/My Drive/Jinru_Research/ICCONIC/Hip Fracture/Programs')
+```
+
+<p> Analysis version: `r paste0(s)` </p>
+
+
+```{python python_pkg, echo=FALSE, warning=FALSE}
+import pandas as pd
+import os
+import duckdb
+import matplotlib.pyplot as plt
+import seaborn as sns
+pd.set_option('display.max_rows', None)  # Adjust as needed
+pd.set_option('display.max_columns', None)  # Adjust as needed
+pd.set_option('display.width', 1500) 
+#import warnings
+#warnings.simplefilter(action='ignore', category=FutureWarning)  # run this line if there is a future warning in visualization section with seaborn
+```
+
+### Objectives
+
+1.	Evaluate the prescription patterns of Fall-Risk Increasing Drugs (FRIDs) and bone mass decreasing drugs in hip fracture patients across countries.
+2.	Examine the impact of their prescription patterns on the health outcomes of hip fracture patients across countries.
+
+
+### Study design
+
+We use the Hip Fracture persona identified in the first phase of ICCONIC work and define 1) a look-back period, 2) an institutionalization period, 3) an observation period, and 4) a follow-up period for the purposes of our study as follows (@fig-timeframe):
+
+![Study design: Timeframe](./aux_files/time_frame_pic.png){#fig-timeframe}
+
+
+### Fracture-Risk Increasing Drugs: Basket Definition:
+
+We used the fracture-risk increasing drugs listed in a JAMA paper (Emeny et al., 2019) and pulled the associated ATC Level 5 codes. Two pharmacoepidemiologists at the Brown University School of Public Health regrouped the 430 molecules identified into 21 drugs categories and 7 grandparent classes.
+
+They also defined a risk class label, indicating whether the drug category increased fracture risk by 1) increasing fall risk or 2) decreasing bone mass. The risk was then characterized as moderate or high:
+
+```{python drug_class_desc, echo=FALSE, warning=FALSE}
+
+####(Updates)####
+Drug_class_desc = pd.DataFrame({'Drug_Category': ['Inhaled steroids', 'Oral Steroids', 'Proton Pump Inhibitors', 'H2 Antagonists/ Histamine 2 Receptor Antagonists', 'SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors', 'Tricyclic Antidepressants', 'Thiazolidinediones', 'Anticonvulsants', 'Gapapentinoids N02BF', 'Benzodiazepines', 'Barbiturates', 'Opioids', '1st Generation Antihistamines/ H1 Receptor Antagonists', 'Anti- Parkinson\'s Disease', 'Centrally-Acting Antihypertensives', '1st-Generation Antipsychotics (FGAP)', '2nd-Generation Antipsychotics (SGAP)', 'Nitrates', 'Loop Diuretics', 'Thiazide and Thiazide-like Diuretics', 'Sedative Hypnotics'], 
+                           'Drug_Category_Short': ['inhSteroids', 'oralSter', 'ppi', 'h2Antags', 'ssriSnri', 'tca', 'tzd', 'anticonv', 'gabaN02BF', 'benzos', 'barbs','Opioids', 'firstGenAH', 'antiPark', 'centrAntiHT', 'fgap', 'sgap', 'nitrates', 'loopDiur', 'thiazDiur', 'sedHyp'],
+                           'Grandparent_Class': ['Respiratory agents', 'Hormones/hormone modifiers', 'Gastrointestinal agents', 'Gastrointestinal agents', 'Psychotherapeutic agents', 'Psychotherapeutic agents', 'Metabolic agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Cardiovascular agents', 'Psychotherapeutic agents', 'Psychotherapeutic agents', 'Cardiovascular agents', 'Cardiovascular agents', 'Cardiovascular agents', 'Central nervous system agents'],
+                           'Risk_Class': ['Bone_mass_decrese_moderate', 'Bone_mass_decrese_high', 'Bone_mass_decrese_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high']})
+Drug_class_desc
+```
+
+### Prescription patterns:
+
+We defined four prescription patterns for our drugs of interest:
+
+•	Continuing: the prescription of this drug was present in the pre-fracture (look-back) and post-fracture (observation) periods.
+
+•	Deprescribing: the prescription of this drug was only present in the pre-fracture (look-back) period.
+
+•	Initiating: the prescription of this drug was only present in the post-fracture (observation) period.
+
+•	No Treat: this drug was never prescribed.
+
+Every prescription pattern is examined at the 
+
+1) drug category (opioids, etc.);
+
+2) grandparent category (metabolic agents, etc.);
+
+3) risk class. Switches are not evaluated.
+
+
+### Model:
+
+We are interested in investigating the impact of the different prescription patterns of these drugs on the health outcomes of the patient. For the purposes of the model, we evaluate:
+
+•	The association between each prescription pattern and the incidence of death or unplanned admission (exitus_readm_outcome)
+
+•	The association between each prescription patterns and the incidence of a second hip fracture (defined as unplanned admission for hip fracture, same as the main diagnosis codes used in the patient cohort definition) (refracture_outcome)
+
+
+### Exclusion criteria:
+
+Patients who died before the outcome period were excluded. (green, grey, and blue periods in the Study Design graph):
+
+
+```{python Data_Preprocessing, echo=FALSE, warning=FALSE, output = FALSE}
+data_path = '../../inputs/data.duckdb' 
+con = duckdb.connect(data_path)
+
+# load datasets
+hip_cohort = con.sql("SELECT * FROM patient_cohort").df() # original cohort
+hip_meds_list = pd.read_csv('./aux_files/hip_meds_classification_atc5.csv')   # Hip meds list with ATC5 codes
+hip_main_dx_code = pd.read_csv('./aux_files/hip_dx_code.csv')                 # Hip main dx code
+
+p_count_0 = len(hip_cohort['patient_id'].unique()) ####(Updates)####
+
+# convert columns to datetime format
+hip_cohort['hospital_admission_dt'] = pd.to_datetime(hip_cohort['hospital_admission_dt'])
+hip_cohort['hospital_discharge_dt'] = pd.to_datetime(hip_cohort['hospital_discharge_dt'])
+
+# create prescription window (6 mon prior to admission, 12 month after dischrge)
+hip_cohort_date = hip_cohort[['patient_id','hospital_admission_dt','hospital_discharge_dt']]
+hip_cohort_date = hip_cohort_date.copy()
+hip_cohort_date['pres_window_start'] = hip_cohort_date['hospital_admission_dt'] - pd.DateOffset(months=6)   # Start point, 6 months prior to admission
+hip_cohort_date['wash_out_end'] = hip_cohort_date['hospital_discharge_dt'] + pd.DateOffset(days=30)         # Wash out period end point, 30 days after discharge
+hip_cohort_date['observation_end'] = hip_cohort_date['wash_out_end'] + pd.DateOffset(days=90)               # Observation end point, 90 days after wash out period
+hip_cohort_date['pres_window_end'] = hip_cohort_date['hospital_discharge_dt'] + pd.DateOffset(months=12)    # End point, 12 months after discharge
+
+# construct final time intervals
+hip_cohort_date = hip_cohort_date[['patient_id','pres_window_start','hospital_admission_dt','hospital_discharge_dt','wash_out_end','observation_end','pres_window_end']]
+
+
+
+
+############################################################### drug_pattern_info ###############################################################
+
+# join time intervals with hip_prescription with prescriptions happened within the prescription window
+#con = duckdb.connect('./duckdb.duckdb')
+#con = duckdb.connect()
+
+#hip_prescription  
+
+pres_0 = con.execute("SELECT a.*, b.prescription_atc_cd, b.prescription_start_dt, b.prescription_end_dt FROM hip_cohort_date as a inner join outpatient_prescription as b on a.patient_id = b.patient_id where prescription_start_dt >=pres_window_start and prescription_start_dt<=pres_window_end").fetchdf()
+#con.close()
+# 9,999 patients left in synthetic data
+
+pres_1 = pres_0[['patient_id','pres_window_start','hospital_admission_dt','hospital_discharge_dt','wash_out_end','observation_end','pres_window_end','prescription_atc_cd','prescription_start_dt','prescription_end_dt']]
+pres_1 = pres_1.merge(hip_meds_list, how='left', on='prescription_atc_cd')  # bring drug name and classifications into the dataset
+pres_1 = pres_1[pres_1['Category'].isnull() == False]   
+# 9,996 patients left in synthetic data
+p_count_1 = len(pres_1['patient_id'].unique()) ####(Updates)#### 
+
+# Flag prescription during pre admission period and post admission period
+pres_1['Hip_Med_Time'] = None
+pres_1.loc[(pres_1['prescription_start_dt'] >= pres_1['pres_window_start']) & (pres_1['prescription_start_dt'] < pres_1['hospital_admission_dt']), 'Hip_Med_Time'] = 'Pre' # Falg prescription during pre admission period
+pres_1.loc[(pres_1['prescription_start_dt'] > pres_1['wash_out_end']) & (pres_1['prescription_start_dt'] <= pres_1['observation_end']), 'Hip_Med_Time'] = 'Post' # Flag prescription during observation period
+pres_1 = pres_1[pres_1['Hip_Med_Time'].isnull() == False] 
+# 9,993 patients left in synthetic data
+p_count_2 = len(pres_1['patient_id'].unique()) ####(Updates)####
+
+# generate wide table with flags for each level of classification
+def pres_df_by_level(df, level):
+    df = df.copy()
+    hip_med_flag_level = 'Hip_Med_Time_' + level
+    df[hip_med_flag_level] = df[level] + '_' + df['Hip_Med_Time']
+
+    df2 = df[['patient_id', hip_med_flag_level]].drop_duplicates().reset_index(drop=True)
+    df2_wide = df2.pivot(index='patient_id', columns=hip_med_flag_level, values=hip_med_flag_level).reset_index()
+
+    pre_cols = [col for col in df2_wide.columns if col.endswith('_Pre')]
+    post_cols = [col for col in df2_wide.columns if col.endswith('_Post')]
+    count_name_pre = level + '_Count_Pre'
+    count_name_post = level + '_Count_Post'
+    df2_wide[count_name_pre] = df2_wide[pre_cols].notnull().sum(axis=1)
+    df2_wide[count_name_post] = df2_wide[post_cols].notnull().sum(axis=1)
+
+    return df2_wide
+
+Grandparent = pres_df_by_level(pres_1, 'Grandparent_Class')
+Risk = pres_df_by_level(pres_1, 'Risk_Class')
+DrugCate = pres_df_by_level(pres_1, 'Cate_short')
+
+# identify prescription patterns for each level of classification
+def pres_pattern (df, Drug):
+    col_pre = Drug + '_Pre'
+    col_post = Drug + '_Post'
+    df2 = df[['patient_id', col_pre, col_post]]
+
+    col_patterns_name = Drug + '_Patterns'
+    df2 = df2.copy()
+    df2[col_patterns_name] = None
+    df2.loc[(df2[col_pre].isnull() == False) & (df2[col_post].isnull() == False), col_patterns_name] = 'Continuing'
+    df2.loc[(df2[col_pre].isnull() == False) & (df2[col_post].isnull()), col_patterns_name] = 'Deprescribing'
+    df2.loc[(df2[col_pre].isnull()) & (df2[col_post].isnull() == False), col_patterns_name] = 'Initiating'
+    df2.loc[(df2[col_pre].isnull()) & (df2[col_post].isnull()), col_patterns_name] = 'No_Treat'
+
+    df2 = df2[['patient_id', col_patterns_name]]
+
+    return df2
+
+DrugCate_list = ['Opioids', 'centrAntiHT', 'oralSter', 'barbs', 'sedHyp', 'benzos', 'gabaN02BF', 'firstGenAH', 'anticonv', 'thiazDiur', 'sgap', 'tca', 'ssriSnri', 'nitrates', 'antiPark', 'ppi', 'loopDiur', 'h2Antags', 'inhSteroids', 'fgap', 'tzd']
+DrugCate_dfs = [pres_pattern(DrugCate, Drug) for Drug in DrugCate_list]
+DrugCate_patterns = DrugCate_dfs[0]
+
+for df in DrugCate_dfs[1:]:
+    DrugCate_patterns = DrugCate_patterns.merge(df, how='left', on='patient_id')
+DrugCate_patterns = DrugCate_patterns.merge(DrugCate[['patient_id', 'Cate_short_Count_Pre', 'Cate_short_Count_Post']], on='patient_id', how='left')
+
+Grandparent_list = ['Central nervous system agents', 'Cardiovascular agents', 'Hormones/hormone modifiers', 'Psychotherapeutic agents', 'Gastrointestinal agents', 'Respiratory agents', 'Metabolic agents']
+Grandparent_dfs = [pres_pattern(Grandparent, Drug) for Drug in Grandparent_list]
+Grandparent_patterns = Grandparent_dfs[0]
+
+for df in Grandparent_dfs[1:]:
+    Grandparent_patterns = Grandparent_patterns.merge(df, how='left', on='patient_id')
+Grandparent_patterns = Grandparent_patterns.merge(Grandparent[['patient_id', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post']], on='patient_id', how='left')
+
+Risk_list = ['Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_high', 'Bone_mass_decrese_moderate']
+Risk_dfs = [pres_pattern(Risk, Drug) for Drug in Risk_list]
+Risk_patterns = Risk_dfs[0]
+
+for df in Risk_dfs[1:]:
+    Risk_patterns = Risk_patterns.merge(df, how='left', on='patient_id')
+Risk_patterns = Risk_patterns.merge(Risk[['patient_id', 'Risk_Class_Count_Pre', 'Risk_Class_Count_Post']], on='patient_id', how='left')
+
+# Generate master table with prescription patterns for all levels of classifications
+prescription_patterns = DrugCate_patterns.merge(Grandparent_patterns, how='left', on='patient_id').merge(Risk_patterns, how='left', on='patient_id')
+
+polypharmacy_cohort_id = prescription_patterns[['patient_id']]
+hip_cohort_date = hip_cohort_date.merge(polypharmacy_cohort_id, how='right', on='patient_id') # update hip_cohort_date with polypharmacy cohort id
+
+
+# Pull prescription duration for each level of classification (Only for Descriptive Analysis)
+pres_1['Prescription_length'] = (pres_1['prescription_end_dt'] - pres_1['prescription_start_dt']).dt.days
+
+def pres_duration_by_level(df, level):
+    pres_duration = df[['patient_id', level ,'Hip_Med_Time','Prescription_length']]
+    pres_duration = pres_duration.groupby(['patient_id', level ,'Hip_Med_Time']).agg({'Prescription_length':'sum'}).reset_index()
+    pres_duration['Flag_by_level'] = pres_duration[level] + '_Duration_' + pres_duration['Hip_Med_Time']
+    pres_duration_wide = pres_duration.pivot(index='patient_id', columns='Flag_by_level', values='Prescription_length').reset_index()
+    return pres_duration_wide
+
+
+Cate_short_duration = pres_duration_by_level(pres_1, 'Cate_short')
+Grandparent_Class_duration = pres_duration_by_level(pres_1, 'Grandparent_Class')
+Risk_Class_duration = pres_duration_by_level(pres_1, 'Risk_Class')
+
+
+
+
+############################################################### exitus_info ###############################################################
+
+# Join time intervals with exitus info
+hip_cohort_exitus= hip_cohort[['patient_id','exitus_bl','exitus_dt']].merge(hip_cohort_date, how='right', on='patient_id')
+
+# Lable exitus during each time interval
+hip_cohort_exitus['exitus_hospitalization'] = False
+hip_cohort_exitus['exitus_washout'] = False
+hip_cohort_exitus['exitus_observation'] = False
+hip_cohort_exitus['exitus_outcome'] = False
+hip_cohort_exitus.loc[(hip_cohort_exitus['exitus_dt'] > hip_cohort_exitus['hospital_admission_dt']) & (hip_cohort_exitus['exitus_dt'] <= hip_cohort_exitus['hospital_discharge_dt']), 'exitus_hospitalization'] = True
+hip_cohort_exitus.loc[(hip_cohort_exitus['exitus_dt'] > hip_cohort_exitus['hospital_discharge_dt']) & (hip_cohort_exitus['exitus_dt'] <= hip_cohort_exitus['wash_out_end']), 'exitus_washout'] = True
+hip_cohort_exitus.loc[(hip_cohort_exitus['exitus_dt'] > hip_cohort_exitus['wash_out_end']) & (hip_cohort_exitus['exitus_dt'] <= hip_cohort_exitus['observation_end']), 'exitus_observation'] = True
+hip_cohort_exitus.loc[(hip_cohort_exitus['exitus_dt'] > hip_cohort_exitus['observation_end']) & (hip_cohort_exitus['exitus_dt'] <= hip_cohort_exitus['pres_window_end']), 'exitus_outcome'] = True
+
+# Generate table with exitus info
+hip_cohort_exitus = hip_cohort_exitus[['patient_id','exitus_bl','exitus_dt','exitus_hospitalization','exitus_washout','exitus_observation','exitus_outcome']]
+
+
+
+
+############################################################### readmission_info ###############################################################
+
+# join time intervals with post_index_episode data
+#con = duckdb.connect('./duckdb.duckdb')
+#con = duckdb.connect()
+
+hip_cohort_postadm = con.execute("SELECT a.*, b.post_index_hospital_admission_dt, b.post_index_main_diagnosis_cd, b.post_index_hospital_discharge_dt FROM hip_cohort_date as a left join post_index_hospital_episode as b on a.patient_id = b.patient_id").fetchdf()
+con.close()
+
+# Label readmission during each time interval
+hip_cohort_postadm['readm_washout'] = False
+hip_cohort_postadm['readm_observation'] = False
+hip_cohort_postadm['readm_outcome'] = False
+hip_cohort_postadm.loc[(hip_cohort_postadm['post_index_hospital_admission_dt'] > hip_cohort_postadm['hospital_discharge_dt']) & (hip_cohort_postadm['post_index_hospital_admission_dt'] <= hip_cohort_postadm['wash_out_end']), 'readm_washout'] = True
+hip_cohort_postadm.loc[(hip_cohort_postadm['post_index_hospital_admission_dt'] > hip_cohort_postadm['wash_out_end']) & (hip_cohort_postadm['post_index_hospital_admission_dt'] <= hip_cohort_postadm['observation_end']), 'readm_observation'] = True
+hip_cohort_postadm.loc[(hip_cohort_postadm['post_index_hospital_admission_dt'] > hip_cohort_postadm['observation_end']) & (hip_cohort_postadm['post_index_hospital_admission_dt'] <= hip_cohort_postadm['pres_window_end']), 'readm_outcome'] = True
+
+# Label refracture during each time interval
+hip_cohort_postadm['post_index_main_diagnosis_cd']=hip_cohort_postadm['post_index_main_diagnosis_cd'].str.replace('.','') # check the raw data in code or code clean format
+hip_cohort_postadm['refracture'] = False
+hip_cohort_postadm['refracture_washout'] = False
+hip_cohort_postadm['refracture_observation'] = False
+hip_cohort_postadm['refracture_outcome'] = False
+hip_cohort_postadm.loc[hip_cohort_postadm['post_index_main_diagnosis_cd'].isin(hip_main_dx_code['hip_dx_code']), 'refracture'] = True
+hip_cohort_postadm.loc[(hip_cohort_postadm['readm_washout']==True) & (hip_cohort_postadm['refracture']==True), 'refracture_washout'] = True
+hip_cohort_postadm.loc[(hip_cohort_postadm['readm_observation']==True) & (hip_cohort_postadm['refracture']==True), 'refracture_observation'] = True
+hip_cohort_postadm.loc[(hip_cohort_postadm['readm_outcome']==True) & (hip_cohort_postadm['refracture']==True), 'refracture_outcome'] = True
+
+# Generate table with readmission info
+hip_cohort_postadm = hip_cohort_postadm[['patient_id','readm_washout','readm_observation','readm_outcome','refracture_washout','refracture_observation','refracture_outcome']].groupby('patient_id').max().reset_index()
+
+
+
+
+############################################################### Merge all info ###############################################################
+
+hip_polypharm = hip_cohort_date.merge(hip_cohort_exitus, how='left', on='patient_id').merge(hip_cohort_postadm, how='left', on='patient_id')
+
+# Create outcome variable during each time interval
+hip_polypharm['exitus_readm_outcome'] = False
+hip_polypharm.loc[(hip_polypharm['exitus_outcome']==True) | (hip_polypharm['readm_outcome']==True), 'exitus_readm_outcome'] = True
+
+# Create master table with all info
+hip_basic_info = hip_cohort.drop(['hospital_admission_dt','hospital_discharge_dt','exitus_bl','exitus_dt'], axis=1)
+hip_polypharm = hip_polypharm.merge(hip_basic_info, how='left', on='patient_id').merge(prescription_patterns, how='left', on='patient_id')
+hip_polypharm['Length_of_stay'] = (hip_polypharm['hospital_discharge_dt'] - hip_polypharm['hospital_admission_dt']).dt.days  # length of stay in hospital
+
+comorbidities_list = ['chronic_kidney_disease_bl', 'tobacco_copd_bl', 'depression_bl', 'serious_mental_illness_bl', 'alcohol_abuse_bl', 'obesity_overweight_bl', 'osteoporosis_osteopenia_bl', 'dementia_bl', 'diabetes_bl', 'liver_disease_bl', 'pancreatic_disease_bl', 'inflamatory_bowel_disease_bl', 'rheumatology_disease_bl', 'spinal_cord_disease_injury_bl', 'serious_neurological_disease_bl', 'parkinson_huntington_diseases_bl', 'seizure_disorder_convulsions_bl', 'congestive_heart_failure_bl', 'coronary_artery_disease_bl', 'cerebrovascular_disease_bl', 'peripheral_vascular_disease_bl', 'traumatic_brain_injury_bl', 'amputee_bl']
+hip_polypharm['Comorbidities_Count'] = hip_polypharm[comorbidities_list].sum(axis=1)
+```
+
+```{python exitus_filtering, echo=FALSE, warning=FALSE}
+# categorical variables (count, percentage)
+def desc_categorical(df, col):
+    count = df[col].value_counts().reset_index().sort_values(col).reset_index(drop=True)
+    count['percentage'] = count['count'].apply(lambda x: f"{(x / count['count'].sum()) * 100:.2f}%")
+    count['variable'] = col
+    count.columns = ['value', 'count', 'percentage', 'variable']
+    count = count[['variable', 'value', 'count', 'percentage']]
+
+    return count
+
+
+count_exitus_hospitalization = desc_categorical(hip_polypharm,'exitus_hospitalization') # Death during hospitalization
+count_exitus_washout = desc_categorical(hip_polypharm,'exitus_washout') # Death during washout
+count_exitus_observation = desc_categorical(hip_polypharm,'exitus_observation') # Death during observation
+exitus_before_outcome = pd.concat([count_exitus_hospitalization, count_exitus_washout, count_exitus_observation], axis=0).reset_index(drop=True)
+exitus_before_outcome = exitus_before_outcome[exitus_before_outcome['value']==True].reset_index(drop=True)
+exitus_before_outcome
+```
+
+### Cohort size over different stages:
+
+```{python Final_cohort_size, echo=FALSE, warning=FALSE}
+####(Updates)####
+hip_polypharm = hip_polypharm[~((hip_polypharm['exitus_hospitalization']==True) | (hip_polypharm['exitus_washout']==True) | (hip_polypharm['exitus_observation']==True))]
+p_count_3 = len(hip_polypharm['patient_id'].unique())
+
+hip_polypharm = hip_polypharm[~hip_polypharm['age_nm'].isnull() == True]
+hip_polypharm = hip_polypharm[~(hip_polypharm['sex_cd'] == 0) | (hip_polypharm['sex_cd'] == 9)]
+p_count_4 = len(hip_polypharm['patient_id'].unique())
+
+cohort_count = {
+    'Stage': ['Initial cohort size', 'Patient with prescriptions during study period', 'Patient with prescriptions during look-back and observation period', 'Exclude patients who died before the outcome period', 'Exclude patients with missing age or gender information (Final cohort size)'],
+    'Final_cohort_size': [p_count_0, p_count_1, p_count_2, p_count_3, p_count_4]  
+}
+
+df = pd.DataFrame(cohort_count)
+
+df = df.iloc[::-1].reset_index(drop=True)
+
+initial_number = df['Final_cohort_size'].iloc[-1]
+df['Percentage'] = (df['Final_cohort_size'] / initial_number) * 100
+
+
+fig, ax = plt.subplots(figsize=(12, 6))
+bars = ax.barh(df['Stage'], df['Final_cohort_size'], color='skyblue')
+for bar in bars:
+    width = bar.get_width()
+    label_position = p_count_0 * 0.05 
+    label = f"{width} ({df['Percentage'][bars.index(bar)]:.1f}%)"
+    ax.text(label_position, bar.get_y() + bar.get_height() / 2, label, va='center', color='black')
+
+ax.set_xlabel('Cohort Size')
+ax.set_ylabel('Stage')
+ax.yaxis.tick_right()
+ax.set_title('Cohort Reduction')
+
+plt.tight_layout()
+plt.show()
+```
+
+
+```{python descriptives, echo=FALSE, warning=FALSE}
+############################################################### Descriptive Statistics ###############################################################
+# Create cohorts based on ICD 10 Code (S72.0, S72.1, S72.2)
+hip_polypharm['main_diagnosis_cd']=hip_polypharm['main_diagnosis_cd'].str.replace('.','') # check the raw data in code or code clean format
+hip_polypharm.loc[hip_polypharm['main_diagnosis_cd'].str.startswith('S720'), 'dx_Flag'] = 'S72.0'
+hip_polypharm.loc[hip_polypharm['main_diagnosis_cd'].str.startswith('S721'), 'dx_Flag'] = 'S72.1'
+hip_polypharm.loc[hip_polypharm['main_diagnosis_cd'].str.startswith('S722'), 'dx_Flag'] = 'S72.2'
+
+#hip_polypharm['dx_Flag'].value_counts() # 8,580 patients left in synthetic data (Final cohort)
+
+def dx_cohort_subset(df, dx_Flag):
+    df = df.copy()
+    df = df[df['dx_Flag']==dx_Flag]
+    return df
+
+dx_full = hip_polypharm
+dx_S720 = dx_cohort_subset(hip_polypharm, 'S72.0')
+dx_S721 = dx_cohort_subset(hip_polypharm, 'S72.1')
+dx_S722 = dx_cohort_subset(hip_polypharm, 'S72.2')
+
+cohort_list = ['dx_full', 'dx_S720', 'dx_S721', 'dx_S722']
+
+# add cohort suffix for merging datasets
+def add_cohort_suffix(df, dx_flag, start_with):
+    df.columns = df.columns[:start_with].tolist() + [col + dx_flag for col in df.columns[start_with:]]
+    return df
+
+suffix_list = ['_S720', '_S721', '_S722']
+
+# continuous variables (mean, std, median, Q1, Q3)
+def desc_continous(df, col):
+    mean = round(df[col].mean(), 4)
+    std = round(df[col].std(), 4)
+    median = df[col].median()
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    count = len(df[col])
+    desc = pd.DataFrame({'variable':[col], 'Count':[count],'Mean':[mean], 'STD':[std], 'Median':[median], 'Q1':[Q1], 'Q3':[Q3]})
+    return desc
+
+############################################################### continuous variables, basic result ############################################################### 
+continuous_variable_list = ['age_nm', 'Length_of_stay', 'Comorbidities_Count', 'Cate_short_Count_Pre', 'Cate_short_Count_Post', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post', 'Risk_Class_Count_Pre', 'Risk_Class_Count_Post']
+for cohort in cohort_list:
+    globals()['desc_continuous_result_' + cohort] = pd.DataFrame()
+    for variable in continuous_variable_list:
+        globals()['desc_' + cohort] = desc_continous(globals()[cohort], variable)
+        globals()['desc_continuous_result_' + cohort] = pd.concat([globals()['desc_continuous_result_' + cohort], globals()['desc_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['desc_continuous_result_' + cohort] = add_cohort_suffix(globals()['desc_continuous_result_' + cohort], suffix, 1)
+desc_continuous_result_dx_combined = desc_continuous_result_dx_full.merge(desc_continuous_result_dx_S720, how='left', on='variable').merge(desc_continuous_result_dx_S721, how='left', on='variable').merge(desc_continuous_result_dx_S722, how='left', on='variable')
+
+############################################################### categorical variables, basic result ############################################################### 
+categorical_variable_list = ['sex_cd', 'exitus_bl', 'exitus_outcome', 'readm_washout', 'readm_observation', 'readm_outcome', 'refracture_washout', 'refracture_observation', 'refracture_outcome', 'exitus_readm_outcome']
+
+for cohort in cohort_list:
+    globals()['desc_categorical_result_' + cohort] = pd.DataFrame()
+    for variable in categorical_variable_list:
+        globals()['desc_' + cohort] = desc_categorical(globals()[cohort], variable)
+        globals()['desc_categorical_result_' + cohort] = pd.concat([globals()['desc_categorical_result_' + cohort], globals()['desc_' + cohort]], axis=0).reset_index(drop=True)
+    
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['desc_categorical_result_' + cohort] = add_cohort_suffix(globals()['desc_categorical_result_' + cohort], suffix, 2)
+desc_categorical_result_dx_combined = desc_categorical_result_dx_full.merge(desc_categorical_result_dx_S720, how='left', on=['variable','value']).merge(desc_categorical_result_dx_S721, how='left', on=['variable','value']).merge(desc_categorical_result_dx_S722, how='left', on=['variable','value'])
+
+
+############################################################### Comorbidities ############################################################### 
+for cohort in cohort_list:
+    globals()['Comorbidities_result_' + cohort] = pd.DataFrame()
+    for variable in comorbidities_list:
+        globals()['Comor_' + cohort] = desc_categorical(globals()[cohort], variable)
+        globals()['Comorbidities_result_' + cohort] = pd.concat([globals()['Comorbidities_result_' + cohort], globals()['Comor_' + cohort]], axis=0).reset_index(drop=True)
+    
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['Comorbidities_result_' + cohort] = add_cohort_suffix(globals()['Comorbidities_result_' + cohort], suffix, 2)
+Comorbidities_result_dx_combined = Comorbidities_result_dx_full.merge(Comorbidities_result_dx_S720, how='left', on=['variable','value']).merge(Comorbidities_result_dx_S721, how='left', on=['variable','value']).merge(Comorbidities_result_dx_S722, how='left', on=['variable','value'])
+
+
+############################################################### polypharmacy distribution outcome ############################################################### 
+
+# By Drug Category
+cate_short_prepost_list = ['Opioids_Pre','Opioids_Post','antiPark_Pre','antiPark_Post','anticonv_Pre','anticonv_Post','barbs_Pre','barbs_Post','benzos_Pre','benzos_Post','centrAntiHT_Pre','centrAntiHT_Post','fgap_Pre','fgap_Post','firstGenAH_Pre','firstGenAH_Post','gabaN02BF_Pre','gabaN02BF_Post','h2Antags_Pre','h2Antags_Post','inhSteroids_Pre','inhSteroids_Post','loopDiur_Pre','loopDiur_Post','nitrates_Pre','nitrates_Post','oralSter_Pre','oralSter_Post','ppi_Pre','ppi_Post','sedHyp_Pre','sedHyp_Post','sgap_Pre','sgap_Post','ssriSnri_Pre','ssriSnri_Post','tca_Pre','tca_Post','thiazDiur_Pre','thiazDiur_Post','tzd_Pre','tzd_Post']
+for cohort in cohort_list:
+    id_list = globals()[cohort][['patient_id']]
+    df_sub = DrugCate.merge(id_list, how='right', on='patient_id')
+    globals()['drug_cate_count_' + cohort] = pd.DataFrame()
+    for variable in cate_short_prepost_list:
+        globals()['drug_cate_' + cohort] = desc_categorical(df_sub, variable)
+        globals()['drug_cate_count_' + cohort] = pd.concat([globals()['drug_cate_count_' + cohort], globals()['drug_cate_' + cohort]], axis=0).reset_index(drop=True)
+        globals()['drug_cate_count_' + cohort] = globals()['drug_cate_count_' + cohort][['variable', 'count']]
+        globals()['drug_cate_count_' + cohort]['percentage'] = globals()['drug_cate_count_' + cohort]['count'].apply(lambda x: f"{(x / len(globals()[cohort])) * 100:.2f}%")
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['drug_cate_count_' + cohort] = add_cohort_suffix(globals()['drug_cate_count_' + cohort], suffix, 1)
+drug_cate_count_dx_combined = drug_cate_count_dx_full.merge(drug_cate_count_dx_S720, how='left', on='variable').merge(drug_cate_count_dx_S721, how='left', on='variable').merge(drug_cate_count_dx_S722, how='left', on='variable')
+
+
+# By Grandparent Class
+Grandparent_prepost_list = ['Cardiovascular agents_Pre','Cardiovascular agents_Post','Central nervous system agents_Pre','Central nervous system agents_Post','Gastrointestinal agents_Pre','Gastrointestinal agents_Post','Hormones/hormone modifiers_Pre','Hormones/hormone modifiers_Post','Metabolic agents_Pre','Metabolic agents_Post','Psychotherapeutic agents_Pre','Psychotherapeutic agents_Post','Respiratory agents_Pre','Respiratory agents_Post']
+for cohort in cohort_list:
+    id_list = globals()[cohort][['patient_id']]
+    df_sub = Grandparent.merge(id_list, how='right', on='patient_id')
+    globals()['Grandparent_count_' + cohort] = pd.DataFrame()
+    for variable in Grandparent_prepost_list:
+        globals()['Grandparent_' + cohort] = desc_categorical(df_sub, variable)
+        globals()['Grandparent_count_' + cohort] = pd.concat([globals()['Grandparent_count_' + cohort], globals()['Grandparent_' + cohort]], axis=0).reset_index(drop=True)
+        globals()['Grandparent_count_' + cohort] = globals()['Grandparent_count_' + cohort][['variable', 'count']]
+        globals()['Grandparent_count_' + cohort]['percentage'] = globals()['Grandparent_count_' + cohort]['count'].apply(lambda x: f"{(x / len(globals()[cohort])) * 100:.2f}%")
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['Grandparent_count_' + cohort] = add_cohort_suffix(globals()['Grandparent_count_' + cohort], suffix, 1)
+Grandparent_count_dx_combined = Grandparent_count_dx_full.merge(Grandparent_count_dx_S720, how='left', on='variable').merge(Grandparent_count_dx_S721, how='left', on='variable').merge(Grandparent_count_dx_S722, how='left', on='variable')
+
+
+# By Risk Class
+Risk_count_prepost_list = ['Bone_mass_decrese_high_Pre','Bone_mass_decrese_high_Post','Bone_mass_decrese_moderate_Pre','Bone_mass_decrese_moderate_Post','Fall_increase_high_Pre','Fall_increase_high_Post','Fall_increase_moderate_Pre','Fall_increase_moderate_Post']
+for cohort in cohort_list:
+    id_list = globals()[cohort][['patient_id']]
+    df_sub = Risk.merge(id_list, how='right', on='patient_id')
+    globals()['Risk_count_' + cohort] = pd.DataFrame()
+    for variable in Risk_count_prepost_list:
+        globals()['Risk_' + cohort] = desc_categorical(df_sub, variable)
+        globals()['Risk_count_' + cohort] = pd.concat([globals()['Risk_count_' + cohort], globals()['Risk_' + cohort]], axis=0).reset_index(drop=True)
+        globals()['Risk_count_' + cohort] = globals()['Risk_count_' + cohort][['variable', 'count']]
+        globals()['Risk_count_' + cohort]['percentage'] = globals()['Risk_count_' + cohort]['count'].apply(lambda x: f"{(x / len(globals()[cohort])) * 100:.2f}%")
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['Risk_count_' + cohort] = add_cohort_suffix(globals()['Risk_count_' + cohort], suffix, 1)
+Risk_count_dx_combined = Risk_count_dx_full.merge(Risk_count_dx_S720, how='left', on='variable').merge(Risk_count_dx_S721, how='left', on='variable').merge(Risk_count_dx_S722, how='left', on='variable')
+
+blank_row = pd.DataFrame([['', '', '']], columns=['variable', 'count', 'percentage'])
+desc_distribution_result = pd.concat([drug_cate_count_dx_full, blank_row, Grandparent_count_dx_full, blank_row, Risk_count_dx_full], axis=0).reset_index(drop=True)
+desc_distribution_result_combined = pd.concat([drug_cate_count_dx_combined, blank_row, Grandparent_count_dx_combined, blank_row, Risk_count_dx_combined], axis=0).reset_index(drop=True)
+
+
+############################################################### polypharmacy patterns outcome ############################################################### 
+# By Drug Category
+cate_short_patterns_list = ['Opioids_Patterns','centrAntiHT_Patterns','oralSter_Patterns','barbs_Patterns','sedHyp_Patterns','benzos_Patterns','gabaN02BF_Patterns','firstGenAH_Patterns','anticonv_Patterns','thiazDiur_Patterns','sgap_Patterns','tca_Patterns','ssriSnri_Patterns','nitrates_Patterns','antiPark_Patterns','ppi_Patterns','loopDiur_Patterns','h2Antags_Patterns','inhSteroids_Patterns','fgap_Patterns','tzd_Patterns']
+for cohort in cohort_list:
+    globals()['desc_drugcate_result_' + cohort] = pd.DataFrame()
+    for variable in cate_short_patterns_list:
+        globals()['desc_drugcate_' + cohort] = desc_categorical(globals()[cohort], variable)
+        globals()['desc_drugcate_result_' + cohort] = pd.concat([globals()['desc_drugcate_result_' + cohort], globals()['desc_drugcate_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['desc_drugcate_result_' + cohort] = add_cohort_suffix(globals()['desc_drugcate_result_' + cohort], suffix, 2)
+desc_drugcate_result_dx_combined = desc_drugcate_result_dx_full.merge(desc_drugcate_result_dx_S720, how='left', on=['variable','value']).merge(desc_drugcate_result_dx_S721, how='left', on=['variable','value']).merge(desc_drugcate_result_dx_S722, how='left', on=['variable','value'])
+
+# By Grantparent Class
+Grandparent_patterns_list = ['Central nervous system agents_Patterns','Cardiovascular agents_Patterns','Hormones/hormone modifiers_Patterns','Psychotherapeutic agents_Patterns','Gastrointestinal agents_Patterns','Respiratory agents_Patterns','Metabolic agents_Patterns']    
+for cohort in cohort_list:
+    globals()['desc_Grantparent_result_' + cohort] = pd.DataFrame()
+    for variable in Grandparent_patterns_list:
+        globals()['desc_Grantparent_' + cohort] = desc_categorical(globals()[cohort], variable)
+        globals()['desc_Grantparent_result_' + cohort] = pd.concat([globals()['desc_Grantparent_result_' + cohort], globals()['desc_Grantparent_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['desc_Grantparent_result_' + cohort] = add_cohort_suffix(globals()['desc_Grantparent_result_' + cohort], suffix, 2)
+desc_Grantparent_result_dx_combined = desc_Grantparent_result_dx_full.merge(desc_Grantparent_result_dx_S720, how='left', on=['variable','value']).merge(desc_Grantparent_result_dx_S721, how='left', on=['variable','value']).merge(desc_Grantparent_result_dx_S722, how='left', on=['variable','value'])
+
+
+# By Risk Class
+Risk_patterns_list = ['Fall_increase_moderate_Patterns','Fall_increase_high_Patterns','Bone_mass_decrese_high_Patterns','Bone_mass_decrese_moderate_Patterns']    
+for cohort in cohort_list:
+    globals()['desc_Risk_result_' + cohort] = pd.DataFrame()
+    for variable in Risk_patterns_list:
+        globals()['desc_Risk_' + cohort] = desc_categorical(globals()[cohort], variable)
+        globals()['desc_Risk_result_' + cohort] = pd.concat([globals()['desc_Risk_result_' + cohort], globals()['desc_Risk_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['desc_Risk_result_' + cohort] = add_cohort_suffix(globals()['desc_Risk_result_' + cohort], suffix, 2)
+desc_Risk_result_dx_combined = desc_Risk_result_dx_full.merge(desc_Risk_result_dx_S720, how='left', on=['variable','value']).merge(desc_Risk_result_dx_S721, how='left', on=['variable','value']).merge(desc_Risk_result_dx_S722, how='left', on=['variable','value'])
+
+blank_row = pd.DataFrame([['', '', '', '']], columns=['variable', 'value', 'count', 'percentage'])
+desc_drug_pattern_result = pd.concat([desc_drugcate_result_dx_full, blank_row, desc_Grantparent_result_dx_full, blank_row, desc_Risk_result_dx_full], axis=0).reset_index(drop=True)
+desc_drug_pattern_result_combined = pd.concat([desc_drugcate_result_dx_combined, blank_row, desc_Grantparent_result_dx_combined, blank_row, desc_Risk_result_dx_combined], axis=0).reset_index(drop=True)
+
+
+############################################################### Ploypharmacy duration outcome, total ############################################################### 
+cate_short_duration_list = ['Opioids_Duration_Pre','Opioids_Duration_Post','antiPark_Duration_Pre','antiPark_Duration_Post','anticonv_Duration_Pre','anticonv_Duration_Post','barbs_Duration_Pre','barbs_Duration_Post','benzos_Duration_Pre','benzos_Duration_Post','centrAntiHT_Duration_Pre','centrAntiHT_Duration_Post','fgap_Duration_Pre','fgap_Duration_Post','firstGenAH_Duration_Pre','firstGenAH_Duration_Post','gabaN02BF_Duration_Pre','gabaN02BF_Duration_Post','h2Antags_Duration_Pre','h2Antags_Duration_Post','inhSteroids_Duration_Pre','inhSteroids_Duration_Post','loopDiur_Duration_Pre','loopDiur_Duration_Post','nitrates_Duration_Pre','nitrates_Duration_Post','oralSter_Duration_Pre','oralSter_Duration_Post','ppi_Duration_Pre','ppi_Duration_Post','sedHyp_Duration_Pre','sedHyp_Duration_Post','sgap_Duration_Pre','sgap_Duration_Post','ssriSnri_Duration_Pre','ssriSnri_Duration_Post','tca_Duration_Pre','tca_Duration_Post','thiazDiur_Duration_Pre','thiazDiur_Duration_Post','tzd_Duration_Pre','tzd_Duration_Post']
+for cohort in cohort_list:
+    globals()['duration_drugcate_result_' + cohort] = pd.DataFrame()
+    for variable in cate_short_duration_list:
+        cohort_id = globals()[cohort][['patient_id']]
+        Cate_short_duration_1 = Cate_short_duration.merge(cohort_id, how='right', on='patient_id')  # join cohort with duration info
+        globals()['duration_drugcate_' + cohort] = desc_continous(Cate_short_duration_1, variable)
+        globals()['duration_drugcate_result_' + cohort] = pd.concat([globals()['duration_drugcate_result_' + cohort], globals()['duration_drugcate_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['duration_drugcate_result_' + cohort] = add_cohort_suffix(globals()['duration_drugcate_result_' + cohort], suffix, 1)
+duration_drugcate_result_dx_combined = duration_drugcate_result_dx_full.merge(duration_drugcate_result_dx_S720, how='left', on='variable').merge(duration_drugcate_result_dx_S721, how='left', on='variable').merge(duration_drugcate_result_dx_S722, how='left', on='variable')
+
+Grandparent_duration_list = ['Cardiovascular agents_Duration_Pre','Cardiovascular agents_Duration_Post','Central nervous system agents_Duration_Pre','Central nervous system agents_Duration_Post','Gastrointestinal agents_Duration_Pre','Gastrointestinal agents_Duration_Post','Hormones/hormone modifiers_Duration_Pre','Hormones/hormone modifiers_Duration_Post','Metabolic agents_Duration_Pre','Metabolic agents_Duration_Post','Psychotherapeutic agents_Duration_Pre','Psychotherapeutic agents_Duration_Post','Respiratory agents_Duration_Pre','Respiratory agents_Duration_Post']
+for cohort in cohort_list:
+    globals()['duration_Grandparent_result_' + cohort] = pd.DataFrame()
+    for variable in Grandparent_duration_list:
+        cohort_id = globals()[cohort][['patient_id']]
+        Grandparent_Class_duration_1 = Grandparent_Class_duration.merge(cohort_id, how='right', on='patient_id')
+        globals()['duration_Grandparent_' + cohort] = desc_continous(Grandparent_Class_duration_1, variable)
+        globals()['duration_Grandparent_result_' + cohort] = pd.concat([globals()['duration_Grandparent_result_' + cohort], globals()['duration_Grandparent_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['duration_Grandparent_result_' + cohort] = add_cohort_suffix(globals()['duration_Grandparent_result_' + cohort], suffix, 1)
+duration_Grandparent_result_dx_combined = duration_Grandparent_result_dx_full.merge(duration_Grandparent_result_dx_S720, how='left', on='variable').merge(duration_Grandparent_result_dx_S721, how='left', on='variable').merge(duration_Grandparent_result_dx_S722, how='left', on='variable')
+
+Risk_duration_list = ['Bone_mass_decrese_high_Duration_Pre','Bone_mass_decrese_high_Duration_Post','Bone_mass_decrese_moderate_Duration_Pre','Bone_mass_decrese_moderate_Duration_Post','Fall_increase_high_Duration_Pre','Fall_increase_high_Duration_Post','Fall_increase_moderate_Duration_Pre','Fall_increase_moderate_Duration_Post']
+for cohort in cohort_list:
+    globals()['duration_Risk_result_' + cohort] = pd.DataFrame()
+    for variable in Risk_duration_list:
+        cohort_id = globals()[cohort][['patient_id']]
+        Risk_Class_duration_1 = Risk_Class_duration.merge(cohort_id, how='right', on='patient_id')
+        globals()['duration_Risk_' + cohort] = desc_continous(Risk_Class_duration_1, variable)
+        globals()['duration_Risk_result_' + cohort] = pd.concat([globals()['duration_Risk_result_' + cohort], globals()['duration_Risk_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['duration_Risk_result_' + cohort] = add_cohort_suffix(globals()['duration_Risk_result_' + cohort], suffix, 1)
+duration_Risk_result_dx_combined = duration_Risk_result_dx_full.merge(duration_Risk_result_dx_S720, how='left', on='variable').merge(duration_Risk_result_dx_S721, how='left', on='variable').merge(duration_Risk_result_dx_S722, how='left', on='variable')
+
+blank_row = pd.DataFrame([['', '', '', '', '', '']], columns=['variable', 'Count', 'Mean', 'STD', 'Q1', 'Q3'])
+duration_result = pd.concat([duration_drugcate_result_dx_full, blank_row, duration_Grandparent_result_dx_full, blank_row, duration_Risk_result_dx_full], axis=0).reset_index(drop=True)
+duration_result_combined = pd.concat([duration_drugcate_result_dx_combined, blank_row, duration_Grandparent_result_dx_combined, blank_row, duration_Risk_result_dx_combined], axis=0).reset_index(drop=True)
+
+
+############################################################### polypharmacy duration outcome, by patterns ############################################################### 
+def duration_cal(cohort, patterns_class, patterns, duration_df):
+    df = cohort[['patient_id', patterns_class]][cohort[['patient_id', patterns_class]][patterns_class] == patterns]
+    df2 = df.merge(duration_df, how='left', on='patient_id')
+    pre_label = patterns_class.rsplit('_', 1)[0] + '_Duration_Pre'
+    post_label = patterns_class.rsplit('_', 1)[0] + '_Duration_Post'
+    df3 = df2[['patient_id', patterns_class, pre_label, post_label]]
+    return df3
+
+patterns_cate = ['Continuing', 'Deprescribing', 'Initiating']
+
+# By Drug Category
+for cohort in cohort_list:
+    globals()['duration_drugcate_pat_' + cohort] = pd.DataFrame()
+    for patterns in patterns_cate:
+        for variable in cate_short_patterns_list:
+            globals()['duration_drugcate_cal_' + cohort + '_'+ patterns + '_' + variable] = duration_cal(globals()[cohort], variable, patterns, Cate_short_duration)
+            pre_label = variable.rsplit('_', 1)[0] + '_Duration_Pre'
+            post_label = variable.rsplit('_', 1)[0] + '_Duration_Post'
+            globals()['duration_drugcate_cal_' + cohort + '_'+ patterns +'_Pre'] = desc_continous(globals()['duration_drugcate_cal_' + cohort + '_'+ patterns + '_' + variable], pre_label)
+            globals()['duration_drugcate_cal_' + cohort + '_'+ patterns +'_Post'] = desc_continous(globals()['duration_drugcate_cal_' + cohort + '_'+ patterns + '_' + variable], post_label)
+            globals()['duration_drugcate_cal_' + cohort + '_'+ patterns] = pd.concat([globals()['duration_drugcate_cal_' + cohort + '_'+ patterns +'_Pre'], globals()['duration_drugcate_cal_' + cohort + '_'+ patterns +'_Post']], axis=0).reset_index(drop=True)
+            globals()['duration_drugcate_cal_' + cohort + '_'+ patterns]['patterns_cate'] = patterns
+            globals()['duration_drugcate_pat_' + cohort] = pd.concat([globals()['duration_drugcate_pat_' + cohort], globals()['duration_drugcate_cal_' + cohort + '_'+ patterns]], axis=0).reset_index(drop=True)
+            globals()['duration_drugcate_pat_' + cohort] = globals()['duration_drugcate_pat_' + cohort][['patterns_cate', 'variable', 'Count', 'Mean', 'STD', 'Median', 'Q1', 'Q3']]
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['duration_drugcate_pat_' + cohort] = add_cohort_suffix(globals()['duration_drugcate_pat_' + cohort], suffix, 2)
+duration_drugcate_pat_dx_combined = duration_drugcate_pat_dx_full.merge(duration_drugcate_pat_dx_S720, how='left', on=['patterns_cate', 'variable']).merge(duration_drugcate_pat_dx_S721, how='left', on=['patterns_cate', 'variable']).merge(duration_drugcate_pat_dx_S722, how='left', on=['patterns_cate', 'variable'])
+
+# By Grandparent Class
+for cohort in cohort_list:
+    globals()['duration_Grandparent_pat_' + cohort] = pd.DataFrame()
+    for patterns in patterns_cate:
+        for variable in Grandparent_patterns_list:
+            globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns + '_' + variable] = duration_cal(globals()[cohort], variable, patterns, Grandparent_Class_duration)
+            pre_label = variable.rsplit('_', 1)[0] + '_Duration_Pre'
+            post_label = variable.rsplit('_', 1)[0] + '_Duration_Post'
+            globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns +'_Pre'] = desc_continous(globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns + '_' + variable], pre_label)
+            globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns +'_Post'] = desc_continous(globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns + '_' + variable], post_label)
+            globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns] = pd.concat([globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns +'_Pre'], globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns +'_Post']], axis=0).reset_index(drop=True)
+            globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns]['patterns_cate'] = patterns
+            globals()['duration_Grandparent_pat_' + cohort] = pd.concat([globals()['duration_Grandparent_pat_' + cohort], globals()['duration_Grandparent_cal_' + cohort + '_'+ patterns]], axis=0).reset_index(drop=True)
+            globals()['duration_Grandparent_pat_' + cohort] = globals()['duration_Grandparent_pat_' + cohort][['patterns_cate', 'variable', 'Count', 'Mean', 'STD', 'Median', 'Q1', 'Q3']]
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['duration_Grandparent_pat_' + cohort] = add_cohort_suffix(globals()['duration_Grandparent_pat_' + cohort], suffix, 2)
+duration_Grandparent_pat_dx_combined = duration_Grandparent_pat_dx_full.merge(duration_Grandparent_pat_dx_S720, how='left', on=['patterns_cate', 'variable']).merge(duration_Grandparent_pat_dx_S721, how='left', on=['patterns_cate', 'variable']).merge(duration_Grandparent_pat_dx_S722, how='left', on=['patterns_cate', 'variable'])
+
+# By Risk Class
+for cohort in cohort_list:
+    globals()['duration_Risk_pat_' + cohort] = pd.DataFrame()
+    for patterns in patterns_cate:
+        for variable in Risk_patterns_list:
+            globals()['duration_Risk_cal_' + cohort + '_'+ patterns + '_' + variable] = duration_cal(globals()[cohort], variable, patterns, Risk_Class_duration)
+            pre_label = variable.rsplit('_', 1)[0] + '_Duration_Pre'
+            post_label = variable.rsplit('_', 1)[0] + '_Duration_Post'
+            globals()['duration_Risk_cal_' + cohort + '_'+ patterns +'_Pre'] = desc_continous(globals()['duration_Risk_cal_' + cohort + '_'+ patterns + '_' + variable], pre_label)
+            globals()['duration_Risk_cal_' + cohort + '_'+ patterns +'_Post'] = desc_continous(globals()['duration_Risk_cal_' + cohort + '_'+ patterns + '_' + variable], post_label)
+            globals()['duration_Risk_cal_' + cohort + '_'+ patterns] = pd.concat([globals()['duration_Risk_cal_' + cohort + '_'+ patterns +'_Pre'], globals()['duration_Risk_cal_' + cohort + '_'+ patterns +'_Post']], axis=0).reset_index(drop=True)
+            globals()['duration_Risk_cal_' + cohort + '_'+ patterns]['patterns_cate'] = patterns
+            globals()['duration_Risk_pat_' + cohort] = pd.concat([globals()['duration_Risk_pat_' + cohort], globals()['duration_Risk_cal_' + cohort + '_'+ patterns]], axis=0).reset_index(drop=True)
+            globals()['duration_Risk_pat_' + cohort] = globals()['duration_Risk_pat_' + cohort][['patterns_cate', 'variable', 'Count', 'Mean', 'STD', 'Median', 'Q1', 'Q3']]
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['duration_Risk_pat_' + cohort] = add_cohort_suffix(globals()['duration_Risk_pat_' + cohort], suffix, 2)
+duration_Risk_pat_dx_combined = duration_Risk_pat_dx_full.merge(duration_Risk_pat_dx_S720, how='left', on=['patterns_cate', 'variable']).merge(duration_Risk_pat_dx_S721, how='left', on=['patterns_cate', 'variable']).merge(duration_Risk_pat_dx_S722, how='left', on=['patterns_cate', 'variable'])
+
+blank_row = pd.DataFrame([['', '', '', '', '', '', '', '']], columns=['patterns_cate', 'variable', 'Count','Mean', 'STD', 'Median', 'Q1', 'Q3'])
+duration_drug_pattern_result = pd.concat([duration_drugcate_pat_dx_full, blank_row, duration_Grandparent_pat_dx_full, blank_row, duration_Risk_pat_dx_full], axis=0).reset_index(drop=True)
+duration_drug_pattern_result_combined = pd.concat([duration_drugcate_pat_dx_combined, blank_row, duration_Grandparent_pat_dx_combined, blank_row, duration_Risk_pat_dx_combined], axis=0).reset_index(drop=True)
+
+
+############################################################### polypharmacy patterns vs. outcome (readmission & exitus, refracture) ############################################################### 
+
+def patterns_outcome(df_0, drug_patterns_list, outcome):
+    list = ['patient_id'] + drug_patterns_list + [outcome]
+    df = df_0[list]
+    
+    df_outcome = pd.DataFrame()
+    for patterns in drug_patterns_list:
+        colname = patterns + '_outcome'
+        df = df.copy()
+        df.loc[:, colname] = df[patterns] + '_' + df[outcome].astype(str)
+        df_1 = desc_categorical(df, colname)
+        df_outcome = pd.concat([df_outcome, df_1], axis=0).reset_index(drop=True)
+        df_outcome = df_outcome[df_outcome['value'].str.endswith('True')].reset_index(drop=True)
+    
+    df_outcome['value'] = df_outcome['value'].str[:-5]
+    df_outcome['outcome'] = outcome
+    df_outcome['outcome'] = df_outcome['outcome'].str[:-8]
+    df_outcome = df_outcome[['variable', 'value', 'outcome', 'count', 'percentage']]
+    return df_outcome
+
+outcome_list = ['exitus_readm_outcome', 'refracture_outcome']
+
+# By Drug Category
+for cohort in cohort_list:
+    globals()['outcome_drugcate_pat_' + cohort] = pd.DataFrame()
+    for outcome in outcome_list:
+        globals()['outcome_drugcate_' + cohort] = patterns_outcome(globals()[cohort], cate_short_patterns_list, outcome)
+        globals()['outcome_drugcate_pat_' + cohort] = pd.concat([globals()['outcome_drugcate_pat_' + cohort], globals()['outcome_drugcate_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['outcome_drugcate_pat_' + cohort] = add_cohort_suffix(globals()['outcome_drugcate_pat_' + cohort], suffix, 3)
+outcome_drugcate_pat_dx_combined = outcome_drugcate_pat_dx_full.merge(outcome_drugcate_pat_dx_S720, how='left', on=['variable','value','outcome']).merge(outcome_drugcate_pat_dx_S721, how='left', on=['variable','value','outcome']).merge(outcome_drugcate_pat_dx_S722, how='left', on=['variable','value','outcome'])
+
+
+# By Grandparent Class
+for cohort in cohort_list:
+    globals()['outcome_Grandparent_pat_' + cohort] = pd.DataFrame()
+    for outcome in outcome_list:
+        globals()['outcome_Grandparent_' + cohort] = patterns_outcome(globals()[cohort], Grandparent_patterns_list, outcome)
+        globals()['outcome_Grandparent_pat_' + cohort] = pd.concat([globals()['outcome_Grandparent_pat_' + cohort], globals()['outcome_Grandparent_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['outcome_Grandparent_pat_' + cohort] = add_cohort_suffix(globals()['outcome_Grandparent_pat_' + cohort], suffix, 3)
+outcome_Grandparent_pat_dx_combined = outcome_Grandparent_pat_dx_full.merge(outcome_Grandparent_pat_dx_S720, how='left', on=['variable','value','outcome']).merge(outcome_Grandparent_pat_dx_S721, how='left', on=['variable','value','outcome']).merge(outcome_Grandparent_pat_dx_S722, how='left', on=['variable','value','outcome'])
+
+
+# By Risk Class
+for cohort in cohort_list:
+    globals()['outcome_Risk_pat_' + cohort] = pd.DataFrame()
+    for outcome in outcome_list:
+        globals()['outcome_Risk_' + cohort] = patterns_outcome(globals()[cohort], Risk_patterns_list, outcome)
+        globals()['outcome_Risk_pat_' + cohort] = pd.concat([globals()['outcome_Risk_pat_' + cohort], globals()['outcome_Risk_' + cohort]], axis=0).reset_index(drop=True)
+
+for cohort, suffix in zip(cohort_list[1:], suffix_list):
+    globals()['outcome_Risk_pat_' + cohort] = add_cohort_suffix(globals()['outcome_Risk_pat_' + cohort], suffix, 3)
+outcome_Risk_pat_dx_combined = outcome_Risk_pat_dx_full.merge(outcome_Risk_pat_dx_S720, how='left', on=['variable','value','outcome']).merge(outcome_Risk_pat_dx_S721, how='left', on=['variable','value','outcome']).merge(outcome_Risk_pat_dx_S722, how='left', on=['variable','value','outcome'])
+
+blank_row = pd.DataFrame([['', '', '', '', '']], columns=['variable', 'value', 'outcome', 'count', 'percentage'])
+outcome_drug_pattern_result = pd.concat([outcome_drugcate_pat_dx_full, blank_row, outcome_Grandparent_pat_dx_full, blank_row, outcome_Risk_pat_dx_full], axis=0).reset_index(drop=True)
+outcome_drug_pattern_result_combined = pd.concat([outcome_drugcate_pat_dx_combined, blank_row, outcome_Grandparent_pat_dx_combined, blank_row, outcome_Risk_pat_dx_combined], axis=0).reset_index(drop=True)
+```
+
+## Results
+
+### Descriptive statistics
+
+#### Table 1: Continuous variable (by main dx code cohort: S72.0, S72.1, S72.2)
+
+```{python table_1, echo=FALSE, warning=FALSE}
+desc_continuous_result_dx_combined
+```
+
+#### Table 2: Categorical variable (by main dx code cohort: S72.0, S72.1, S72.2)
+
+```{python table_2, echo=FALSE, warning=FALSE}
+desc_categorical_result_dx_combined
+```
+
+#### Table 3: Comorbidities (by main dx code cohort: S72.0, S72.1, S72.2)
+
+```{python table_3, echo=FALSE, warning=FALSE}
+Comorbidities_result_dx_combined
+```
+
+#### Figure 1: Prescription count by Drug Class
+
+By Risk Class
+```{python figure_1a, echo=FALSE, warning=FALSE}
+def bar_plot_counts (df_0, title, add_label):
+    df = df_0.copy()
+    df['percentage_num'] = df['percentage'].str.rstrip('%').astype('float')
+    df[['variable', 'time_period']] = df['variable'].str.rsplit('_', n=1, expand=True)
+    sorted_parents = df[df['time_period'] == 'Post'].sort_values(by='percentage_num')
+    df_plot_sort = pd.concat([df[df['variable'] == time] for time in sorted_parents['variable']], ignore_index=True)
+    
+    sns.set(style="whitegrid")
+    plt.figure(figsize=(12, 6)) 
+    ax = sns.barplot(x="time_period", y="percentage_num", hue="variable", palette='deep', data=df_plot_sort)
+    ax.legend(title='Drug Class', bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    if add_label == 'Add':
+        for p in ax.patches:
+            ax.text(p.get_x() + p.get_width() / 2., p.get_height(), f'{p.get_height():.2f}', 
+                    fontsize=9, ha='center', va='bottom')
+        
+    plot_title = 'Prescription Distribution by ' + title
+    ax.set_title(plot_title)
+    ax.set_xlabel('Prescription Distribution')
+    ax.set_ylabel('Percnetage (%)')
+    plt.tight_layout()
+    plt.show()
+
+    df_plot_sort.sort_values(by=['variable', 'time_period'], inplace=True)
+    
+    return df_plot_sort
+
+Risk_counts_barplot = bar_plot_counts(Risk_count_dx_full, 'Risk Class', 'Add').reset_index(drop=True)
+Risk_counts_barplot.drop('percentage_num', axis=1)
+```
+
+By Grandparent Class
+```{python figure_1b, echo=FALSE, warning=FALSE}
+Grandparent_counts_barplot = bar_plot_counts(Grandparent_count_dx_full, 'Grandparent Class', 'Add').reset_index(drop=True)
+Grandparent_counts_barplot.drop('percentage_num', axis=1)
+```
+
+By Drug Category
+```{python figure_1c, echo=FALSE, warning=FALSE}
+cate_short_counts_barplot = bar_plot_counts(drug_cate_count_dx_full, 'Drug Category', 'No Add').reset_index(drop=True).reset_index(drop=True)
+cate_short_counts_barplot.drop('percentage_num', axis=1)
+```
+
+#### Figure 2: Prescription patterns by Drug Class
+
+By Risk Class
+```{python figure_2a, echo=FALSE, warning=FALSE}
+def bar_plot_patterns (df_0, title, add_label):
+    df = df_0.copy()
+    df['percentage_num'] = df['percentage'].str.rstrip('%').astype('float')
+    df_plot = df[df['value'] != 'No_Treat'].copy()
+    df_plot.loc[:, 'variable'] = df_plot['variable'].str[:-9]
+    df_plot.sort_values(by='percentage_num', ascending=False, inplace=True)
+
+    sorted_parents = df_plot[df_plot['value'] == 'Deprescribing'].sort_values(by='percentage_num')
+    df_plot_sort = pd.concat([df_plot[df_plot['variable'] == drug_class] for drug_class in sorted_parents['variable']], ignore_index=True)
+
+    sns.set(style="whitegrid")
+    plt.figure(figsize=(12, 6)) 
+    ax = sns.barplot(x="value", y="percentage_num", hue="variable", palette='deep', data=df_plot_sort)
+    ax.legend(title='Drug Class', bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    # Labeling the bars
+
+    if add_label == 'Add':
+        for p in ax.patches:
+            ax.text(p.get_x() + p.get_width() / 2., p.get_height(), f'{p.get_height():.2f}', 
+                    fontsize=9, ha='center', va='bottom')
+   
+    plot_title = 'Prescription Patterns by ' + title
+    ax.set_title(plot_title)
+    ax.set_xlabel('Prescription Patterns')
+    ax.set_ylabel('Percnetage (%)')
+    plt.tight_layout()
+
+    plt.show()
+
+    df_plot_sort.sort_values(by=['variable', 'value'], inplace=True)
+
+    return df_plot_sort
+
+Risk_patterns_barplot = bar_plot_patterns(desc_Risk_result_dx_full, 'Risk Class', 'Add').reset_index(drop=True)
+Risk_patterns_barplot.drop('percentage_num', axis=1)
+```
+
+By Grandparent Class
+```{python figure_2b, echo=FALSE, warning=FALSE}
+Grandparent_patterns_barplot = bar_plot_patterns(desc_Grantparent_result_dx_full, 'Grandparent Class', 'Add').reset_index(drop=True)
+Grandparent_patterns_barplot.drop('percentage_num', axis=1)
+```
+
+By Drug Category
+```{python figure_2c, echo=FALSE, warning=FALSE}
+Cate_short_patterns_barplot = bar_plot_patterns(desc_drugcate_result_dx_full, 'Drug Category', 'No Add').reset_index(drop=True)
+Cate_short_patterns_barplot.drop('percentage_num', axis=1)
+```
+
+
+#### Figure 3: Prescription Duration Forest Plot
+
+By Risk Class
+```{python figure_3a, echo=FALSE, warning=FALSE}
+def duration_forest(df_0, title):
+    df_pre = df_0[(df_0['patterns_cate'] == 'Continuing') | (df_0['patterns_cate'] == 'Deprescribing')]
+    df_pre = df_pre[df_pre['variable'].str.contains('Pre')].reset_index(drop=True)
+    df_post = df_0[(df_0['patterns_cate'] == 'Continuing') | (df_0['patterns_cate'] == 'Initiating')]
+    df_post = df_post[df_post['variable'].str.contains('Post')].reset_index(drop=True)
+    
+    for df in [df_pre, df_post]:
+        df['err_neg'] = df['Median'] - df['Q1']
+        df['err_pos'] = df['Q3'] - df['Median']
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 9))
+    types1 = df_pre['patterns_cate'].unique()
+    types2 = df_post['patterns_cate'].unique()
+    x_min_pre = df_pre['Q1'].min() - 10
+    x_max_pre = df_pre['Q3'].max() + 10
+    x_min_post = df_post['Q1'].min() - 10 
+    x_max_post = df_post['Q3'].max() + 10
+
+    for i, t in enumerate(types1):
+        ax = axes[0, i]
+        subset = df_pre[df_pre['patterns_cate'] == t]
+        drugs = subset['variable'].unique()
+        y_positions = range(len(drugs))
+        ax.errorbar(subset['Median'], y_positions, xerr=[subset['err_neg'], subset['err_pos']], fmt='o', capsize=5, label=f'{t}')
+        ax.set_yticks(y_positions)
+        ax.set_yticklabels(drugs)
+        ax.set_title(f'{t}')
+        ax.set_xlim(x_min_pre, x_max_pre)
+        ax.set_xlabel('Prescription Duration (days)')
+        if i == 0:
+            ax.set_ylabel('Drug Class Level')
+
+    for i, t in enumerate(types2):
+        ax = axes[1, i]
+        subset = df_post[df_post['patterns_cate'] == t]
+        drugs = subset['variable'].unique()
+        y_positions = range(len(drugs))
+        ax.errorbar(subset['Median'], y_positions, xerr=[subset['err_neg'], subset['err_pos']], fmt='o', capsize=5, label=f'{t}')
+        ax.set_yticks(y_positions)
+        ax.set_yticklabels(drugs)
+        ax.set_title(f'{t}')
+        ax.set_xlim(x_min_post, x_max_post)
+        ax.set_xlabel('Prescription Duration (days)')
+        if i == 0:
+            ax.set_ylabel('Drug Class Level')
+
+    plot_title = 'Forest Plots for Duratione by ' + title
+    plt.suptitle(plot_title)
+    plt.tight_layout()
+    plt.show()
+
+duration_forest(duration_Risk_pat_dx_full, 'Risk Class')
+```
+
+By Grandparent Class
+```{python figure_3b, echo=FALSE, warning=FALSE}
+duration_forest(duration_Grandparent_pat_dx_full, 'Grandparent Class')
+```
+
+By Drug Category
+```{python figure_3c, echo=FALSE, warning=FALSE}
+duration_forest(duration_drugcate_pat_dx_full, 'Drug Category')
+```
+
+
+#### Figure 4: Prescription patterns by Outcome
+
+By Risk Class
+```{python figure_4a, echo=FALSE, warning=FALSE}
+def bar_plot_outcome(df_0, title, add_label, outcome, ax):
+    df = df_0.copy()
+    df = df[df['value'] != 'No_Treat']
+    df = df[df['outcome'] == outcome]
+    df['percentage_num'] = df['percentage'].str.rstrip('%').astype('float')
+    df['variable'] = df['variable'].str[:-17]
+    sorted_parents = df[df['value'] == 'Deprescribing'].sort_values(by='percentage_num')
+    df_plot_sort = pd.concat([df[df['variable'] == time] for time in sorted_parents['variable']], ignore_index=True)
+
+    sns.set(style="whitegrid")
+    sns.barplot(x="variable", y="percentage_num", hue="value", palette='deep', data=df_plot_sort, ax=ax)
+    ax.legend(title='Prescription Patterns', bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    if add_label == 'Add':
+        for p in ax.patches:
+            ax.text(p.get_x() + p.get_width() / 2., p.get_height(), f'{p.get_height():.2f}', 
+                    fontsize=9, ha='center', va='bottom')
+
+    plot_title = 'Outcome Distribution by ' + title + ' for ' + outcome
+    ax.set_title(plot_title)
+    ax.set_xlabel('Drug Class')
+    ax.set_ylabel('Percentage (%)')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+
+    df_plot_sort.sort_values(by=['variable', 'value'], inplace=True)
+    
+    return df_plot_sort
+
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+df_sorted1 = bar_plot_outcome(outcome_Risk_pat_dx_full, 'Risk Class', 'Add', 'refracture', axes[0])
+df_sorted2 = bar_plot_outcome(outcome_Risk_pat_dx_full, 'Risk Class', 'Add', 'exitus_readm', axes[1])
+plt.tight_layout()
+plt.show()
+```
+
+By Grandparent Class
+
+```{python figure_4b, echo=FALSE, warning=FALSE}
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+df_sorted1 = bar_plot_outcome(outcome_Grandparent_pat_dx_full, 'Grandparent Class', 'Add', 'refracture', axes[0])
+df_sorted2 = bar_plot_outcome(outcome_Grandparent_pat_dx_full, 'Grandparent Class', 'Add', 'exitus_readm', axes[1])
+plt.tight_layout()
+plt.show()
+```
+
+By Drug Category
+```{python figure_4c, echo=FALSE, warning=FALSE}
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+df_sorted1 = bar_plot_outcome(outcome_drugcate_pat_dx_full, 'Drug Category', 'No Add', 'refracture', axes[0])
+df_sorted2 = bar_plot_outcome(outcome_drugcate_pat_dx_full, 'Drug Category', 'No Add', 'exitus_readm', axes[1])
+plt.tight_layout()
+plt.show()
+```
+
+
+```{python file_saving_desc, echo=FALSE, warning=FALSE,output=FALSE}
+############################################################### Result Save for Manuscript ###############################################################
+data_path = '../../inputs/data.duckdb' 
+# Cohort dataset saving for modeling
+dx_full_model = dx_full[['patient_id', 'exitus_readm_outcome', 'refracture_outcome', 'age_nm', 'Length_of_stay','sex_cd', 'residence_area_cd', 'previous_hospital_admission_bl', 'hospital_admission_type_cd',
+                         'Opioids_Patterns', 'antiPark_Patterns', 'anticonv_Patterns', 'barbs_Patterns', 'benzos_Patterns', 'centrAntiHT_Patterns', 'fgap_Patterns', 'firstGenAH_Patterns', 'gabaN02BF_Patterns', 'h2Antags_Patterns', 'inhSteroids_Patterns', 'loopDiur_Patterns', 'nitrates_Patterns', 'oralSter_Patterns', 'ppi_Patterns', 'sedHyp_Patterns', 'sgap_Patterns', 'ssriSnri_Patterns', 'tca_Patterns', 'thiazDiur_Patterns', 'tzd_Patterns',
+                         'Central nervous system agents_Patterns', 'Cardiovascular agents_Patterns', 'Hormones/hormone modifiers_Patterns', 'Psychotherapeutic agents_Patterns', 'Gastrointestinal agents_Patterns', 'Respiratory agents_Patterns', 'Metabolic agents_Patterns',
+                         'Fall_increase_moderate_Patterns', 'Fall_increase_high_Patterns', 'Bone_mass_decrese_high_Patterns', 'Bone_mass_decrese_moderate_Patterns']]
+dx_full_model['exitus_readm_outcome'] = dx_full_model['exitus_readm_outcome'].astype(int)
+dx_full_model['refracture_outcome'] = dx_full_model['refracture_outcome'].astype(int)
+
+#dx_full_model.to_csv('../../outputs/hip_polypharma_model.csv', index=False) # dir_flag
+
+con = duckdb.connect(data_path)
+
+dx_full_model.columns = [str(c).replace(' ','_') for c in dx_full_model.columns]
+dx_full_model.columns = [str(c).replace('/','_') for c in dx_full_model.columns]
+# load datasets
+con.register("dataset", dx_full_model)
+con.execute("CREATE OR REPLACE TABLE full_model AS SELECT * FROM dataset")
+
+#con.sql("INSERT INTO full_model_view SELECT * FROM dx_full_model")
+con.close()
+
+# Descriptives Output Saving for manuscript and visualization
+desc_result_file_list = ['desc_continuous_result_dx_combined', 'desc_categorical_result_dx_combined', 'Comorbidities_result_dx_combined', 'desc_distribution_result_combined', 'desc_drug_pattern_result_combined', 'duration_result_combined', 'duration_drug_pattern_result_combined', 'outcome_drug_pattern_result_combined']
+
+folder_name = "../../outputs" # dir_flag
+os.makedirs(folder_name, exist_ok=True)
+
+for df in desc_result_file_list:
+    globals()[df].to_csv('../../outputs/'+ df +'.csv', index=False) # dir_flag
+```
+
+
+
+### Logistic regression model
+
+#### Propensity score matching balance assessment
+```{r ps_model, echo=FALSE, warning=FALSE}
+# load final cohort dataset for modeling
+
+con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+    
+hip_poly <- dbGetQuery(con,"SELECT * FROM full_model")
+
+
+dbDisconnect(con, shutdown=TRUE)
+
+#hip_poly = read.csv('../../outputs/hip_polypharma_model.csv')
+
+hip_poly$residence_area_cd[is.na(hip_poly$residence_area_cd)] <- "not_known"
+hip_poly$hospital_admission_type_cd = as.factor(hip_poly$hospital_admission_type_cd)
+hip_poly$sex_cd = as.factor(hip_poly$sex_cd)
+
+############################################################### Caculate Propensity Score ###############################################################
+previous_adm_bl_notnull <- any(!is.na(hip_poly$previous_hospital_admission_bl))
+hospital_admtype_notnull  <- any(!is.na(hip_poly$hospital_admission_type_cd))
+
+ps_score <- function(outcome_variable, df) {
+  
+  if (previous_adm_bl_notnull & hospital_admtype_notnull) {
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, family = "binomial")
+} else if (previous_adm_bl_notnull) {
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl, data = df, family = "binomial")
+} else if (hospital_admtype_notnull) {
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd + hospital_admission_type_cd, data = df, family = "binomial")
+} else {
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd, data = hip_poly, family = "binomial")
+}
+  return(ps_model)
+}
+
+ps_model_exitus_readm <-  ps_score(hip_poly$exitus_readm_outcome, hip_poly)
+ps_model_refracture <-  ps_score(hip_poly$refracture_outcome, hip_poly)
+hip_poly$pscore_exitus_readm <- predict(ps_model_exitus_readm, type = "response")
+hip_poly$pscore_refracture <- predict(ps_model_refracture, type = "response")
+
+
+############################################################### Create Matched Dataset ###############################################################
+ps_matching <- function(outcome_variable, df) {
+
+    if (previous_adm_bl_notnull & hospital_admtype_notnull) {
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
+} else if (previous_adm_bl_notnull) {
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl, data = df, method = "nearest", ratio = 1)
+} else if (hospital_admtype_notnull) {
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
+} else {
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd, data = df, method = "nearest", ratio = 1)
+}
+  matched_exitus_readm <- match.data(matchit_model_exitus_readm)
+}
+
+matched_exitus_readm <-  ps_matching(hip_poly$exitus_readm_outcome, hip_poly)
+matched_refracture <-  ps_matching(hip_poly$refracture_outcome, hip_poly)
+
+############################################################### Create Matched Distribution ###############################################################
+check_matching <- function(outcome, ps_score, df, title_part) {
+  
+  full_title <- paste("Propensity Score Distribution", title_part)
+  ggplot(df, aes(x = ps_score, fill = factor(outcome))) +
+  geom_histogram(position = "dodge", bins = 10) +
+  theme_minimal() +
+  labs(fill = "Treatment Group", title = full_title)
+}
+
+check_matching(hip_poly$exitus_readm_outcome, hip_poly$pscore_exitus_readm, hip_poly, 'Readmission & Exitus, Before Matching')
+check_matching(matched_exitus_readm$exitus_readm_outcome, matched_exitus_readm$pscore_exitus_readm, matched_exitus_readm, 'Readmission & Exitus, After Matching')
+
+check_matching(hip_poly$refracture_outcome, hip_poly$pscore_refracture, hip_poly, 'Refracture, Before Matching')
+check_matching(matched_refracture$refracture_outcome, matched_refracture$pscore_refracture, matched_refracture, 'Refracture, After Matching')
+```
+
+
+#### Model result on outcome 1: exitus_readm_outcome, by different drug classification
+```{r model_outcome_1, echo=FALSE, warning=FALSE}
+# Model m1_1a: outcome 1, by Risk, neareast mathch 
+m1_1a <- glm(exitus_readm_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)   
+summary(m1_1a)
+
+# Model m1_1b: outcome 1, by Risk, no match
+m1_1b <- glm(exitus_readm_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = hip_poly)   
+
+# Model m1_2a: outcome 1, by Grandparent, neareast mathch 
+m1_2a <- glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)
+summary(m1_2a)
+
+# Model m1_2b: outcome 1, by Grandparent, no match 
+m1_2b = glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = hip_poly)
+
+# Model m1_3a: outcome 1, by Drug Category, neareast mathch 
+m1_3a = glm(exitus_readm_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)
+summary(m1_3a)
+
+# Model m1_3b: outcome 1, by Drug Category, no mathch
+m1_3b = glm(exitus_readm_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = hip_poly)
+```
+
+#### Model result on outcome 2: refracture_outcome, by different drug classification
+```{r model_outcome_2, echo=FALSE, warning=FALSE}
+# Model m2_1a: outcome 1, by Risk, neareast mathch 
+m2_1a = glm(refracture_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = matched_refracture)   
+summary(m2_1a)
+
+# Model m2_1b: outcome 1, by Risk, no match
+m2_1b = glm(refracture_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = hip_poly)   
+
+# Model m2_2a: outcome 1, by Grandparent, neareast mathch 
+m2_2a = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_refracture)
+summary(m2_2a)
+
+# Model m2_2b: outcome 1, by Grandparent, no match 
+m2_2b = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = hip_poly)
+
+# Model m2_3a: outcome 1, by Drug Category, neareast mathch 
+m2_3a = glm(refracture_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = matched_refracture)
+summary(m2_3a)
+
+# Model m2_3b: outcome 1, by Drug Category, no mathch
+m2_3b = glm(refracture_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = hip_poly)
+```
+
+
+
+```{r result_saving_model, echo=FALSE, warning=FALSE}
+####(Updates)####
+extract_model_info <- function(model) {
+  # Get summary
+  model_summary <- capture.output(summary(model))
+  
+  # estimates and std error
+  coefficients <- summary(model)$coefficients
+  conf_int_95 <- suppressMessages(confint(model, level = 0.95))  # 95% 
+  conf_int_99 <- suppressMessages(confint(model, level = 0.99)) # 99% 
+  odds_ratios <- exp(coefficients[, "Estimate"])
+  aic <- AIC(model)
+  bic <- BIC(model)
+  logLikelihood <- logLik(model)
+
+  # Combine into a data frame
+  results_df <- data.frame(
+    Estimate = coefficients[, "Estimate"],
+    StdError = coefficients[, "Std. Error"],
+    PValue = coefficients[, "Pr(>|z|)"],
+    ZValue = coefficients[, 3],
+    ci_95_upper = conf_int_95[,1],
+    ci_95_lower = conf_int_95[,2],
+    ci_99_upper = conf_int_99[,1],
+    ci_99_lower = conf_int_99[,2],
+    OddsRatio = odds_ratios,
+    OR_ci_95_upper = exp(conf_int_95[,1]),
+    OR_ci_95_lower = exp(conf_int_95[,2]),
+    OR_ci_99_upper = exp(conf_int_99[,1]),
+    OR_ci_99_lower = exp(conf_int_99[,2]),
+    AIC = aic,
+    BIC = bic,
+    LogLikelihood = logLikelihood
+  )
+  
+  list(summary = model_summary, results = results_df)
+}
+
+outcome_1_list <- list(m1_1a, m1_1b, m1_2a, m1_2b, m1_3a, m1_3b)
+outcome_2_list <- list(m2_1a, m2_1b, m2_2a, m2_2b, m2_3a, m2_3b)
+
+
+output_folder <- "../../outputs" # dir_flag
+
+for (i in 1:length(outcome_1_list)) {
+  model_info <- extract_model_info(outcome_1_list[[i]])
+  
+  # Write Summary
+  writeLines(model_info$summary, file.path(output_folder, paste0("model_outcome_1_", i, "_summary.txt")))
+  
+  # Write Odds Ratios
+  write.csv(model_info$results, file.path(output_folder, paste0("model_outcome_1_", i, "_estimates.csv")), row.names = TRUE)
+  
+}
+
+for (i in 1:length(outcome_2_list)) {
+  model_info <- extract_model_info(outcome_2_list[[i]])
+  
+  # Write Summary
+  writeLines(model_info$summary, file.path(output_folder, paste0("model_outcome_2_", i, "_summary.txt")))
+  
+  # Write Odds Ratios
+  write.csv(model_info$results, file.path(output_folder, paste0("model_outcome_2_", i, "_estimates.csv")), row.names = TRUE)
+  
+}
+```

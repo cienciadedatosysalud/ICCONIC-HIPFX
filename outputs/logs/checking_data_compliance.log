@@ -1,9 +1,24 @@
 INFO:: Starting Checking data compliance with validation rules process
-INFO:: Configuration file loaded.
+INFO:: Configuration file loaded
+
+INFO:: #########################################
+INFO:: # CDMB version: 1.3.6
+INFO:: # ASPIRE version: 1.2.3
+INFO:: # PIPELINE version: 1.1.0
+INFO:: #########################################
+
 INFO:: Trying to connect to the database ...
 INFO:: Checking the conformity of the data with the validation rules for the "patient_cohort" entity.
 INFO:: Counting total registries for the "patient_cohort" entity.
 INFO:: Counting NA values for the "patient_cohort"'s variables.
+INFO:: Checking variables that are defined based on a catalog.
+INFO:: Trying to detect the encoding of the file '../../docs/CDM/entities/patient_cohort/catalogs/main_diagnosis_cd.csv'
+INFO:: The file '../../docs/CDM/entities/patient_cohort/catalogs/main_diagnosis_cd.csv' follows an encoding format 'ascii' at 1.0 confidence.
+INFO:: Header for the file 'main_diagnosis_cd.csv':
+
+classification_system,code,code_clean,description 
+
+WARNING:: 0 different erroneous values were found in the data according to the catalog.
 INFO:: Checking variables that are defined based on a catalog.
 INFO:: Trying to detect the encoding of the file '../../docs/CDM/entities/patient_cohort/catalogs/surgical_procedure_cd.csv'
 INFO:: The file '../../docs/CDM/entities/patient_cohort/catalogs/surgical_procedure_cd.csv' follows an encoding format 'ascii' at 1.0 confidence.
@@ -22,27 +37,29 @@ classification_system,code,code_clean,description,anesthesia_bl,general_anesthes
 WARNING:: 3 different erroneous values were found in the data according to the catalog.
 INFO:: Starting validation rules checking
 INFO:: Checking rule - " age_nm BETWEEN 5 AND 115 "
-INFO:: 11895 entries passed the rule.
+INFO:: 9895 entries passed the rule.
 INFO:: Checking rule - " sex_cd IN ('0', '1', '2', '9') "
-INFO:: 12000 entries passed the rule.
+INFO:: 10000 entries passed the rule.
 INFO:: Checking rule - " socecon_lvl_cd IN ('0', '1', '2', '3', '4', '5', '6', '7', '8') "
-INFO:: 12000 entries passed the rule.
+INFO:: 10000 entries passed the rule.
 INFO:: Checking rule - " hospital_admission_dt >= '2017-01-01' "
-INFO:: 12000 entries passed the rule.
+INFO:: 10000 entries passed the rule.
 INFO:: Checking rule - " surgical_procedure_dt >= '2017-01-01' "
-INFO:: 4114 entries passed the rule.
+INFO:: 7497 entries passed the rule.
 INFO:: Checking rule - " surgical_procedure_cd IN ('0', '1', '2', '3') "
-INFO:: 4114 entries passed the rule.
+INFO:: 0 entries passed the rule.
 INFO:: Checking rule - " hospital_discharge_dt >= hospital_admission_dt "
-INFO:: 12000 entries passed the rule.
-INFO:: Checking rule - " hospital_discharge_type_cd IN ('0', '1', '2', '3', '4') "
-INFO:: 12000 entries passed the rule.
+INFO:: 10000 entries passed the rule.
+INFO:: Checking rule - " hospital_discharge_type_cd IN ('0', '1', '2', '3', '4', '5', '6') "
+INFO:: 10000 entries passed the rule.
+INFO:: Checking rule - " hospital_admission_type_cd IN ('0', '1', '2', '3', '4', '5') "
+INFO:: 10000 entries passed the rule.
 INFO:: Checking rule - " icu_admission_dt >= '2017-01-01' "
-INFO:: 4109 entries passed the rule.
+INFO:: 3502 entries passed the rule.
 INFO:: Checking rule - " icu_discharge_dt >= '2017-01-01' "
-INFO:: 4109 entries passed the rule.
+INFO:: 3502 entries passed the rule.
 INFO:: Checking rule - " exitus_dt >= '2017-01-01' "
-INFO:: 1735 entries passed the rule.
+INFO:: 1413 entries passed the rule.
 INFO:: Checking the conformity of the data with the validation rules for the "outpatient_prescription" entity.
 INFO:: Counting total registries for the "outpatient_prescription" entity.
 INFO:: Counting NA values for the "outpatient_prescription"'s variables.
@@ -56,7 +73,15 @@ classification_system,code,code_clean,drug_active_agent_desc,drug_category_desc,
 WARNING:: 10 different erroneous values were found in the data according to the catalog.
 INFO:: Starting validation rules checking
 INFO:: Checking rule - " prescription_start_dt >= '2017-01-01' "
-INFO:: 207246 entries passed the rule.
+INFO:: 170839 entries passed the rule.
 INFO:: Checking rule - " prescription_end_dt >= prescription_start_dt "
-INFO:: 201932 entries passed the rule.
+INFO:: 165742 entries passed the rule.
+INFO:: Checking the conformity of the data with the validation rules for the "post_index_hospital_episode" entity.
+INFO:: Counting total registries for the "post_index_hospital_episode" entity.
+INFO:: Counting NA values for the "post_index_hospital_episode"'s variables.
+INFO:: Starting validation rules checking
+INFO:: Checking rule - " post_index_hospital_admission_dt >= '2017-01-01' "
+INFO:: 34704 entries passed the rule.
+INFO:: Checking rule - " post_index_hospital_discharge_dt >= post_index_hospital_admission_dt "
+INFO:: 34704 entries passed the rule.
 INFO:: validator_output.json created.

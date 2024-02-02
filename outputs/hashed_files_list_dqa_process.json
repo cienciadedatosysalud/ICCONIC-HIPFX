@@ -1,24 +1,32 @@
 {
     "files": [
         {
-            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_patient_cohort.html",
-            "hash": "96efa3a90ce097e97f1ad37e155dc50c"
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_outpatient_prescription.json",
+            "hash": "0fddde4d8d900106ffdb5a3487c0c60c"
+        },
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_post_index_hospital_episode.json",
+            "hash": "d57023ba10ec74e1438c037a2398bfc2"
         },
         {
             "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_patient_cohort.json",
-            "hash": "37d3b565fcf8b7cbe751011ae3957610"
-        },
-        {
-            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_outpatient_prescription.json",
-            "hash": "b052bddb536a876c53e919efaf4cffd3"
+            "hash": "3cf97d303f01813a71a702896220b904"
         },
         {
             "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_outpatient_prescription.html",
-            "hash": "a8918a5c6cab2802769879be5aab18a5"
+            "hash": "06fb34472c02207a4dd448a06ed41a3e"
+        },
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_patient_cohort.html",
+            "hash": "3b1c6f5750870a9e1b2a416855ed8d50"
+        },
+        {
+            "filename": "outputs/dqa_Variations_in_hospital_episode_(inpatient)_with_a_main_diagnosis_('main_diagnosis_cd')_of_hip_fracture_post_index_hospital_episode.html",
+            "hash": "c19ba84d39e19d180e9cf6267cc73faf"
         },
         {
             "filename": "outputs/logs/data_quality_assesment.log",
-            "hash": "7e710cb18e48989ae2e987159b5d72d0"
+            "hash": "3519d57fcd7cfc6c2d89fcace2c31357"
         }
     ]
 }
