@@ -1035,8 +1035,8 @@ con.close()
 # Descriptives Output Saving for manuscript and visualization
 desc_result_file_list = ['desc_continuous_result_dx_combined', 'desc_categorical_result_dx_combined', 'Comorbidities_result_dx_combined', 'desc_distribution_result_combined', 'desc_drug_pattern_result_combined', 'duration_result_combined', 'duration_drug_pattern_result_combined', 'outcome_drug_pattern_result_combined']
 
-folder_name = "../../outputs" # dir_flag
-os.makedirs(folder_name, exist_ok=True)
+#folder_name = "../../outputs" # dir_flag
+#os.makedirs(folder_name, exist_ok=True)
 
 for df in desc_result_file_list:
     globals()[df].to_csv('../../outputs/'+ df +'.csv', index=False) # dir_flag

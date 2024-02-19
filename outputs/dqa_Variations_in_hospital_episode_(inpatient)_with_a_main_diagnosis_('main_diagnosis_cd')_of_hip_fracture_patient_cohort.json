@@ -1,8 +1,8 @@
 {
     "analysis": {
         "title": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture - patient_cohort | Profiling Report",
-        "date_start": "2024-02-02 09:47:32.768865",
-        "date_end": "2024-02-02 09:47:33.026720"
+        "date_start": "2024-02-19 09:40:55.360867",
+        "date_end": "2024-02-19 09:40:55.659259"
     },
     "time_index_analysis": "None",
     "table": {
