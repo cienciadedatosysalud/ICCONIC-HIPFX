@@ -804,8 +804,13 @@ summary(model_exitus_30days_bl_simple)
 ### Filter hospitals with n_patient >=500
 
 variables_in_hospital_filter <- variables_in_hospital %>% filter(n_patient >= 500)
-df_model_filter <- df_model %>% filter(hospital_st %in% variables_in_hospital_filter$hospital_st)
-df_model_filter <- na.omit(df_model_filter)
+if(descriptive_values$country_cd != 'US'){
+  df_model_filter <- df_model %>% filter(hospital_st %in% variables_in_hospital_filter$hospital_st)
+  df_model_filter <- na.omit(df_model_filter)
+}else{
+  df_model_filter <- na.omit(df_model)
+}
+
 ```
 
 
@@ -832,9 +837,13 @@ df_var <- calculate_ICC(model_exitus_hosp_bl_simple, variable_random_effect = 'h
 MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR))
 
-
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI <- calculate_MOR(model_exitus_hosp_bl_simple,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
 
 ```
 
@@ -857,10 +866,14 @@ df_var <- calculate_ICC(model_exitus_7days_bl_simple, variable_random_effect = '
 MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR))
 
-
-
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI <- calculate_MOR(model_exitus_7days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
+
 ```
 
 
@@ -881,9 +894,13 @@ MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR))
 
 
-
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI <- calculate_MOR(model_exitus_30days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
 
 
 ```
@@ -994,9 +1011,12 @@ df_var_re <- calculate_ICC(model_exitus_hosp_bl_simple, variable_random_effect =
 MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR))
 
-
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI <- calculate_MOR(model_exitus_hosp_bl_simple,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
 
 ```
 
@@ -1025,9 +1045,14 @@ df_var_re <- calculate_ICC(model_exitus_7days_bl_simple, variable_random_effect 
 MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR))
 
-
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI <- calculate_MOR(model_exitus_7days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
 
 ```
 
@@ -1062,10 +1087,14 @@ MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
 
 print(paste0('Median odds ratio (MOR): ', MOR))
 
-
-
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI <- calculate_MOR(model_exitus_30days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
 ```
 
 
@@ -1100,16 +1129,48 @@ gratia::draw(model_exitus_hosp_bl,select = 1,ci_level = 0.95) +
   labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
   theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
 
-df_var_re <- calculate_ICC(model_exitus_hosp_bl, variable_random_effect = 'hospital_st')
+##### Not use function 'calculate_ICC' here to save variables #####
 
-MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
+var <- variance_comp(model_exitus_hosp_bl)
+var
+var_re_exitus_inhospital <- var %>% filter(component %in% "s(hospital_st)")
 
-print(paste0('Median odds ratio (MOR): ', MOR))
+icc_exitus_inhospital <- (var_re_exitus_inhospital$variance/(var_re_exitus_inhospital$variance + ((pi*pi)/3)))
+if(sum(is.na(icc_exitus_inhospital))== 0){
+  
+icc_lower_exitus_inhospital <- (var_re_exitus_inhospital$variance - var_re_exitus_inhospital$std_dev)/((var_re_exitus_inhospital$variance - var_re_exitus_inhospital$std_dev)+((pi*pi)/3))
+icc_upper_exitus_inhospital <- (var_re_exitus_inhospital$variance + var_re_exitus_inhospital$std_dev)/((var_re_exitus_inhospital$variance + var_re_exitus_inhospital$std_dev)+((pi*pi)/3))
+             
+print(paste0('ICC ajusted: ', round(icc_exitus_inhospital,5),' with lower_ci95=',round(icc_lower_exitus_inhospital,5),' and upper_ci95=',round(icc_upper_exitus_inhospital,5)))  
+}else{
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+MOR_exitus_inhospital <- round(exp(sqrt(2*(var_re_exitus_inhospital$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_exitus_inhospital))
+
+if(descriptive_values$country_cd != 'US'){
+MOR_w_CI_exitus_inhospital <- calculate_MOR(model_exitus_hosp_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_inhospital[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_exitus_inhospital[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_inhospital[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
 
 
 
-MOR_w_CI <- calculate_MOR(model_exitus_hosp_bl,var_re = 'hospital_st',n_iter = 1000)
-print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+# df_var_re <- calculate_ICC(model_exitus_hosp_bl, variable_random_effect = 'hospital_st')
+# 
+# MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
+# 
+# print(paste0('Median odds ratio (MOR): ', MOR))
+# 
+# 
+# 
+# MOR_w_CI <- calculate_MOR(model_exitus_hosp_bl,var_re = 'hospital_st',n_iter = 1000)
+# print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
 
 df_model_filter[c('predict_model_exitus_hospital_bl','se_predict_model_exitus_hospital_bl')] <- model_exitus_hosp_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
 
@@ -1139,7 +1200,7 @@ output_model_exitus_hospital_bl <- output_model_exitus_hospital_bl %>%
             P95_residuals_model = round(quantile(resid_model_exitus_hospital_bl,0.95,na.rm=TRUE),5)
             )
 
-# write.table(output_model_exitus_hospital_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_exitus_inhospital.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+write.table(output_model_exitus_hospital_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_exitus_inhospital.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
 
 ggplot(df_model_filter, aes(x = resid_model_exitus_hospital_bl, y = hospital_st, group = hospital_st)) + 
   geom_density_ridges(alpha=0.7) +
@@ -1194,9 +1255,17 @@ MOR_exitus_7d <- round(exp(sqrt(2*(var_re_exitus_7d$variance))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR_exitus_7d))
 
 
+
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI_exitus_7d <- calculate_MOR(model_exitus_7days_bl,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_7d[2],5),
              ' with lower_ci95=',round(MOR_w_CI_exitus_7d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_7d[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
+
 
 df_model_filter[c('predict_model_exitus_7days_bl','se_predict_model_exitus_7days_bl')] <- model_exitus_7days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
 
@@ -1279,9 +1348,18 @@ print(paste0('ICC ajusted: ', round(icc_exitus_30d,5),' with lower_ci95=',round(
 MOR_exitus_30d <- round(exp(sqrt(2*(var_re_exitus_30d$variance))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR_exitus_30d))
 
+
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI_exitus_30d <- calculate_MOR(model_exitus_30days_bl,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_30d[2],5),
              ' with lower_ci95=',round(MOR_w_CI_exitus_30d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_30d[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
+
+
 
 
 df_model_filter[c('predict_model_exitus_30days_bl','se_predict_model_exitus_30days_bl')] <- model_exitus_30days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
@@ -1335,10 +1413,11 @@ rm(output_model_exitus_30days_bl)
 ```{r, warning=FALSE, echo=FALSE}
 #| label: performance model exitus
 
-p <- compare_performance(model_exitus_7days_bl, model_exitus_30days_bl)
+p <- compare_performance(model_exitus_hosp_bl,model_exitus_7days_bl, model_exitus_30days_bl)
 
-p$Name[p$Name %in% 'model_exitus_7days_bl'] <- 'Model 1: exitus in 7 days after surgery'
-p$Name[p$Name %in% 'model_exitus_30days_bl'] <- 'Model 2: exitus in 30 days after surgery'
+p$Name[p$Name %in% 'model_exitus_hosp_bl'] <- 'Model 1: exitus in hospital'
+p$Name[p$Name %in% 'model_exitus_7days_bl'] <- 'Model 2: exitus in 7 days after surgery'
+p$Name[p$Name %in% 'model_exitus_30days_bl'] <- 'Model 3: exitus in 30 days after surgery'
 
 p
 write.table(p,'../../outputs/performance_GAMM_exitus.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
@@ -1391,9 +1470,17 @@ print(paste0('ICC ajusted: ', round(icc_unplanned_7d,5),' with lower_ci95=',roun
 MOR_unplanned_7d <- round(exp(sqrt(2*(var_re_unplanned_7d$variance))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR_unplanned_7d))
 
+
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI_unplanned_7d <- calculate_MOR(model_unplanned_7days_bl,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_7d[2],5),
              ' with lower_ci95=',round(MOR_w_CI_unplanned_7d[1],5),' and upper_ci95=',round(MOR_w_CI_unplanned_7d[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
+
+
 
 
 df_model_filter[c('predict_model_unplanned_7days_bl','se_predict_model_unplanned_7days_bl')] <- model_unplanned_7days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
@@ -1481,9 +1568,15 @@ print(paste0('ICC ajusted: ', round(icc_unplanned_30d,5),' with lower_ci95=',rou
 MOR_unplanned_30d <- round(exp(sqrt(2*(var_re_unplanned_30d$variance))*qnorm(.75)),5)
 print(paste0('Median odds ratio (MOR): ', MOR_unplanned_30d))
 
+
+if(descriptive_values$country_cd != 'US'){
 MOR_w_CI_unplanned_30d <- calculate_MOR(model_unplanned_30days_bl,var_re = 'hospital_st',n_iter = 1000)
 print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_30d[2],5),
              ' with lower_ci95=',round(MOR_w_CI_unplanned_30d[1],5),' and upper_ci95=',round(MOR_w_CI_unplanned_30d[3],5)))
+
+}else{
+  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
+}
 
 df_model_filter[c('predict_model_unplanned_30days_bl','se_predict_model_unplanned_30days_bl')] <- model_unplanned_30days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
 

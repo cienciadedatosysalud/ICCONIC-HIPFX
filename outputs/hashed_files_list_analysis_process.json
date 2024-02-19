@@ -1,144 +1,16 @@
 {
     "files": [
         {
-            "filename": "outputs/model_outcome_1_6_summary.txt",
-            "hash": "4a40102ac3b88f9fedfc65d46116e8cc"
-        },
-        {
-            "filename": "outputs/model_outcome_2_4_summary.txt",
-            "hash": "95bc0cb0e04a85ef4e1dc7e5e7863cbb"
-        },
-        {
-            "filename": "outputs/model_outcome_2_2_summary.txt",
-            "hash": "2c5986bea8e421ff6e5b01d92fae0fe0"
-        },
-        {
-            "filename": "outputs/model_outcome_1_2_summary.txt",
-            "hash": "4a87ee1142d89c0163671bb0a6701ec4"
-        },
-        {
-            "filename": "outputs/model_outcome_1_3_summary.txt",
-            "hash": "5abd4642a4f5eeb9321d79f148df0b53"
-        },
-        {
-            "filename": "outputs/duration_drug_pattern_result_combined.csv",
-            "hash": "c1cde4fcfc7726aa9e041ec140e092a8"
-        },
-        {
-            "filename": "outputs/model_outcome_2_6_summary.txt",
-            "hash": "718fe1ac2c39e6a2385d377f5d43755d"
-        },
-        {
-            "filename": "outputs/model_outcome_2_1_estimates.csv",
-            "hash": "e42f403c0c83f66b338073a813b0d38a"
-        },
-        {
-            "filename": "outputs/model_outcome_2_3_summary.txt",
-            "hash": "cf7f1a1b05aff24d639c7f5fb82d994c"
-        },
-        {
-            "filename": "outputs/model_outcome_1_3_estimates.csv",
-            "hash": "fac895a94d4b0de49468ed56cc44c343"
-        },
-        {
-            "filename": "outputs/desc_categorical_result_dx_combined.csv",
-            "hash": "bf2ec473fff34d87bbdb7601c3769957"
-        },
-        {
-            "filename": "outputs/model_outcome_1_5_estimates.csv",
-            "hash": "27462ef62cda6bc54deac8ab514bfeb0"
-        },
-        {
-            "filename": "outputs/model_outcome_1_4_summary.txt",
-            "hash": "4ba329be1b56cd464d503c592741b5cf"
-        },
-        {
-            "filename": "outputs/model_outcome_1_1_estimates.csv",
-            "hash": "e42f403c0c83f66b338073a813b0d38a"
-        },
-        {
-            "filename": "outputs/model_outcome_1_5_summary.txt",
-            "hash": "2964b3bb63966ac6f085059d165b6d79"
-        },
-        {
-            "filename": "outputs/duration_result_combined.csv",
-            "hash": "186af7575b73b734de0590b1296335de"
-        },
-        {
-            "filename": "outputs/outcome_drug_pattern_result_combined.csv",
-            "hash": "073f8b9cc0390ee50a816888d8306224"
-        },
-        {
-            "filename": "outputs/model_outcome_2_3_estimates.csv",
-            "hash": "fac895a94d4b0de49468ed56cc44c343"
-        },
-        {
-            "filename": "outputs/model_outcome_2_1_summary.txt",
-            "hash": "b1b150ff2e2b15ba5a4e79536e4e89e8"
-        },
-        {
-            "filename": "outputs/desc_drug_pattern_result_combined.csv",
-            "hash": "3c9dfd8c100adcff8cf1ce616d429cff"
-        },
-        {
-            "filename": "outputs/model_outcome_1_4_estimates.csv",
-            "hash": "919f4cf14cea8b347dc66f0263cc0bc3"
-        },
-        {
-            "filename": "outputs/model_outcome_2_4_estimates.csv",
-            "hash": "919f4cf14cea8b347dc66f0263cc0bc3"
-        },
-        {
-            "filename": "outputs/desc_distribution_result_combined.csv",
-            "hash": "117c140fbe567a3e483bfb2f7c6d0525"
-        },
-        {
-            "filename": "outputs/desc_continuous_result_dx_combined.csv",
-            "hash": "7c40da79e23d0bab0f28a7111d4a4375"
-        },
-        {
-            "filename": "outputs/model_outcome_1_2_estimates.csv",
-            "hash": "2894190f75a0cbbb3788abac54ac3069"
-        },
-        {
-            "filename": "outputs/Comorbidities_result_dx_combined.csv",
-            "hash": "2b68ada5f82b8b9b2cba406346f43778"
-        },
-        {
             "filename": "outputs/analysis_icconic_hipfx_polypharmacy.html",
-            "hash": "85afb6a96d8d4cba4567941f61c15ddd"
-        },
-        {
-            "filename": "outputs/model_outcome_1_6_estimates.csv",
-            "hash": "7978f523d0df7d4820a72bacd37b1a4c"
-        },
-        {
-            "filename": "outputs/model_outcome_1_1_summary.txt",
-            "hash": "21a0db3b8be3d7048b43f353af4c79ec"
-        },
-        {
-            "filename": "outputs/model_outcome_2_2_estimates.csv",
-            "hash": "2894190f75a0cbbb3788abac54ac3069"
+            "hash": "c7a8dc5e1a6653e72d186abd2f6fc18b"
         },
         {
             "filename": "outputs/logs/analysis_execution.log",
-            "hash": "cc9addc8394b51e6eaf3b23255539040"
-        },
-        {
-            "filename": "outputs/model_outcome_2_5_summary.txt",
-            "hash": "89dcda5dd4464d17a77f98ae8efef5a3"
-        },
-        {
-            "filename": "outputs/model_outcome_2_5_estimates.csv",
-            "hash": "27462ef62cda6bc54deac8ab514bfeb0"
-        },
-        {
-            "filename": "outputs/model_outcome_2_6_estimates.csv",
-            "hash": "7978f523d0df7d4820a72bacd37b1a4c"
+            "hash": "9d32e471e350b462a31f797e151bef5c"
         },
         {
             "filename": "inputs/data.duckdb",
-            "hash": "87a945900968afc1107a9ea8223a7a5b"
+            "hash": "c1118df02bf87f53c55b4d5cfc31c6e4"
         }
     ]
 }

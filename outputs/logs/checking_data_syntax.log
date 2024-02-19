@@ -4,7 +4,7 @@ INFO:: Configuration file loaded
 INFO:: #########################################
 INFO:: # CDMB version: 1.3.6
 INFO:: # ASPIRE version: 1.2.3
-INFO:: # PIPELINE version: 1.1.0
+INFO:: # PIPELINE version: 1.1.1
 INFO:: #########################################
 
 INFO:: -Found 3 uploaded files to check and map!
@@ -94,7 +94,6 @@ INFO:: ./inputs/synthetic_post_index_hospital_episode.csv -> LOADED!
 The information from the files has been loaded into the embedded database in case of success of the check process.
 Proceeding to delete the csv files uploaded by the user.
 
- /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/readme.txt deleted!
  /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/synthetic_outpatient_prescription.csv deleted!
  /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/synthetic_post_index_hospital_episode.csv deleted!
  /home/mambauser/projects/icconic-hipfx/src/check_load-scripts/inputs/synthetic_patient_cohort.csv deleted!
