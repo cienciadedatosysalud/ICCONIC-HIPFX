@@ -2,11 +2,11 @@
     "files": [
         {
             "filename": "outputs/logs/checking_data_syntax.log",
-            "hash": "41ec163a57c5beb37ebae9fe8724f9d8"
+            "hash": "ad32af74ac8f017453fe24367604de7f"
         },
         {
             "filename": "inputs/data.duckdb",
-            "hash": "a745bc68b7fa2b355e8868ef8b811ddc"
+            "hash": "b4073ffb2221641dbfd35c16e8bc9c21"
         }
     ]
 }

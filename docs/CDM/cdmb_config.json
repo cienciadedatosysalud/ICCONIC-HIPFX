@@ -10,7 +10,7 @@
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "document": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.2.3",
+        "version_sem": "1.2.4",
         "authors": [
             {
                 "name": "Estupiñán-Romero, Francisco ",
@@ -117,7 +117,7 @@
                     "catalog_bl": false,
                     "transformations_from_origin": "",
                     "possible_data_source": "Insurance registry or Health system users database",
-                    "observations_comments": "age_nm >= 5 | age_nm <= 115",
+                    "observations_comments": "age_nm >= 65 | age_nm <= 115",
                     "examples": "",
                     "catalog": null
                 },
@@ -286,7 +286,7 @@
                     "observations_comments": "",
                     "examples": "",
                     "catalog": {
-                        "column_name": "code",
+                        "column_name": "source",
                         "filename": "surgical_procedure_cd.csv"
                     }
                 },
@@ -337,7 +337,7 @@
                     "observations_comments": "see 'def_anesthesia_cd' tab for further information on how to calculate the type of anesthesia depending on procedure codes",
                     "examples": "",
                     "catalog": {
-                        "column_name": "code",
+                        "column_name": "anesthesia_type_cd",
                         "filename": "anesthesia_type_cd.csv"
                     }
                 },
@@ -963,7 +963,7 @@
             ],
             "rules": [
                 {
-                    "expression": "age_nm BETWEEN 5 AND 115",
+                    "expression": "age_nm BETWEEN 65 AND 115",
                     "name": "age_nm",
                     "description": "Rule for column age_nm"
                 },

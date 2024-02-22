@@ -10,14 +10,13 @@ if(sum(is.na(icc_exitus_inhospital))== 0){
   print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
 }
 print(paste0('Median odds ratio (MOR): ', MOR_exitus_inhospital))
-if(descriptive_values$country_cd != 'US'){
-  MOR_w_CI_exitus_inhospital <- calculate_MOR(model_exitus_hosp_bl,var_re = 'hospital_st',n_iter = 1000)
-  print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_inhospital[2],5),
+
+MOR_w_CI_exitus_inhospital <- calculate_MOR(model_exitus_hosp_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_inhospital[2],5),
                ' with lower_ci95=',round(MOR_w_CI_exitus_inhospital[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_inhospital[3],5)))
   
-}else{
-  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
-}
+
+print(paste0('Summary for country_cd: ',descriptive_values$country_cd))
 sink(file = NULL)
 
 
@@ -32,14 +31,12 @@ if(sum(is.na(icc_exitus_7d))== 0){
   print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
 }
 print(paste0('Median odds ratio (MOR): ', MOR_exitus_7d))
-if(descriptive_values$country_cd != 'US'){
-  MOR_w_CI_exitus_7d <- calculate_MOR(model_exitus_7days_bl,var_re = 'hospital_st',n_iter = 1000)
-  print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_7d[2],5),
+
+MOR_w_CI_exitus_7d <- calculate_MOR(model_exitus_7days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_7d[2],5),
                ' with lower_ci95=',round(MOR_w_CI_exitus_7d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_7d[3],5)))
   
-}else{
-  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
-}
+
 print(paste0('Summary for country_cd: ',descriptive_values$country_cd))
 sink(file = NULL)
 
@@ -55,14 +52,11 @@ if(sum(is.na(icc_exitus_30d))== 0){
 }
 print(paste0('Median odds ratio (MOR): ', MOR_exitus_30d))
 
-if(descriptive_values$country_cd != 'US'){
-  MOR_w_CI_exitus_30d <- calculate_MOR(model_exitus_30days_bl,var_re = 'hospital_st',n_iter = 1000)
-  print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_30d[2],5),
+
+MOR_w_CI_exitus_30d <- calculate_MOR(model_exitus_30days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_30d[2],5),
                ' with lower_ci95=',round(MOR_w_CI_exitus_30d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_30d[3],5)))
   
-}else{
-  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
-}
 
 print(paste0('Summary for country_cd: ',descriptive_values$country_cd))
 sink(file = NULL)
@@ -81,14 +75,12 @@ print(paste0('ICC ajusted: ',
   print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
 }
 print(paste0('Median odds ratio (MOR): ', MOR_unplanned_7d))
-if(descriptive_values$country_cd != 'US'){
-  MOR_w_CI_unplanned_7d <- calculate_MOR(model_unplanned_7days_bl,var_re = 'hospital_st',n_iter = 1000)
-  print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_7d[2],5),
+
+MOR_w_CI_unplanned_7d <- calculate_MOR(model_unplanned_7days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_7d[2],5),
                ' with lower_ci95=',round(MOR_w_CI_unplanned_7d[1],5),' and upper_ci95=',round(MOR_w_CI_unplanned_7d[3],5)))
   
-}else{
-  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
-}
+
 print(paste0('Summary for country_cd: ',descriptive_values$country_cd))
 sink(file = NULL)
 
@@ -106,14 +98,12 @@ print(paste0('ICC ajusted: ',
   print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
 }
 print(paste0('Median odds ratio (MOR): ', MOR_unplanned_30d))
-if(descriptive_values$country_cd != 'US'){
-  MOR_w_CI_unplanned_30d <- calculate_MOR(model_unplanned_30days_bl,var_re = 'hospital_st',n_iter = 1000)
-  print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_30d[2],5),
+
+MOR_w_CI_unplanned_30d <- calculate_MOR(model_unplanned_30days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_30d[2],5),
                ' with lower_ci95=',round(MOR_w_CI_unplanned_30d[1],5),' and upper_ci95=',round(MOR_w_CI_unplanned_30d[3],5)))
   
-}else{
-  print(paste0('MOR with bootsrapping: not possible to calculate (may be due to a large number of hospitals)'))
-}
+
 print(paste0('Summary for country_cd: ',descriptive_values$country_cd))
 sink(file = NULL)
 

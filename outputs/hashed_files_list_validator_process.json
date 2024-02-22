@@ -2,11 +2,11 @@
     "files": [
         {
             "filename": "outputs/validator_output.json",
-            "hash": "e4268aa6a3f2832230d00aa6734fa903"
+            "hash": "dd21dc62732e1e36add427ffb2208cf2"
         },
         {
             "filename": "outputs/validator_report.html",
-            "hash": "4e799b25e2e5dcaa0332098f1a80e778"
+            "hash": "33c5aa947eeec7f04bdaeabd5284cf88"
         },
         {
             "filename": "outputs/logs/report_validation_report.log",
@@ -14,7 +14,7 @@
         },
         {
             "filename": "outputs/logs/checking_data_compliance.log",
-            "hash": "b976060925158cf89ce876dcd8ce8d6d"
+            "hash": "cae07520f72a021b93d35e6063b62319"
         }
     ]
 }
