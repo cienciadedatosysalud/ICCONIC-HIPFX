@@ -104,5 +104,5 @@ R-sq.(adj) =  0.000143   Deviance explained = 1.74%
 [1] "For component hospital_st, variance is: 0.00141 with lower_ci95=8e-05 and upper_ci95=17.26997"
 [1] "ICC ajusted: 0.00043 with lower_ci95=-0.0111 and upper_ci95=0.0117"
 [1] "Median odds ratio (MOR): 1.03644"
-[1] "MOR with bootsrapping: 1.10029 with lower_ci95=1.05202 and upper_ci95=1.16689"
+[1] "MOR with bootsrapping: 1.102 with lower_ci95=1.04943 and upper_ci95=1.16446"
 [1] "Summary for country_cd: ESP"

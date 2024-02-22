@@ -237,25 +237,9 @@
                 },
                 {
                     "variable": "anesthesia_type_cd",
-                    "wrong_values": [
-                        "2",
-                        "1",
-                        "0"
-                    ],
-                    "wrong_lines": [
-                        "1",
-                        "2",
-                        "3",
-                        "4",
-                        "5",
-                        "6",
-                        "7",
-                        "9",
-                        "10",
-                        "11",
-                        "+9042 lines"
-                    ],
-                    "total_wrong_lines": 9052
+                    "wrong_values": [],
+                    "wrong_lines": [],
+                    "total_wrong_lines": 0
                 }
             ],
             "rules": [
