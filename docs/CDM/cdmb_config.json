@@ -286,7 +286,7 @@
                     "observations_comments": "",
                     "examples": "",
                     "catalog": {
-                        "column_name": "source",
+                        "column_name": "type_cd",
                         "filename": "surgical_procedure_cd.csv"
                     }
                 },
@@ -1099,7 +1099,7 @@
             ],
             "rules": [
                 {
-                    "expression": "prescription_start_dt >= '2017-01-01'",
+                    "expression": "prescription_start_dt >= '2016-01-01'",
                     "name": "prescription_start_dt",
                     "description": "Rule for column prescription_start_dt"
                 },

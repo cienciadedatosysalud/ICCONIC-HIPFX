@@ -18,7 +18,8 @@ execute:
   cache: false
   echo: false
 params:
-    data_path: '../../inputs/data.duckdb' 
+    data_path: '../../inputs/data.duckdb'
+    state: ''
 ---
 
 ```{css, echo = FALSE}
@@ -599,7 +600,7 @@ table <- variables_in_hospital %>% gt() %>%
                    use_compact_mode = TRUE,
                    use_resizers = TRUE)
 
-write.table(variables_in_hospital,'../../outputs/table_descriptive_hospital_with_unique_patients.csv',row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+write.table(variables_in_hospital,paste0('../../outputs/table_descriptive_hospital_with_unique_patients',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
 table
 rm(table)
 ```
@@ -730,6 +731,7 @@ df_model$month <- as.factor(df_model$month)
 miss_threshold = 0.2
 df_model_aux <- df_model %>% select(!c(age_nm,exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,futime_adm_surg,futime_adm_surg_cd,hospital_st,unplanned_readmission_7d_bl,unplanned_readmission_30d_bl))
 a <- names(df_model_aux)[sapply(df_model_aux, function(x) (sum(is.na(x))/nrow(df_model_aux)) <= miss_threshold)]
+print(df_model_aux)
 df_model_aux <- df_model_aux %>% select(a)
 formula_model <- paste0(colnames(df_model_aux), collapse = ' + ')
 rm(df_model_aux)
@@ -804,14 +806,14 @@ summary(model_exitus_30days_bl_simple)
 ### Filter hospitals by patients
 
 filter_hospital_by_npatients <- function(n_filter, variables_in_hospital, df_model,
-                                         n_min_hospital,n_max_hospital, perc_sample){
+                                         n_min_hospital,n_max_hospital){
   variables_in_hospital_filter <- variables_in_hospital %>% filter(n_patient >= n_filter)
   if(length(variables_in_hospital_filter$hospital_st) < n_min_hospital){
     n_total_patients <- sum(variables_in_hospital$n_patient,na.rm=TRUE)
     hospitals_filter <- variables_in_hospital %>% dplyr::select(hospital_st,n_hospitalization_episode_id,n_patient) 
     hospitals_filter <- hospitals_filter[order(hospitals_filter$n_patient,decreasing = TRUE),]
     hospitals_filter <- hospitals_filter %>% mutate(perc_cumsum_patient = 100*(cumsum(n_patient)/n_total_patients))
-    hospitals_filter <- hospitals_filter %>% filter(perc_cumsum_patient <= perc_sample)
+    #hospitals_filter <- hospitals_filter %>% filter(perc_cumsum_patient <= perc_sample)
     if(nrow(hospitals_filter) > n_max_hospital){
       hospitals_filter <- hospitals_filter[1:n_max_hospital,]
     }
@@ -826,10 +828,13 @@ filter_hospital_by_npatients <- function(n_filter, variables_in_hospital, df_mod
   return(df_model_filter)
 }
 df_model_filter <- filter_hospital_by_npatients(n_filter=50,variables_in_hospital,df_model,n_min_hospital=5, 
-                                                n_max_hospital=150, perc_sample=85)
+                                                n_max_hospital=150)
 df_model_filter <- na.omit(df_model_filter)
 
-log_info(paste0("For multilevel model, the number of records is: ",nrow(df_model_filter),' which is a percentage of the sample of: ',round(100*(nrow(df_model_filter)/sum(variables_in_hospital$n_hospitalization_episode_id, na.rm = TRUE)),2),'%'))
+log_info(paste0("For multilevel model, the number of records is: ",nrow(df_model_filter),' which is a percentage of the sample of: '
+,round(100*(nrow(df_model_filter)/sum(variables_in_hospital$n_hospitalization_episode_id, na.rm = TRUE)),2),'%. These models include: ',
+length(unique(df_model_filter$hospital_st)),' hospitals of: ',length(unique(variables_in_hospital$hospital_st)),' (',
+round(100*(length(unique(df_model_filter$hospital_st))/length(unique(variables_in_hospital$hospital_st))),2),'%)'))
 
 
 ```
@@ -1194,7 +1199,7 @@ output_model_exitus_hospital_bl <- output_model_exitus_hospital_bl %>%
             P95_residuals_model = round(quantile(resid_model_exitus_hospital_bl,0.95,na.rm=TRUE),5)
             )
 
-write.table(output_model_exitus_hospital_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_exitus_inhospital.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+write.table(output_model_exitus_hospital_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_inhospital',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
 
 ggplot(df_model_filter, aes(x = resid_model_exitus_hospital_bl, y = hospital_st, group = hospital_st)) + 
   geom_density_ridges(alpha=0.7) +
@@ -1286,7 +1291,7 @@ output_model_exitus_7days_bl <- output_model_exitus_7days_bl %>%
             P95_residuals_model = round(quantile(resid_model_exitus_7days_bl,0.95,na.rm=TRUE),5)
             )
 
-write.table(output_model_exitus_7days_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in7days.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+write.table(output_model_exitus_7days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in7days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
 
 ggplot(df_model_filter, aes(x = resid_model_exitus_7days_bl, y = hospital_st, group = hospital_st)) + 
   geom_density_ridges(alpha=0.7) +
@@ -1382,7 +1387,7 @@ output_model_exitus_30days_bl <- output_model_exitus_30days_bl %>%
             P95_residuals_model = round(quantile(resid_model_exitus_30days_bl,0.95,na.rm=TRUE),5)
             )
 
-write.table(output_model_exitus_30days_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in30days.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+write.table(output_model_exitus_30days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in30days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
 
 ggplot(df_model_filter, aes(x = resid_model_exitus_30days_bl, y = hospital_st, group = hospital_st)) + 
   geom_density_ridges(alpha=0.7) +
@@ -1409,7 +1414,7 @@ p$Name[p$Name %in% 'model_exitus_7days_bl'] <- 'Model 2: exitus in 7 days after 
 p$Name[p$Name %in% 'model_exitus_30days_bl'] <- 'Model 3: exitus in 30 days after surgery'
 
 p
-write.table(p,'../../outputs/performance_GAMM_exitus.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+write.table(p,paste0('../../outputs/performance_GAMM_exitus',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
 ```
  
 
@@ -1498,7 +1503,7 @@ output_model_unplanned_7days_bl <- output_model_unplanned_7days_bl %>%
             )
 
 
-write.table(output_model_unplanned_7days_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_unplanned_7days.csv', sep='|',row.names=FALSE)
+write.table(output_model_unplanned_7days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_unplanned_7days',params$state,'.csv'), sep='|',row.names=FALSE)
 
 ggplot(df_model_filter, aes(x = resid_model_unplanned_7days_bl, y = hospital_st, group = hospital_st)) + 
   geom_density_ridges(alpha=0.7) +
@@ -1589,7 +1594,7 @@ output_model_unplanned_30days_bl <- output_model_unplanned_30days_bl %>%
             P95_residuals_model = round(quantile(resid_model_unplanned_30days_bl,0.95,na.rm=TRUE),5)
             )
 
-write.table(output_model_unplanned_30days_bl,'../../outputs/aggregated_outputs_byhospital_GAMM_unplanned_30days.csv', sep='|',row.names=FALSE)
+write.table(output_model_unplanned_30days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_unplanned_30days',params$state,'.csv'), sep='|',row.names=FALSE)
 
 ggplot(df_model_filter, aes(x = resid_model_unplanned_30days_bl, y = hospital_st, group = hospital_st)) + 
   geom_density_ridges(alpha=0.7) +
@@ -1616,7 +1621,7 @@ p$Name[p$Name %in% 'model_unplanned_7days_bl'] <- 'Model 1: unplanned readmissio
 p$Name[p$Name %in% 'model_unplanned_30days_bl'] <- 'Model 2: unplanned readmission in the next 30 days after hospitalization'
 
 p
-write.table(p,'../../outputs/performance_GAMM_unplanned_readmission.csv', sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+write.table(p,paste0('../../outputs/performance_GAMM_unplanned_readmission',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
 ```
 
 
