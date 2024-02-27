@@ -1,0 +1,70 @@
+---
+title: "ICCONIC HipFX time to surgery: Analytical pipeline (by residence area)"
+author: Data Science for Health Services and Policy Research (IACS)
+editor: source
+
+format: 
+  html:
+    embed-resources: true
+    code-fold: true
+    html-math-method: katex
+execute: 
+  warning: false
+  cache: false
+  echo: false
+params:
+    data_path: '../../inputs/data.duckdb' 
+---
+
+```{r, echo=FALSE,warning=FALSE, output = TRUE}
+#| label: running analysis
+
+library(duckdb)
+
+con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+residence_area_cd_list <- dbGetQuery(conn = con,"select distinct residence_area_cd from main.patient_cohort where residence_area_cd is not null and hospital_st is not null ORDER BY residence_area_cd ASC")
+residence_area_cd_list <- residence_area_cd_list$residence_area_cd
+dbDisconnect(con, shutdown=TRUE)
+
+copy_original_data <- function(){
+    con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+    dbExecute(con,paste0("CREATE OR REPLACE TABLE patient_cohort_copy AS FROM patient_cohort;"))
+    dbDisconnect(con, shutdown=TRUE)
+}
+reset_original_data <- function(){
+    con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+    dbExecute(con,paste0("CREATE OR REPLACE TABLE patient_cohort AS FROM patient_cohort_copy;"))
+    dbDisconnect(con, shutdown=TRUE)
+}
+remove_copy_data <- function(){
+    reset_original_data()
+    con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)       
+    dbExecute(con,paste0("DROP TABLE patient_cohort_copy;"))
+    dbDisconnect(con, shutdown=TRUE)
+}
+
+copy_original_data()
+print(residence_area_cd_list)
+for (i in 1:length(residence_area_cd_list)) { 
+  con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+  dbExecute(con,paste0("CREATE OR REPLACE TABLE patient_cohort AS FROM (select * from patient_cohort_copy where residence_area_cd = '",residence_area_cd_list[i],"');"))
+  dbDisconnect(con, shutdown=TRUE)
+  tryCatch(
+  {
+    print(paste0('Running analysis for residence area: ',residence_area_cd_list[i]))
+    status <- system(paste0("quarto render analysis_icconic_hipfx_timetosurgery.qmd -P state:\"_",residence_area_cd_list[i],"\" --to html --output analysis_icconic_hipfx_timetosurgery_",residence_area_cd_list[i],".html"))
+    if(status != 0){
+      print(paste0('Not possible Running analysis for residence area: ',residence_area_cd_list[i]))
+    }
+    reset_original_data()    
+  },
+  error=function(cond) {
+    print(paste0('Not possible Running analysis for residence area: ',residence_area_cd_list[i]))
+    reset_original_data()  
+  }
+
+) 
+  
+}
+remove_copy_data()
+```
