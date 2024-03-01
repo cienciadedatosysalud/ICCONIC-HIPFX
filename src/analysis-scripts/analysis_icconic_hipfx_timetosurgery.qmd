@@ -688,7 +688,7 @@ df_patient_filter <- df_patient_filter %>%
       !is.na(exitus_dt) & futime_surg_end<= 30 ~ 1,
       TRUE ~ 0),
     exitus_hosp_bl = case_when(
-      hospital_discharge_dt<=exitus_dt ~ 1,
+      !is.na(exitus_dt) & hospital_discharge_dt>=exitus_dt ~ 1,
       TRUE ~ 0),
     futime_adm_surg_cd = case_when(
       futime_adm_surg <= 1 ~ 1,
@@ -696,7 +696,7 @@ df_patient_filter <- df_patient_filter %>%
       futime_adm_surg > 2 & futime_adm_surg <= 3 ~ 3,
       TRUE ~ 4)
   )
-
+df_patient_filter <- df_patient_filter %>% filter(futime_adm_surg>=0) # filter remove possible NAs too
 df_patient_filter <- df_patient_filter %>% mutate(
   year = year(surgical_procedure_dt),
   month = month(surgical_procedure_dt),
