@@ -10,7 +10,7 @@
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "document": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.2.4",
+        "version_sem": "1.2.5",
         "authors": [
             {
                 "name": "Estupiñán-Romero, Francisco ",
@@ -58,7 +58,7 @@
         "description": "A cohort including all people with a hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture (hipfx)",
         "inclusion_criteria": "Any person 65 years or older with an unplanned hospital episode (inpatient) with a main diagnosis  ('main_diagnosis_cd') of hip fracture during the study period",
         "exclusion_criteria": "Any person under 65 years old\nMultiple fractures (polytrauma)\nAdmission from another hospital\n",
-        "beggining_study_period": "2017-01-01",
+        "beggining_study_period": "2016-01-01",
         "end_study_period": "2021-12-31",
         "cohort_definition_inclusion": {
             "filename": "cohort_definition_inclusion.csv",
@@ -1099,7 +1099,7 @@
             ],
             "rules": [
                 {
-                    "expression": "prescription_start_dt >= '2016-01-01'",
+                    "expression": "prescription_start_dt >= '2015-01-01'",
                     "name": "prescription_start_dt",
                     "description": "Rule for column prescription_start_dt"
                 },

@@ -436,9 +436,9 @@ descriptive_values_ <- melt(descriptive_values,id=NULL)
 anesthesia_type <- anesthesia_type %>% arrange(anesthesia_type_cd) %>%  dplyr::select(anesthesia_type_cd,united_anesthesia_type)
 anesthesia_type <- anesthesia_type %>% mutate(
     descrp = case_when(
-    anesthesia_type_cd %in% '0' ~ 'General',
+    anesthesia_type_cd %in% '0' ~ 'Analgesia',
     anesthesia_type_cd %in% '1' ~ 'Locorregional',
-    anesthesia_type_cd %in% '2' ~ 'Locorregional and General',
+    anesthesia_type_cd %in% '2' ~ 'General',
     TRUE ~ 'Unknown'
     )
 )

@@ -10,24 +10,24 @@ atc,R03BA05,R03BA05,fluticasone,Inhaled steroids,1.0,1
 atc,R03BA07,R03BA07,mometasone,Inhaled steroids,1.0,1
 atc,R03BA06,R03BA06,triamcinolone,Inhaled steroids,1.0,1
 atc,R03BA08,R03BA08,ciclesonide,Inhaled steroids,1.0,1
-atc,A07EA04 ,A07EA04 ,betamethasone,Oral Steroids,1.0,1
-atc,H02AB01 ,H02AB01 ,betamethasone,Oral Steroids,,1
+atc,A07EA04,A07EA04,betamethasone,Oral Steroids,1.0,1
+atc,H02AB01,H02AB01,betamethasone,Oral Steroids,,1
 atc,R03BA02,R03BA02,budesonide,Oral Steroids,1.0,1
-atc,H02AB10 ,H02AB10 ,cortisone,Oral Steroids,1.0,1
+atc,H02AB10,H02AB10,cortisone,Oral Steroids,1.0,1
 atc,H02AB02,H02AB02,dexamethasone,Oral Steroids,1.0,1
-atc,H02AA02 ,H02AA02 ,fludrocortisone,Oral Steroids,1.0,1
-atc,A01AC03 ,A01AC03 ,hydrocortisone,Oral Steroids,1.0,1
+atc,H02AA02,H02AA02,fludrocortisone,Oral Steroids,1.0,1
+atc,A01AC03,A01AC03,hydrocortisone,Oral Steroids,1.0,1
 atc,H02AB04,H02AB04,methylprednisolone,Oral Steroids,1.0,1
 atc,H02BX01,H02BX01,methylprednisolone,Oral Steroids,,1
 atc,H02AB06,H02AB06,prednisolone,Oral Steroids,,1
 atc,H02AB07,H02AB07,prednisone,Oral Steroids,1.0,1
 atc,H02AB08,H02AB08,triamcinolone,Oral Steroids,1.0,1
-atc,A02BC06 ,A02BC06 ,dexlansoprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC06,A02BC06,dexlansoprazole,Proton Pump Inhibitors,1.0,1
 atc,A02BC05,A02BC05,esomeprazole,Proton Pump Inhibitors,1.0,1
-atc,A02BC03 ,A02BC03 ,lansoprazole,Proton Pump Inhibitors,1.0,1
-atc,A02BC53 ,A02BC53 ,lansoprazole,Proton Pump Inhibitors,,1
-atc,A02BC01 ,A02BC01 ,omeprazole,Proton Pump Inhibitors,1.0,1
-atc,A02BC02 ,A02BC02 ,pantoprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC03,A02BC03,lansoprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC53,A02BC53,lansoprazole,Proton Pump Inhibitors,,1
+atc,A02BC01,A02BC01,omeprazole,Proton Pump Inhibitors,1.0,1
+atc,A02BC02,A02BC02,pantoprazole,Proton Pump Inhibitors,1.0,1
 atc,A02BC04,A02BC04,rabeprazole,Proton Pump Inhibitors,1.0,1
 atc,A02BC54,A02BC54,rabeprazole,Proton Pump Inhibitors,,1
 atc,A02BA01,A02BA01,cimetidine,H2 Antagonists/ Histamine 2 Receptor Antagonists,1.0,1
@@ -436,3 +436,28 @@ atc,C07BA05,C07BA05,propranolol and thiazides,Beta Blockers,,0
 atc,C07AA06,C07AA06,timolol,Beta Blockers,2.0,0
 atc,C07BA06,C07BA06,timolol and thiazides,Beta Blockers,,0
 atc,C07DA06,C07DA06,"timolol, thiazides and other diuretics",Beta Blockers,,0
+atc,R01AD05,R01AD05,,,,
+atc,R01AD03,R01AD03,,,,
+atc,R01AD53,R01AD53,,,,
+atc,R01AD13,R01AD13,,,,
+atc,N06AB04,N06AB04,,,,
+atc,N06AB10,N06AB10,,,,
+atc,N06AB03,N06AB03,,,,
+atc,N06AB08,N06AB08,,,,
+atc,N01AH04,N01AH04,,,,
+atc,N07BC02,N07BC02,,,,
+atc,R06AB56,R06AB56,,,,
+atc,R06AE01,R06AE01,,,,
+atc,R06AE51,R06AE51,,,,
+atc,R03DA12,R03DA12,,,,
+atc,R06AD03,R06AD03,,,,
+atc,C02AB01,C02AB01,,,,
+atc,C02AB02,C02AB02,,,,
+atc,N05AF01,N05AF01,,,,
+atc,N05AF02,N05AF02,,,,
+atc,N05AF03,N05AF03,,,,
+atc,N05AF05,N05AF05,,,,
+atc,C01DA13,C01DA13,,,,
+atc,C01DA05,C01DA05,,,,
+atc,C01DA55,C01DA55,,,,
+atc,C05AE01,C05AE01,,,,
