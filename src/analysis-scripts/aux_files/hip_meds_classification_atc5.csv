@@ -247,7 +247,8 @@ Centrally-Acting Antihypertensives,N02CX02,Cardiovascular agents,Fall_increase_h
 Centrally-Acting Antihypertensives,C02LC01,Cardiovascular agents,Fall_increase_high,centrAntiHT
 Centrally-Acting Antihypertensives,C02LC51,Cardiovascular agents,Fall_increase_high,centrAntiHT
 Centrally-Acting Antihypertensives,C02AC02,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,C02AB,Cardiovascular agents,Fall_increase_high,centrAntiHT
+Centrally-Acting Antihypertensives,C02AB01,Cardiovascular agents,Fall_increase_high,centrAntiHT
+Centrally-Acting Antihypertensives,C02AB02,Cardiovascular agents,Fall_increase_high,centrAntiHT
 Centrally-Acting Antihypertensives,M03BX02,Cardiovascular agents,Fall_increase_high,centrAntiHT
 1st-Generation Antipsychotics (FGAP),N05AA01,Psychotherapeutic agents,Fall_increase_high,fgap
 1st-Generation Antipsychotics (FGAP),N05AD08,Psychotherapeutic agents,Fall_increase_high,fgap
@@ -261,7 +262,11 @@ Centrally-Acting Antihypertensives,M03BX02,Cardiovascular agents,Fall_increase_h
 1st-Generation Antipsychotics (FGAP),N05AG02,Psychotherapeutic agents,Fall_increase_high,fgap
 1st-Generation Antipsychotics (FGAP),N05AB04,Psychotherapeutic agents,Fall_increase_high,fgap
 1st-Generation Antipsychotics (FGAP),N05AC02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AF ,Psychotherapeutic agents,Fall_increase_high,fgap
+1st-Generation Antipsychotics (FGAP),N05AF01,Psychotherapeutic agents,Fall_increase_high,fgap
+1st-Generation Antipsychotics (FGAP),N05AF02,Psychotherapeutic agents,Fall_increase_high,fgap
+1st-Generation Antipsychotics (FGAP),N05AF03,Psychotherapeutic agents,Fall_increase_high,fgap
+1st-Generation Antipsychotics (FGAP),N05AF04,Psychotherapeutic agents,Fall_increase_high,fgap
+1st-Generation Antipsychotics (FGAP),N05AF05,Psychotherapeutic agents,Fall_increase_high,fgap
 1st-Generation Antipsychotics (FGAP),N05AB06,Psychotherapeutic agents,Fall_increase_high,fgap
 1st-Generation Antipsychotics (FGAP),N05AA05,Psychotherapeutic agents,Fall_increase_high,fgap
 2nd-Generation Antipsychotics (SGAP),N05AX12,Psychotherapeutic agents,Fall_increase_moderate,sgap
@@ -282,8 +287,8 @@ Centrally-Acting Antihypertensives,M03BX02,Cardiovascular agents,Fall_increase_h
 "Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA63,Cardiovascular agents,Fall_increase_high,nitrates
 "Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA05,Cardiovascular agents,Fall_increase_high,nitrates
 "Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA55,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA02 ,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C05AE01 ,Cardiovascular agents,Fall_increase_high,nitrates
+"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA02,Cardiovascular agents,Fall_increase_high,nitrates
+"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C05AE01,Cardiovascular agents,Fall_increase_high,nitrates
 "Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA08,Cardiovascular agents,Fall_increase_high,nitrates
 "Nitrates* (do not include sublingual tablets, oral and transdermal only)",C05AE02,Cardiovascular agents,Fall_increase_high,nitrates
 "Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA58,Cardiovascular agents,Fall_increase_high,nitrates
@@ -294,7 +299,7 @@ Loop Diuretics,C03EB02,Cardiovascular agents,Fall_increase_high,loopDiur
 Loop Diuretics,C03CA01,Cardiovascular agents,Fall_increase_high,loopDiur
 Loop Diuretics,C03CB01,Cardiovascular agents,Fall_increase_high,loopDiur
 Loop Diuretics,C03EB01,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03CA04 ,Cardiovascular agents,Fall_increase_high,loopDiur
+Loop Diuretics,C03CA04,Cardiovascular agents,Fall_increase_high,loopDiur
 Loop Diuretics,C03CC01,Cardiovascular agents,Fall_increase_high,loopDiur
 Thiazide and Thiazide-like Diuretics,C03AA01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
 Thiazide and Thiazide-like Diuretics,C03AB01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
@@ -324,7 +329,7 @@ Thiazide and Thiazide-like Diuretics,C03BA08,Cardiovascular agents,Fall_increase
 Thiazide and Thiazide-like Diuretics,C03EA12,Cardiovascular agents,Fall_increase_moderate,thiazDiur
 Thiazide and Thiazide-like Diuretics,C03AA05,Cardiovascular agents,Fall_increase_moderate,thiazDiur
 Thiazide and Thiazide-like Diuretics,C03AB05,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,G01AE10 ,Cardiovascular agents,Fall_increase_moderate,thiazDiur
+Thiazide and Thiazide-like Diuretics,G01AE10,Cardiovascular agents,Fall_increase_moderate,thiazDiur
 Sedative Hypnotics,N05CM04,Central nervous system agents,Fall_increase_high,sedHyp
 Sedative Hypnotics,N05BE01,Central nervous system agents,Fall_increase_high,sedHyp
 Sedative Hypnotics,N05CC01,Central nervous system agents,Fall_increase_high,sedHyp

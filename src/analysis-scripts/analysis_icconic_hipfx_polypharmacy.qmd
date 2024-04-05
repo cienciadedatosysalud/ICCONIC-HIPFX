@@ -32,6 +32,9 @@ library(MatchIt)
 library(ggplot2)
 library(duckdb)
 library(logger)
+######Updates(0328)###### Start ##### 1
+library(dplyr)
+######Updates(0328)###### End #####
 s <- Sys.getenv("PIPELINE_VERSION")
 
 log_info(paste0("Analysis version: ",s))
@@ -144,7 +147,12 @@ hip_cohort_date['pres_window_end'] = hip_cohort_date['hospital_discharge_dt'] + 
 # construct final time intervals
 hip_cohort_date = hip_cohort_date[['patient_id','pres_window_start','hospital_admission_dt','hospital_discharge_dt','wash_out_end','observation_end','pres_window_end']]
 
-
+######Updates(0328)###### Start ##### 2
+# filter patients by cohort capture period admission after 2016-07-01, discharge before 2020-12-31
+hip_cohort_date = hip_cohort_date[hip_cohort_date['hospital_admission_dt'] >= '2016-07-01']
+hip_cohort_date = hip_cohort_date[hip_cohort_date['hospital_discharge_dt'] <= '2020-12-31']
+p_count_0_1 = len(hip_cohort_date['patient_id'].unique())
+######Updates(0328)###### End #####
 
 
 ############################################################### drug_pattern_info ###############################################################
@@ -194,6 +202,28 @@ def pres_df_by_level(df, level):
 Grandparent = pres_df_by_level(pres_1, 'Grandparent_Class')
 Risk = pres_df_by_level(pres_1, 'Risk_Class')
 DrugCate = pres_df_by_level(pres_1, 'Cate_short')
+
+######Updates(0402)###### Start ##### 1
+Grandparent_collist = ['Central nervous system agents', 'Cardiovascular agents', 'Hormones/hormone modifiers', 'Psychotherapeutic agents', 'Gastrointestinal agents', 'Respiratory agents', 'Metabolic agents']
+Grandparent_collist = [x + '_Pre' for x in Grandparent_collist] + [x + '_Post' for x in Grandparent_collist]
+for col in Grandparent_collist:
+    if col not in Grandparent.columns:
+        Grandparent[col] = pd.NA 
+
+Risk_collist = ['Bone_mass_decrese_moderate', 'Bone_mass_decrese_high', 'Fall_increase_moderate', 'Fall_increase_high']
+Risk_collist = [x + '_Pre' for x in Risk_collist] + [x + '_Post' for x in Risk_collist]
+for col in Risk_collist:
+    if col not in Risk.columns:
+        Risk[col] = pd.NA
+
+DrugCate_collist = ['Opioids', 'centrAntiHT', 'oralSter', 'barbs', 'sedHyp', 'benzos', 'gabaN02BF', 'firstGenAH', 'anticonv', 'thiazDiur', 'sgap', 'tca', 'ssriSnri', 'nitrates', 'antiPark', 'ppi', 'loopDiur', 'h2Antags', 'inhSteroids', 'fgap', 'tzd']
+DrugCate_collist = [x + '_Pre' for x in DrugCate_collist] + [x + '_Post' for x in DrugCate_collist]
+for col in DrugCate_collist:
+    if col not in DrugCate.columns:
+        DrugCate[col] = pd.NA
+######Updates(0402)###### End #####
+
+
 
 # identify prescription patterns for each level of classification
 def pres_pattern (df, Drug):
@@ -245,6 +275,12 @@ hip_cohort_date = hip_cohort_date.merge(polypharmacy_cohort_id, how='right', on=
 
 
 # Pull prescription duration for each level of classification (Only for Descriptive Analysis)
+
+######Updates(0328)###### Start ##### 3
+# For countries don't have prescription_end_dt, fill NA with 2016 to produce negative daration for plots.
+pres_1['prescription_end_dt'] = pres_1['prescription_end_dt'].fillna(pd.Timestamp('2016-01-01'))
+######Updates(0328)###### End #####
+
 pres_1['Prescription_length'] = (pres_1['prescription_end_dt'] - pres_1['prescription_start_dt']).dt.days
 
 def pres_duration_by_level(df, level):
@@ -259,7 +295,22 @@ Cate_short_duration = pres_duration_by_level(pres_1, 'Cate_short')
 Grandparent_Class_duration = pres_duration_by_level(pres_1, 'Grandparent_Class')
 Risk_Class_duration = pres_duration_by_level(pres_1, 'Risk_Class')
 
+######Updates(0402)###### Start ##### 2
+Grandparent_collist_3 = [x + '_Duration_Pre' for x in Grandparent_collist] + [x + '_Duration_Pre' for x in Grandparent_collist]
+for col in Grandparent_collist_3:
+    if col not in Grandparent_Class_duration.columns:
+        Grandparent_Class_duration[col] = pd.NA 
 
+Risk_collist_3 = [x + '_Duration_Pre' for x in Risk_collist] + [x + '_Duration_Post' for x in Risk_collist]
+for col in Risk_collist_3:
+    if col not in Risk_Class_duration.columns:
+        Risk_Class_duration[col] = pd.NA
+
+DrugCate_collist_3 = [x + '_Duration_Pre' for x in DrugCate_collist] + [x + '_Duration_Post' for x in DrugCate_collist]
+for col in DrugCate_collist_3:
+    if col not in Cate_short_duration.columns:
+        Cate_short_duration[col] = pd.NA
+######Updates(0402)###### End #####
 
 
 ############################################################### exitus_info ###############################################################
@@ -365,10 +416,13 @@ hip_polypharm = hip_polypharm[~hip_polypharm['age_nm'].isnull() == True]
 hip_polypharm = hip_polypharm[~(hip_polypharm['sex_cd'] == 0) | (hip_polypharm['sex_cd'] == 9)]
 p_count_4 = len(hip_polypharm['patient_id'].unique())
 
+######Updates(0328)###### Start ##### 4
+# Correct patient count info based on new cohort design
 cohort_count = {
-    'Stage': ['Initial cohort size', 'Patient with prescriptions during study period', 'Patient with prescriptions during look-back and observation period', 'Exclude patients who died before the outcome period', 'Exclude patients with missing age or gender information (Final cohort size)'],
-    'Final_cohort_size': [p_count_0, p_count_1, p_count_2, p_count_3, p_count_4]  
+    'Stage': ['Initial cohort size', 'Patient with hospitalization during the index period (JUL 2016-DEC 2020)', 'Patient with prescriptions during look-back and observation period', 'Exclude patients who died before the outcome period', 'Exclude patients with missing age or gender information (Final cohort size)'],
+    'Final_cohort_size': [p_count_0, p_count_0_1, p_count_2, p_count_3, p_count_4]  
 }
+######Updates(0328)###### End #####
 
 df = pd.DataFrame(cohort_count)
 
@@ -576,6 +630,14 @@ desc_drug_pattern_result_combined = pd.concat([desc_drugcate_result_dx_combined,
 
 ############################################################### Ploypharmacy duration outcome, total ############################################################### 
 cate_short_duration_list = ['Opioids_Duration_Pre','Opioids_Duration_Post','antiPark_Duration_Pre','antiPark_Duration_Post','anticonv_Duration_Pre','anticonv_Duration_Post','barbs_Duration_Pre','barbs_Duration_Post','benzos_Duration_Pre','benzos_Duration_Post','centrAntiHT_Duration_Pre','centrAntiHT_Duration_Post','fgap_Duration_Pre','fgap_Duration_Post','firstGenAH_Duration_Pre','firstGenAH_Duration_Post','gabaN02BF_Duration_Pre','gabaN02BF_Duration_Post','h2Antags_Duration_Pre','h2Antags_Duration_Post','inhSteroids_Duration_Pre','inhSteroids_Duration_Post','loopDiur_Duration_Pre','loopDiur_Duration_Post','nitrates_Duration_Pre','nitrates_Duration_Post','oralSter_Duration_Pre','oralSter_Duration_Post','ppi_Duration_Pre','ppi_Duration_Post','sedHyp_Duration_Pre','sedHyp_Duration_Post','sgap_Duration_Pre','sgap_Duration_Post','ssriSnri_Duration_Pre','ssriSnri_Duration_Post','tca_Duration_Pre','tca_Duration_Post','thiazDiur_Duration_Pre','thiazDiur_Duration_Post','tzd_Duration_Pre','tzd_Duration_Post']
+
+####### START UPDATE IACS #####
+cate_short_duration_list_left = list(set(cate_short_duration_list)-set(Cate_short_duration.columns))
+
+for c in cate_short_duration_list_left:
+  Cate_short_duration[c] = pd.NA
+######## END UPDATE IACS ########
+
 for cohort in cohort_list:
     globals()['duration_drugcate_result_' + cohort] = pd.DataFrame()
     for variable in cate_short_duration_list:
@@ -589,6 +651,16 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
 duration_drugcate_result_dx_combined = duration_drugcate_result_dx_full.merge(duration_drugcate_result_dx_S720, how='left', on='variable').merge(duration_drugcate_result_dx_S721, how='left', on='variable').merge(duration_drugcate_result_dx_S722, how='left', on='variable')
 
 Grandparent_duration_list = ['Cardiovascular agents_Duration_Pre','Cardiovascular agents_Duration_Post','Central nervous system agents_Duration_Pre','Central nervous system agents_Duration_Post','Gastrointestinal agents_Duration_Pre','Gastrointestinal agents_Duration_Post','Hormones/hormone modifiers_Duration_Pre','Hormones/hormone modifiers_Duration_Post','Metabolic agents_Duration_Pre','Metabolic agents_Duration_Post','Psychotherapeutic agents_Duration_Pre','Psychotherapeutic agents_Duration_Post','Respiratory agents_Duration_Pre','Respiratory agents_Duration_Post']
+
+
+####### START UPDATE IACS #####
+Grandparent_duration_list_left = list(set(Grandparent_duration_list)-set(Grandparent_Class_duration.columns))
+
+for c in Grandparent_duration_list_left:
+  Grandparent_Class_duration[c] = pd.NA
+######## END UPDATE IACS ########
+
+
 for cohort in cohort_list:
     globals()['duration_Grandparent_result_' + cohort] = pd.DataFrame()
     for variable in Grandparent_duration_list:
@@ -948,6 +1020,7 @@ By Drug Category
 duration_forest(duration_drugcate_pat_dx_full, 'Drug Category')
 ```
 
+#### If you don't have prescription_end_dt data, you will see negative duration here. Please simply skip the plot in this section.
 
 #### Figure 4: Prescription patterns by Outcome
 
@@ -1067,6 +1140,13 @@ hip_poly$sex_cd = as.factor(hip_poly$sex_cd)
 previous_adm_bl_notnull <- any(!is.na(hip_poly$previous_hospital_admission_bl))
 hospital_admtype_notnull  <- any(!is.na(hip_poly$hospital_admission_type_cd))
 
+
+####### START UPDATE IACS #####
+
+# GLM only uses rows without any NA value. So the dataframe you get from function predict() will have less records than the original one if you introduce NA values in the model. 
+
+hip_poly <- na.omit(hip_poly)
+######## END UPDATE IACS ########
 ps_score <- function(outcome_variable, df) {
   
   if (previous_adm_bl_notnull & hospital_admtype_notnull) {
@@ -1132,19 +1212,55 @@ summary(m1_1a)
 # Model m1_1b: outcome 1, by Risk, no match
 m1_1b <- glm(exitus_readm_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = hip_poly)   
 
+
 # Model m1_2a: outcome 1, by Grandparent, neareast mathch 
-m1_2a <- glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)
+
+####### START UPDATE IACS #####
+cols <- c("Central_nervous_system_agents_Patterns", "Cardiovascular_agents_Patterns", "Hormones_hormone_modifiers_Patterns", "Psychotherapeutic_agents_Patterns", "Gastrointestinal_agents_Patterns", "Respiratory_agents_Patterns", "Metabolic_agents_Patterns")
+
+missing <- sapply(matched_exitus_readm[cols], function(x) n_distinct(x) == 1)
+use <- cols[!missing]
+
+formula_str_1_2a <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(use, collapse = " + "))
+
+# m1_2a <- glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns +
+#                Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)
+
+m1_2a <- glm(as.formula(formula_str_1_2a), family = binomial(link = "logit"), data = matched_exitus_readm)
 summary(m1_2a)
+
+
+######## END UPDATE IACS ########
 
 # Model m1_2b: outcome 1, by Grandparent, no match 
 m1_2b = glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = hip_poly)
 
+######Updates(0328)###### Start ##### 5
+cate_cols <- c("Opioids_Patterns", "centrAntiHT_Patterns", "oralSter_Patterns", "barbs_Patterns", "sedHyp_Patterns", "benzos_Patterns", "gabaN02BF_Patterns", "firstGenAH_Patterns", "anticonv_Patterns", "thiazDiur_Patterns", "sgap_Patterns", "tca_Patterns", "ssriSnri_Patterns", "nitrates_Patterns", "antiPark_Patterns", "ppi_Patterns", "loopDiur_Patterns", "h2Antags_Patterns", "inhSteroids_Patterns", "fgap_Patterns", "tzd_Patterns")
+
+####### START UPDATE IACS #####
+
+cate_missing <- sapply(matched_exitus_readm[cate_cols], function(x) n_distinct(x) == 1)
+cate_use_1 <- cate_cols[!cate_missing]
+
+cate_missing <- sapply(hip_poly[cate_cols], function(x) n_distinct(x) == 1)
+cate_use_2 <- cate_cols[!cate_missing]
+
+
+formula_str_1_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use_1, collapse = " + "))
+formula_str_1_2 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use_2, collapse = " + "))
+
 # Model m1_3a: outcome 1, by Drug Category, neareast mathch 
-m1_3a = glm(exitus_readm_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)
+m1_3a = glm(as.formula(formula_str_1_1), family = binomial(link = "logit"), data = matched_exitus_readm)
 summary(m1_3a)
 
 # Model m1_3b: outcome 1, by Drug Category, no mathch
-m1_3b = glm(exitus_readm_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = hip_poly)
+m1_3b = glm(as.formula(formula_str_1_2), family = binomial(link = "logit"), data = hip_poly)
+summary(m1_3b)
+######Updates(0328)###### End #####
+
+######## END UPDATE IACS ########
+
 ```
 
 #### Model result on outcome 2: refracture_outcome, by different drug classification
@@ -1157,32 +1273,101 @@ summary(m2_1a)
 m2_1b = glm(refracture_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = hip_poly)   
 
 # Model m2_2a: outcome 1, by Grandparent, neareast mathch 
-m2_2a = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_refracture)
+
+
+####### START UPDATE IACS #####
+cols <- c("Central_nervous_system_agents_Patterns", "Cardiovascular_agents_Patterns", "Hormones_hormone_modifiers_Patterns", "Psychotherapeutic_agents_Patterns", "Gastrointestinal_agents_Patterns", "Respiratory_agents_Patterns", "Metabolic_agents_Patterns")
+
+missing <- sapply(matched_refracture[cols], function(x) n_distinct(x) == 1)
+use <- cols[!missing]
+
+formula_str_2_2a <- paste("refracture_outcome ~ Length_of_stay +", paste(use, collapse = " + "))
+
+# m2_2a = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_refracture)
+
+m2_2a <- glm(as.formula(formula_str_2_2a), family = binomial(link = "logit"), data = matched_refracture)
+######## END UPDATE IACS ########
 summary(m2_2a)
+
 
 # Model m2_2b: outcome 1, by Grandparent, no match 
 m2_2b = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = hip_poly)
 
+######Updates(0328)###### Start ##### 6
 # Model m2_3a: outcome 1, by Drug Category, neareast mathch 
-m2_3a = glm(refracture_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = matched_refracture)
+
+####### START UPDATE IACS #####
+
+cate_missing <- sapply(matched_refracture[cate_cols], function(x) n_distinct(x) == 1)
+cate_use_1 <- cate_cols[!cate_missing]
+
+cate_missing <- sapply(hip_poly[cate_cols], function(x) n_distinct(x) == 1)
+cate_use_2 <- cate_cols[!cate_missing]
+
+formula_str_2_1 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use_1, collapse = " + "))
+formula_str_2_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use_2, collapse = " + "))
+
+m2_3a = glm(as.formula(formula_str_2_1), family = binomial(link = "logit"), data = matched_refracture)
 summary(m2_3a)
 
 # Model m2_3b: outcome 1, by Drug Category, no mathch
-m2_3b = glm(refracture_outcome ~ Length_of_stay + Opioids_Patterns + centrAntiHT_Patterns + oralSter_Patterns + barbs_Patterns + sedHyp_Patterns + benzos_Patterns + gabaN02BF_Patterns + firstGenAH_Patterns + anticonv_Patterns + thiazDiur_Patterns + sgap_Patterns + tca_Patterns + ssriSnri_Patterns + nitrates_Patterns + antiPark_Patterns + ppi_Patterns + loopDiur_Patterns + h2Antags_Patterns + inhSteroids_Patterns + fgap_Patterns + tzd_Patterns, family = binomial(link = "logit"), data = hip_poly)
+m2_3b = glm(as.formula(formula_str_2_2), family = binomial(link = "logit"), data = hip_poly)
+summary(m2_3b)
+######Updates(0328)###### End #####
+
+
+######## END UPDATE IACS ########
+
 ```
 
 
 
 ```{r result_saving_model, echo=FALSE, warning=FALSE}
 ####(Updates)####
-extract_model_info <- function(model) {
+extract_model_info <- function(model){
   # Get summary
   model_summary <- capture.output(summary(model))
   
   # estimates and std error
   coefficients <- summary(model)$coefficients
-  conf_int_95 <- suppressMessages(confint(model, level = 0.95))  # 95% 
-  conf_int_99 <- suppressMessages(confint(model, level = 0.99)) # 99% 
+  
+  conf_int_95 <- data.frame(ci_low = rep(NA,nrow(coefficients)),
+                            ci_upp = rep(NA,nrow(coefficients)))
+  conf_int_95 <- conf_int_95 %>% rename(`2.5 %` = ci_low,
+                                       `97.5 %` = ci_upp)
+    tryCatch(
+  {
+    conf_int_95 <- suppressMessages(confint(model, level = 0.95))  # 95% 
+  },
+  error=function(cond) {
+    log_error(paste0(cond))
+    conf_int_95[,1] <- NA
+    conf_int_95[,2] <- NA
+  }
+  )
+  ####### START UPDATE IACS #####
+  # print(i) to know which model could produce error (see log_analysis)
+  log_info(paste0('model ',i))
+  if(nrow(conf_int_95) != nrow(coefficients)){
+    conf_int_95<- as.data.frame(conf_int_95) %>% filter(row.names(conf_int_95) %in% row.names(coefficients))
+  }
+  conf_int_99 <- conf_int_95
+  conf_int_99[,1] <- NA
+  conf_int_99[,2] <- NA
+  tryCatch(
+  {
+    conf_int_99 <- suppressMessages(confint(model, level = 0.99)) # 99% 
+  },
+  error=function(cond) {
+    log_error(paste0(cond))
+    conf_int_99[,1] <- NA
+    conf_int_99[,2] <- NA
+  }
+  )
+  if(nrow(conf_int_99) != nrow(coefficients)){
+    conf_int_99<- as.data.frame(conf_int_99) %>% filter(row.names(conf_int_99) %in% row.names(coefficients))
+  }
+  ######## END UPDATE IACS ########
   odds_ratios <- exp(coefficients[, "Estimate"])
   aic <- AIC(model)
   bic <- BIC(model)
@@ -1194,15 +1379,15 @@ extract_model_info <- function(model) {
     StdError = coefficients[, "Std. Error"],
     PValue = coefficients[, "Pr(>|z|)"],
     ZValue = coefficients[, 3],
-    ci_95_upper = conf_int_95[,1],
-    ci_95_lower = conf_int_95[,2],
-    ci_99_upper = conf_int_99[,1],
-    ci_99_lower = conf_int_99[,2],
+    ci_95_upper = conf_int_95[,2],
+    ci_95_lower = conf_int_95[,1],
+    ci_99_upper = conf_int_99[,2],
+    ci_99_lower = conf_int_99[,1],
     OddsRatio = odds_ratios,
-    OR_ci_95_upper = exp(conf_int_95[,1]),
-    OR_ci_95_lower = exp(conf_int_95[,2]),
-    OR_ci_99_upper = exp(conf_int_99[,1]),
-    OR_ci_99_lower = exp(conf_int_99[,2]),
+    OR_ci_95_upper = exp(conf_int_95[,2]),
+    OR_ci_95_lower = exp(conf_int_95[,1]),
+    OR_ci_99_upper = exp(conf_int_99[,2]),
+    OR_ci_99_lower = exp(conf_int_99[,1]),
     AIC = aic,
     BIC = bic,
     LogLikelihood = logLikelihood
@@ -1218,6 +1403,7 @@ outcome_2_list <- list(m2_1a, m2_1b, m2_2a, m2_2b, m2_3a, m2_3b)
 output_folder <- "../../outputs" # dir_flag
 
 for (i in 1:length(outcome_1_list)) {
+  
   model_info <- extract_model_info(outcome_1_list[[i]])
   
   # Write Summary
