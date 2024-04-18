@@ -1,0 +1,2336 @@
+---
+title: "ICCONIC HipFX time to surgery: Analytical pipeline"
+author: Data Science for Health Services and Policy Research (IACS)
+editor: source
+
+#date: 
+# bibliography: 
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 7
+    highlight-style: pygments
+    code-fold: true
+    grid:
+     body-width: 1050px
+    html-math-method: katex
+execute: 
+  warning: false
+  cache: false
+  echo: false
+params:
+    data_path: '../../inputs/data.duckdb'
+    state: ''
+---
+
+```{css, echo = FALSE}
+.justify {
+  text-align: justify !important
+}
+```
+
+
+```{r, output = FALSE, echo=FALSE, warning=FALSE}
+#| label: load r packages
+library(duckdb)
+library(dplyr)
+library(Hmisc)
+library(survival)
+library(survminer)
+library(lubridate)
+library(mgcv)
+library(logger)
+library(stringr)
+library(sjPlot)
+library(gt)
+library(reshape2)
+library(htmltools)
+library(ggridges)
+library(performance)
+# library(ggplotify)
+
+#new
+library(lme4)
+library(gratia)
+library(broom)
+s <- Sys.getenv("PIPELINE_VERSION")
+
+log_info(paste0("Analysis version: ",s))
+
+```
+
+<p> Analysis version: `r paste0(s)` </p>
+
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: functions
+calculate_MOR <- function(model,var_re,n_iter){
+  #calculate MOR with 95% CI
+  if(inherits(model,'glmerMod')){
+    t <- lme4::ranef(model,condVar = TRUE)
+    est<-as.numeric(unlist(t[[var_re]]))
+    
+    var<- as.numeric(unlist(attr(t[[var_re]],"postVar")))
+  }else{
+    idx <-grep(var_re, names(coef(model)))
+    est<-coef(model)[idx]
+    attributes(est)<-NULL
+    var <-sqrt(diag(model$Ve))[idx]
+    }
+    
+  ### bootstrap 
+  ### create empty output collection:
+  mor_boot<- c()
+  #### iterate over replicates
+  for(i in 1:n_iter){
+    ### draw vector of area random effects from normal
+    drw<- rnorm(n = length(est),mean = est,sd = sqrt(var))
+    ### create data frame with all possible pairs 
+    s<- combn(drw,2)
+    #### estimate MOR and save in output
+    mor_boot<- c(mor_boot, median(exp(abs(s[1,]- s[2,]))))
+  }
+  ### bootstrap median and 95% CI
+  p <- quantile(mor_boot, c(.025,.5,.975))
+  return(p)
+}
+
+calculate_ICC <- function(model, variable_random_effect){
+  if(inherits(model,'glmerMod')){
+    x <- summary(model)$varcor
+    x <- as.data.frame(x)
+    icc <- (x$vcov)/((x$vcov)+((pi*pi)/3))
+    # var_ci <- confint(model, level = 0.95)
+    # icc_lower <- (var_ci[1,1]^2)/((var_ci[1,1]^2)+((pi*pi)/3))
+    # icc_upper <- (var_ci[1,2]^2)/((var_ci[1,2]^2)+((pi*pi)/3))
+    # print(paste0('ICC ajusted: ', round(icc,5),' with lower_ci95=',round(icc_lower,5),' and upper_ci95=',round(icc_upper,5)))
+    print(paste0('ICC ajusted: ', round(icc,5)))
+    return(x)
+  }else{
+    var <- gratia::variance_comp(model)
+    
+    print(var)
+    var_re <- var %>% filter(grepl(variable_random_effect, component))
+    icc <- (var_re$variance/(var_re$variance + ((pi*pi)/3)))
+    var_re$variance_low <- var_re$lower_ci * var_re$lower_ci
+    var_re$variance_upp <- var_re$upper_ci * var_re$upper_ci
+    icc_lower <-  (var_re$variance_low)/((var_re$variance_low)+((pi*pi)/3))
+    icc_upper <-  (var_re$variance_upp)/((var_re$variance_upp)+((pi*pi)/3))
+    print(paste0('ICC ajusted: ', round(icc,5),' with lower_ci95=',round(icc_lower,5),' and upper_ci95=',round(icc_upper,5)))
+    return(var_re)
+  }
+}
+
+```
+
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: query descriptive patient
+
+
+con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+
+descriptive_values <- dbGetQuery(conn = con, "
+SELECT first (country_cd) filter (where country_cd IS NOT NULL) as country_cd,
+median(age_nm) as median_age,
+(QUANTILE_CONT(age_nm, 0.75)-QUANTILE_CONT(age_nm, 0.25)) as iqr_age,
+count(distinct hospitalization_episode_id) filter (where sex_cd = '1') as men,
+count(distinct hospitalization_episode_id) filter (where sex_cd = '2') as women,
+count(distinct patient_id) as n_patient,
+count(distinct hospitalization_episode_id) as n_hospitalization_episode_id,
+count(distinct hospitalization_episode_id) filter (where surgical_procedure_bl = TRUE) as n_hosp_id_with_surgery,
+median(surgical_procedure_dt -hospital_admission_dt) as median_time_adm_to_surgery,
+(QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.75)-QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.25)) as IQR_median_time_adm_to_surgery,
+-- round(mean(surgical_procedure_dt -hospital_admission_dt),2) as mean_time_adm_to_surgery
+FROM main.patient_cohort")
+
+write.table(descriptive_values,paste0('../../outputs/table_descriptive_global',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+descriptive_values <- descriptive_values %>% mutate(
+  perc_men = round((men/n_patient)*100,2),
+  united_men =paste0(men, ' (',perc_men,'%)' ),
+  perc_women = round((women/n_patient)*100,2),
+  united_women =paste0(women, ' (',perc_women,'%)' )
+)
+
+descriptive_values <- descriptive_values %>% select(!c(men,women,perc_men,perc_women))
+## socec
+
+socecon_lvl <- dbGetQuery(conn = con,"
+SELECT
+	coalesce(socecon_lvl_cd, 'Unknown') as socecon_lvl_cd,
+	count(distinct hospitalization_episode_id) as n_hosp_id_socecon,
+	
+FROM
+	main.patient_cohort
+GROUP BY
+	socecon_lvl_cd ")
+write.table(socecon_lvl,paste0('../../outputs/table_descriptive_socecon_level',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+socecon_lvl <- socecon_lvl %>% mutate(
+  perc_socecon_lvl = round((n_hosp_id_socecon/descriptive_values$n_hospitalization_episode_id)*100,2),
+  united_socecon =paste0(n_hosp_id_socecon, ' (',perc_socecon_lvl,'%)' )
+)
+
+## surgical_procedure_cd
+surgical_procedure <- dbGetQuery(conn = con,"
+SELECT
+	coalesce(surgical_procedure_cd::int::VARCHAR,
+	'Non surgical procedure' ) as surgical_procedure_cd ,
+	count(distinct hospitalization_episode_id) as n_hosp_id_surgical_procedure_cd
+FROM
+	main.patient_cohort
+GROUP BY
+	surgical_procedure_cd")
+write.table(surgical_procedure,paste0('../../outputs/table_descriptive_surgical_procedure',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+surgical_procedure <- surgical_procedure %>% mutate(
+  perc_surgical_procedure = round((n_hosp_id_surgical_procedure_cd/descriptive_values$n_hospitalization_episode_id)*100,2),
+  united_surgical_procedure=paste0(n_hosp_id_surgical_procedure_cd, ' (',perc_surgical_procedure,'%)' )
+)
+
+## anesthesia_type_cd only in patients with surgical procedure, so perc is divided by number of patients with surgery
+
+anesthesia_type <- dbGetQuery(conn=con,"
+ SELECT
+	coalesce(anesthesia_type_cd::int::VARCHAR,
+	'Unknown') as anesthesia_type_cd,
+	count(distinct hospitalization_episode_id) as n_hosp_id_anesthesia_type_cd
+FROM
+	main.patient_cohort
+WHERE surgical_procedure_bl = TRUE
+GROUP BY
+	anesthesia_type_cd ")
+write.table(anesthesia_type,paste0('../../outputs/table_descriptive_anesthesia_type',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+anesthesia_type <- anesthesia_type %>% mutate(
+  perc_anesthesia_type = round((n_hosp_id_anesthesia_type_cd/sum(anesthesia_type$n_hosp_id_anesthesia_type_cd))*100,2),
+  united_anesthesia_type=paste0(n_hosp_id_anesthesia_type_cd, ' (',perc_anesthesia_type,'%)' )
+)
+
+
+comorbidities <- dbGetQuery(conn=con,"
+with seleccion as (
+SELECT
+	patient_id,
+  hospitalization_episode_id,
+	list_aggregate([chronic_kidney_disease_bl::int,
+	tobacco_copd_bl::int,
+	depression_bl::int,
+	serious_mental_illness_bl::int,
+	alcohol_abuse_bl::int,
+	obesity_overweight_bl::int,
+	osteoporosis_osteopenia_bl::int,
+	dementia_bl::int,
+	diabetes_bl::int,
+	liver_disease_bl::int,
+	pancreatic_disease_bl::int,
+	inflamatory_bowel_disease_bl::int,
+	rheumatology_disease_bl::int,
+	spinal_cord_disease_injury_bl::int,
+	serious_neurological_disease_bl::int,
+	parkinson_huntington_diseases_bl::int,
+	seizure_disorder_convulsions_bl::int,
+	congestive_heart_failure_bl::int,
+	coronary_artery_disease_bl::int,
+	cerebrovascular_disease_bl::int,
+	peripheral_vascular_disease_bl::int,
+	traumatic_brain_injury_bl::int,
+	amputee_bl::int],
+	'sum') as sum_comorbidities
+from
+	main.patient_cohort)
+select
+	sum_comorbidities,
+	count(DISTINCT hospitalization_episode_id) as n_hosp_id_n_comorbidities
+from
+	seleccion
+group by
+	sum_comorbidities")
+
+comorbidities_ <- data.frame(comor_0_2 = sum(filter(comorbidities, sum_comorbidities <= 2)$n_hosp_id_n_comorbidities),
+                             comor_3_5 = sum(filter(comorbidities, sum_comorbidities > 2 & sum_comorbidities <=5)$n_hosp_id_n_comorbidities),
+                             comor_5mayor = sum(filter(comorbidities,sum_comorbidities >5)$n_hosp_id_n_comorbidities))
+comorbidities_ <- melt(comorbidities_)
+
+write.table(comorbidities_,paste0('../../outputs/table_descriptive_comorbidities',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+
+comorbidities_ <- comorbidities_ %>% mutate(
+  perc_comorbidities = round((value/descriptive_values$n_hospitalization_episode_id)*100,2),
+  united_comorbidities=paste0(value, ' (',perc_comorbidities,'%)' )
+)
+rm(comorbidities)
+```
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: query descriptive hospital
+
+variables_in_hospital <- dbGetQuery(conn=con,"
+SELECT
+	coalesce(hospital_st,
+	'Unknown')  as hospital_st,
+count(distinct patient_id) as n_patient,
+count(distinct hospitalization_episode_id) as n_hospitalization_episode_id,
+count(distinct hospitalization_episode_id) filter (where surgical_procedure_bl = TRUE) as n_hosp_id_with_surgery,
+median(age_nm) as median_age, 
+(QUANTILE_CONT(age_nm, 0.75)-QUANTILE_CONT(age_nm, 0.25)) as iqr_age,
+count(distinct patient_id) filter (where sex_cd = '2') as women,
+median(surgical_procedure_dt -hospital_admission_dt) as median_time_adm_to_surgery,
+(QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.75)-QUANTILE_CONT((surgical_procedure_dt -hospital_admission_dt), 0.25)) as IQR_median_time_adm_to_surgery,
+count(distinct hospitalization_episode_id) filter (where exitus_bl = TRUE) as n_exitus,
+count(distinct hospitalization_episode_id) filter (where unplanned_readmission_30d_bl = TRUE) as n_unplanned_readmission_30d,
+count(distinct hospitalization_episode_id) filter (where chronic_kidney_disease_bl = TRUE) as n_chronic_kidney_disease,
+count(distinct hospitalization_episode_id) filter (where tobacco_copd_bl = TRUE) as n_tobacco_copd,
+count(distinct hospitalization_episode_id) filter (where depression_bl = TRUE) as n_depression,
+count(distinct hospitalization_episode_id) filter (where serious_mental_illness_bl = TRUE) as n_serious_mental_illness,
+count(distinct hospitalization_episode_id) filter (where alcohol_abuse_bl = TRUE) as n_alcohol_abuse,
+count(distinct hospitalization_episode_id) filter (where obesity_overweight_bl = TRUE) as n_obesity_overweight,
+count(distinct hospitalization_episode_id) filter (where osteoporosis_osteopenia_bl = TRUE) as n_osteoporosis_osteopenia,
+count(distinct hospitalization_episode_id) filter (where dementia_bl = TRUE) as n_dementia,
+count(distinct hospitalization_episode_id) filter (where diabetes_bl = TRUE) as n_diabetes,
+count(distinct hospitalization_episode_id) filter (where liver_disease_bl = TRUE) as n_liver_disease,
+count(distinct hospitalization_episode_id) filter (where pancreatic_disease_bl = TRUE) as n_pancreatic_disease,
+count(distinct hospitalization_episode_id) filter (where inflamatory_bowel_disease_bl = TRUE) as n_inflamatory_bowel_disease,
+count(distinct hospitalization_episode_id) filter (where rheumatology_disease_bl = TRUE) as n_rheumatology_disease,
+count(distinct hospitalization_episode_id) filter (where spinal_cord_disease_injury_bl = TRUE) as n_spinal_cord_disease_injury,
+count(distinct hospitalization_episode_id) filter (where serious_neurological_disease_bl = TRUE) as n_serious_neurological_disease,
+count(distinct hospitalization_episode_id) filter (where parkinson_huntington_diseases_bl = TRUE) as n_parkinson_huntington_diseases,
+count(distinct hospitalization_episode_id) filter (where seizure_disorder_convulsions_bl = TRUE) as n_seizure_disorder_convulsions,
+count(distinct hospitalization_episode_id) filter (where congestive_heart_failure_bl = TRUE) as n_congestive_heart_failure,
+count(distinct hospitalization_episode_id) filter (where coronary_artery_disease_bl = TRUE) as n_coronary_artery_disease,
+count(distinct hospitalization_episode_id) filter (where cerebrovascular_disease_bl = TRUE) as n_cerebrovascular_disease,
+count(distinct hospitalization_episode_id) filter (where peripheral_vascular_disease_bl = TRUE) as n_peripheral_vascular_disease,
+count(distinct hospitalization_episode_id) filter (where traumatic_brain_injury_bl = TRUE) as n_traumatic_brain_injury,
+count(distinct hospitalization_episode_id) filter (where amputee_bl = TRUE) as n_amputee,
+from
+	main.patient_cohort
+group by
+	hospital_st")
+
+dbDisconnect(con, shutdown=TRUE)
+
+```
+
+
+# Introduction
+
+::: {.justify}
+Breaking a hip might be a sign of frailty. It can entail diminished autonomy and a high risk of death in the elderly (i.e. 30% dying within a year, with 7% dying during hospitalization). With the ageing population, hip fractures in the elderly are becoming a growing medical and social concern as it lead to frailty, decreasing autonomy, worse quality of life or even death. 
+
+In hip fracture care, whether mortality worsens when surgery is delayed is disputed. Proponents of early surgery believe that there is decreased morbidity with early fixation and reduced mortality with early mobilization postoperatively. Proponents of elective surgery argue that most elderly require vascular stabilization, including reversion of antiplatelet or anticoagulant therapies to minimize bleeding during hip surgery, resulting in better quality of care and, ultimately, better outcomes.    
+
+Key elements of the acute treatment of hip fracture in the elderly (frailty) population imply health care capacity and processes in weighting the individual situation of each patient in terms of prognosis, concurrent clinical conditions, medication, autonomy and self-care ability, and social circumstances in the indication of surgery with the expectation for the patient returning home. 
+Mortality in hip fracture patients after surgery can be a critical indicator in benchmarking hospital performance in assisting the elderly and frail population.  
+
+An exploratory analysis of the prevalence of hip fracture surgery (i.e., hip pinning, hip replacement and hip repair) in the frail population was conducted in several countries participating in ICCONIC as part of the project's first phase. Time to hip fracture surgery, a classical predictor of good hip fracture repair outcomes, varied across ICCONIC countries. Likewise, preliminary results exhibited large differences in health outcomes, particularly in-hospital and 30-day mortality. However, no substantial differences in mortality were observed among the ICCONIC countries, with the largest difference in time to surgery (Germany and Spain).
+
+This preliminary evidence is consistent with literature focusing on the type of surgery and the management of anti-aggregated or anticoagulated patients - rather than on time-to-surgery - as the main predictors of adverse outcomes.
+
+However, the evidence from ICCONIC is based on aggregated information that might suffer from some biases. Taking advantage of the ICCONIC collaborative at [ICCONIC website](https://icconic.org/), we will explore the variation in inpatient, 7-day mortality and 30-day mortality after hip fracture surgery across ICCONIC hospitals, using individual-level data, taking into consideration the differences in surgical and perioperative management as well as health system differences. In addition, we will examine patterns of polypharmacy, high-risk prescribing, and medication review before and after hip fracture. Subsequently, we will determine hip fracture outcomes depending on socioeconomic factors.
+This study aims to measure mortality after hip fracture surgery as a benchmark for hospital performance across several countries, considering patients’, hospitals’ and contextual factors that might contribute to better outcomes, including time-to-surgery, comorbidities and previous therapies.
+
+:::
+# Hypothesis
+::: {.justify}
+The study's central hypothesis explores whether hospital performance in terms of mortality after surgery worsens when the intervention is delayed after a hip fracture in a population over 65. 
+:::
+# Objectives
+
+## General objective
+::: {.justify}
+Determine that prompt action in the acute treatment of hip fracture in the elderly (frailty) population implies health care capacity and processes in weighting the individual situation of each patient in terms of prognosis, concurrent clinical conditions, medication, autonomy and self-care ability, and social circumstances in the indication of surgery with the expectation for the patient returning home.
+:::
+### Specific Objectives
+::: {.justify}
+1.	Evaluate the impact of time to hip surgery after fracture on mortality 
+
+2.	Determinate hip fracture outcomes depending on socioeconomic factors
+:::
+# Methodology
+
+## Design
+::: {.justify}
+An observational retrospective longitudinal multi-country cohort study of individuals aged 65+ admitted to a hospital due to hip fracture that underwent hip pinning or replacement surgery between 01-01-2017 and 31-12-2021.  
+The cohort to be studied includes any person 65 years old or older, with an unplanned hospital episode (inpatient), with a primary diagnosis of hip fracture, with the following exclusion criteria: a) any person under 65 years old, b) multiple fractures (polytrauma), or c) admission from another hospital.
+To determine hip fracture outcomes depending on socioeconomic factors would be supplemented with analyses by socio-economic status.
+The study will be conducted simultaneously in Spain (Aragón), the USA (Brown University), and several other countries (i.e., Denmark, Finland, Canada, and Sweden), following a federated research methodology based mainly on the reuse of healthcare data from administrative databases at regional or population level at each country.
+:::
+
+## Information sources
+
+::: {.justify}
+The analyses are based on Individual-level data from health records (i.e., electronic medical records) and administrative data (information on hospital discharges). Data will be analysed locally by each of the participants using deployable analytical scripts. The participants will then share aggregated outputs of the local analyses to conduct a meta-analysis comparing hospitals’ performance in the different countries. 
+In Aragon, data will be requested from BIGAN (established by Executive Order SAN/1355/2018 as an element of the health information system in Aragon).
+Each participant will comply with their institution's data application processes to access and process data for research. 
+::: 
+
+## Population studied
+::: {.justify}
+All the population insured in Aragon with a relevant contact with the healthcare system during the study period.
+:::
+## Relevant outcomes
+::: {.justify}
+*Adjusted inpatient mortality by hospital:* adjusted mortality after surgery due to hip fracture occurring in the index hospital episode considering patient attributes (i.e., age, sex, comorbidities, etc.), care process (i.e. time to surgery, month, weekday, etc.), and contextual data (i.e., socioeconomic data of the area of residence of the patient, etc.)
+
+*7-day adjusted mortality:* adjusted mortality up to 7 days after surgery due to hip fracture considering patient attributes (i.e., age, sex, comorbidities, etc.), care process (i.e. time to surgery, month, weekday, etc.), and contextual data (i.e., socioeconomic data of the area of residence of the patient, etc.)
+
+*30-day adjusted mortality:* adjusted mortality up to 30 days after surgery due to hip fracture considering patient attributes (i.e., age, sex, comorbidities, etc.), care process (i.e. time to surgery, month, weekday, etc.), and contextual data (i.e., socioeconomic data of the area of residence of the patient, etc.)
+
+*180-day adjusted mortality:* adjusted mortality up to 180 days after surgery due to hip fracture considering patient attributes (i.e., age, sex, comorbidities, etc.), care process (i.e. time to surgery, month, weekday, etc.), and contextual data (i.e., socioeconomic data of the area of residence of the patient, etc.)
+
+*7-day unplanned readmission:* adjusted unplanned readmission (for any cause) up to 7 days after hospitalization due to hip fracture considering patient attributes (i.e., age, sex, comorbidities, etc.), care process (i.e. time to surgery, month, weekday, etc.), and contextual data (i.e., socioeconomic data of the area of residence of the patient, etc.)
+
+*30-day unplanned readmission:* adjusted unplanned readmission (for any cause) up to 30 days after hospitalization due to hip fracture considering patient attributes (i.e., age, sex, comorbidities, etc.), care process (i.e. time to surgery, month, weekday, etc.), and contextual data (i.e., socioeconomic data of the area of residence of the patient, etc.)
+
+:::
+## Variables of the study
+::: {.justify}
+You can see in **docs/CDM** folder the specification of the common data model and cohort selection criteria, including the description of the study's variables.
+:::
+## Statistical Analysis
+
+### Data quality analysis on local inputs
+::: {.justify}
+Local analyses will be preceded by a data quality and validation analysis on local inputs at the origin. Those analyses will consist of univariate exploratory data analysis of each of the variables of the data entities required for the study and information on the compliance of the local input data with the data validation rules established by the common data model specification. 
+:::
+### Descriptive statistics
+::: {.justify}
+Local analysis will include descriptive statistics at the individual level on patient and episode characteristics and prescriptions before and after hospital admission due to hip fracture and on the characteristics of patients admitted and intervened in each hospital.
+
+:::
+### Modelling hospital performance
+
+#### Adjusted mortality by time to surgery
+::: {.justify}
+In order to study whether there is a relationship between mortality and the time elapsed between the date of admission and the date of surgery, two different groups of models depending on the number of independent variables are carried out. On the one hand, several reference exploratory models. On the other hand, several final models.
+:::
+
+##### Exploratory models
+::: {.justify}
+
+Five different exploratory models are built:
+
+1. Generalized Linear Model (GLM): four GLM models following the same methodology but varying the dependent variable (y):
+
+    - Model 1: y = inpatient mortality due to any cause
+    - Model 2: y = mortality 7-days after surgery (any cause)
+    - Model 3: y = mortality 30-days after surgery (any cause)
+    - Model 4: y = mortality 180-days after surgery (any cause)
+  
+  In this model, the independent variable (x) is the time elapsed between the date of admission and the date of surgery categorized as:
+  
+    - 1: x <= 24 hours 
+    - 2: 24 hours < x <= 48 hours
+    - 3: 48 hours < x <= 72 hours
+    - 4: 72 hours < x
+
+2. Generalized Linear Mixed Model (GLMM): four GLMM models are constructed following the GLM model methodology, but including the hospital as the second level.
+
+3. Generalized Additive Model (GAM): f(age), modeling the outcome *exitus in 180 days after surgery* and *age* as an independent variable entered as a smooth term.
+
+4. Generalized Additive Model (GAM): f(time_admission_to_surgery), four GAM models following the same methodology but varying the dependent variable (y) as in the GLM models, but in this case, the dependent variable is not categorized but introduced as a spline.
+
+5. Generalized Additive Mixed Model (GAMM): f(time_admission_to_surgery | hospital), four GAMM models are constructed following the GAM model methodology, but including the hospital as the second level.
+:::
+
+##### Final models
+::: {.justify}
+Four multilevel GAMM models are built depending on the dependent variable to be predicted (y) as previous section. The most relevant independent variable in this case is (as previous section) the time elapsed between the date of admission and the date of surgery but in this case different patient variables that are considered relevant in the study such as age group, sex, length of stay after surgery, comorbidities etc. are introduced into the model.  
+:::
+
+#### Adjusted unplanned readmissions by time to surgery
+##### Final models
+::: {.justify}
+In order to study whether there is a relationship between unplanned readmissions and the time elapsed between the date of admission and the date of surgery, two multivariate GAMM models are carried out
+
+    - Model 1: y = unplanned readmission (for any cause) in the next 7 days after hospitalization
+
+    - Model 2: y = unplanned readmission (for any cause) in the next 30 days after hospitalization
+
+:::
+### International hospital performance comparison (meta-analysis)
+::: {.justify}
+A meta-regression will be adjusted considering region or country-level contextual factors using the aggregated local output data on hospital performance as the primary input. The international comparison meta-analysis will compare hospital performance across the country/regions participating in the study, enabling ranking and providing information on the overall association of healthcare behaviour, namely time-to-surgery on mortality after surgery for hip fracture. 
+:::
+
+
+# Results  (`r descriptive_values$country_cd`)
+
+## Descriptive statistics
+::: {.justify}
+The following are shown 2 descriptive tables of the imported data:
+
+- Table 1 shows the main characteristics of the patients registered in the database.
+
+- Table 2 main characteristics of the patients and the medians from admission to surgery (in days) and their interquartile range grouped by hospital.
+
+:::
+### Table 1. Patient-level summary 
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: descriptive tables inputs1
+descriptive_values_ <- melt(descriptive_values,id=NULL) 
+
+anesthesia_type <- anesthesia_type %>% arrange(anesthesia_type_cd) %>%  dplyr::select(anesthesia_type_cd,united_anesthesia_type)
+anesthesia_type <- anesthesia_type %>% mutate(
+    descrp = case_when(
+    anesthesia_type_cd %in% '0' ~ 'Analgesia',
+    anesthesia_type_cd %in% '1' ~ 'Locorregional',
+    anesthesia_type_cd %in% '2' ~ 'General',
+    TRUE ~ 'Unknown'
+    )
+)
+
+
+comorbidities_ <- comorbidities_ %>% arrange(variable) %>% dplyr::select(variable,united_comorbidities) %>% 
+  mutate(descrp = case_when(
+    variable %in% 'comor_0_2' ~ '<= 2 N comorbidities',
+    variable %in% 'comor_3_5' ~ '3 <= N comorbidities <= 5',
+    variable %in% 'comor_5mayor' ~ '5 < N comorbidities',
+    TRUE ~ 'Unknown'))
+
+surgical_procedure <- surgical_procedure %>% arrange(surgical_procedure_cd) %>%  dplyr::select(surgical_procedure_cd,united_surgical_procedure) 
+
+
+
+surgical_procedure <- surgical_procedure %>% mutate(
+  descrp = case_when(
+    surgical_procedure_cd %in% '0' ~ 'Total',
+    surgical_procedure_cd %in% '1' ~ 'Partial',
+    surgical_procedure_cd %in% '2' ~ 'Pinning',
+    surgical_procedure_cd %in% '3' ~ 'Other',
+    TRUE ~ "Non surgical procedure"
+    
+  )
+)
+
+socecon_lvl <- socecon_lvl %>% arrange(socecon_lvl_cd) %>%  dplyr::select(socecon_lvl_cd,united_socecon) %>% 
+  mutate(variable = paste0('Socioeconomic lvl: ',socecon_lvl_cd),
+         value=united_socecon) %>% dplyr::select(variable,value)
+
+
+descriptive_values_$variable <- as.character(descriptive_values_$variable)
+
+descriptive_values_$variable[descriptive_values_$variable %in% 'country_cd'] <- 'Country cd'
+descriptive_values_$variable[descriptive_values_$variable %in% 'median_age'] <- 'Median age'
+descriptive_values_$variable[descriptive_values_$variable %in% 'iqr_age'] <- 'IQR age'
+descriptive_values_$variable[descriptive_values_$variable %in% 'n_patient'] <- 'N patients (unique)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'n_hospitalization_episode_id'] <- 'N hospitalization episode (unique)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'n_hosp_id_with_surgery'] <- 'N hospitalization episode with surgery (unique)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'median_time_adm_to_surgery'] <- 'Median time from admission to surgery (days)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'IQR_median_time_adm_to_surgery'] <- 'IQR time from admission to surgery (days)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'united_men'] <- 'N Men (%)'
+descriptive_values_$variable[descriptive_values_$variable %in% 'united_women'] <- 'N Women (%)'
+
+
+table <- descriptive_values_ %>% gt(rowname_col = 'variable') %>% 
+  tab_header(
+    title = "Patient-level summary"
+  ) %>% 
+  tab_stubhead(label = "Variable") %>% 
+     cols_label(
+      variable = 'Variable',
+      value = 'n (%)'
+       ) %>% 
+  cols_align(
+  align =  "center",
+  columns = value)
+
+div(style='height:400px; overflow-y: scroll', table)
+
+socecon_lvl %>% gt(rowname_col = 'variable') %>% 
+  tab_header(
+    title = "Socioeconomic level table input"
+  ) %>% 
+     cols_label(
+      variable = 'Variable',
+      value = 'n (%)'
+       ) %>% 
+  cols_align(
+  align =  "center",
+  columns = value)
+
+
+surgical_procedure %>% 
+  dplyr::select(descrp, united_surgical_procedure) %>% gt(rowname_col = 'descrp') %>% 
+  tab_header(
+    title = "Surgical procedure table input"
+  ) %>%
+     cols_label(
+      descrp = 'Surgical procedure type',
+      united_surgical_procedure = 'n (%)'
+       ) %>% 
+  cols_align(
+  align =  "center",
+  columns = united_surgical_procedure)
+
+
+anesthesia_type %>% 
+  dplyr::select(descrp, united_anesthesia_type) %>% gt(rowname_col = 'descrp') %>% 
+  tab_header(
+    title = "Anesthesia type table input"
+  ) %>%
+     cols_label(
+      descrp = 'Anesthesia type',
+      united_anesthesia_type = 'n (%)'
+       ) %>% 
+  cols_align(
+  align =  "center",
+  columns = united_anesthesia_type)
+
+
+
+
+comorbidities_ %>% 
+  dplyr::select(descrp, united_comorbidities) %>% gt(rowname_col = 'descrp') %>% 
+  tab_header(
+    title = "Number of comorbidities table input"
+  ) %>%
+     cols_label(
+      descrp = 'Number of comorbidities',
+      united_comorbidities = 'n (%)'
+       ) %>% 
+  cols_align(
+  align =  "center",
+  columns = united_comorbidities)
+
+
+
+rm(anesthesia_type,comorbidities_,socecon_lvl,surgical_procedure,descriptive_values_,table)
+
+
+```
+
+
+### Table 2. Hospital-level summary
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: descriptive tables inputs2
+
+
+table <- variables_in_hospital %>% dplyr::select(hospital_st,n_patient,n_hospitalization_episode_id,n_hosp_id_with_surgery,
+                                                 median_age,iqr_age,women,median_time_adm_to_surgery,IQR_median_time_adm_to_surgery,
+                                                 n_exitus,n_unplanned_readmission_30d) %>% gt() %>%
+  tab_header(
+    title = " Hospital-level summary"
+  ) %>%  
+  tab_options(
+    column_labels.font.size = 8,
+  ) %>% 
+     cols_label(
+      hospital_st = 'Hospital',
+      n_patient = 'N patients (unique)',
+      n_hospitalization_episode_id = 'N hospitalization episode (unique)',
+      n_hosp_id_with_surgery = 'N hospitalization episode with surgery (unique)',
+      median_age = 'Median age',
+      iqr_age = 'IQR age',
+      women = 'N Women',
+      median_time_adm_to_surgery = 'Median time from admission to surgery (days)',
+      IQR_median_time_adm_to_surgery = 'IQR time from admission to surgery (days)',
+      n_exitus = 'N exitus (all)',
+      n_unplanned_readmission_30d = 'N unplanned readmission 30 days (unique)'
+       ) %>%
+        cols_align(
+  align =  "center",
+  columns = everything()) %>%
+      tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_row_groups()) %>%
+   opt_interactive(use_filters = TRUE,
+                   use_compact_mode = TRUE,
+                   use_resizers = TRUE)
+
+write.table(variables_in_hospital,paste0('../../outputs/table_descriptive_hospital',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+table
+rm(table)
+```
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: analysis start
+
+con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
+
+df_patient <- dbGetQuery(conn = con, "SELECT *,
+                         CASE
+		WHEN age_nm >= 0
+		and age_nm <= 4 THEN 1
+		WHEN age_nm >= 5
+		and age_nm <= 9 THEN 2
+		WHEN age_nm >= 10
+		and age_nm <= 14 THEN 3
+		WHEN age_nm >= 15
+		and age_nm <= 19 THEN 4
+		WHEN age_nm >= 20
+		and age_nm <= 24 THEN 5
+		WHEN age_nm >= 25
+		and age_nm <= 29 THEN 6
+		WHEN age_nm >= 30
+		and age_nm <= 34 THEN 7
+		WHEN age_nm >= 35
+		and age_nm <= 39 THEN 8
+		WHEN age_nm >= 40
+		and age_nm <= 44 THEN 9
+		WHEN age_nm >= 45
+		and age_nm <= 49 THEN 10
+		WHEN age_nm >= 50
+		and age_nm <= 54 THEN 11
+		WHEN age_nm >= 55
+		and age_nm <= 59 THEN 12
+		WHEN age_nm >= 60
+		and age_nm <= 64 THEN 13
+		WHEN age_nm >= 65
+		and age_nm <= 69 THEN 14
+		WHEN age_nm >= 70
+		and age_nm <= 74 THEN 15
+		WHEN age_nm >= 75
+		and age_nm <= 79 THEN 16
+		WHEN age_nm >= 80
+		and age_nm <= 84 THEN 17
+		WHEN age_nm >= 85 
+		and age_nm <= 89 THEN 18
+		WHEN age_nm >= 90 THEN 19
+		ELSE NULL 
+		END as age_group,
+		FROM patient_cohort")
+# df_outpatient_prescription <- dbGetQuery(conn = con, "SELECT * FROM outpatient_prescription")
+dbDisconnect(con, shutdown=TRUE)
+
+df_patient <- df_patient %>% mutate_if(is.logical,as.numeric)
+start_study <- as.Date('2017-01-01')
+end_study <- as.Date('2021-12-31') 
+
+df_study_pre <- df_patient %>% filter(hospital_admission_dt < start_study)
+log_info(paste0('There are ', nrow(df_study_pre),' records where admission is previous to start study date'))
+rm(df_study_pre)
+
+
+
+df_patient <- df_patient %>% filter(hospital_admission_dt >= start_study) 
+
+df_exitus_prev_adm <- df_patient %>% filter(exitus_dt < hospital_admission_dt)
+log_info(paste0('There are ', nrow(df_exitus_prev_adm),' records where death is previous to admission'))
+rm(df_exitus_prev_adm)
+
+
+
+```
+
+
+
+```{r, echo=FALSE,warning=FALSE, output = FALSE}
+#| label: analysis continue
+
+df_patient_filter <- df_patient %>% filter(surgical_procedure_bl %in% 1)
+
+
+df_patient_filter <- df_patient_filter %>% 
+  mutate(
+    futime_adm_surg = as.numeric(surgical_procedure_dt - hospital_admission_dt),
+    futime_surg_end = case_when(
+      !is.na(exitus_dt) ~ as.numeric(exitus_dt - surgical_procedure_dt),
+      is.na(exitus_dt) ~ as.numeric(end_study - surgical_procedure_dt)),
+    exitus_7days_bl = case_when(
+      !is.na(exitus_dt) & futime_surg_end<= 7 ~ 1,
+      TRUE ~ 0),
+    exitus_30days_bl = case_when(
+      !is.na(exitus_dt) & futime_surg_end<= 30 ~ 1,
+      TRUE ~ 0),
+    exitus_180days_bl = case_when(
+      !is.na(exitus_dt) & futime_surg_end<= 180 ~ 1,
+      TRUE ~ 0),
+    exitus_hosp_bl = case_when(
+      !is.na(exitus_dt) & hospital_discharge_dt>=exitus_dt ~ 1,
+      TRUE ~ 0),
+    futime_adm_surg_cd = case_when(
+      futime_adm_surg <= 1 ~ 1,
+      futime_adm_surg > 1 & futime_adm_surg <= 2 ~ 2,
+      futime_adm_surg > 2 & futime_adm_surg <= 3 ~ 3,
+      TRUE ~ 4),
+    length_of_stay_after_surgery = as.numeric(hospital_discharge_dt - surgical_procedure_dt),
+    length_of_stay = as.numeric(hospital_discharge_dt - hospital_admission_dt),
+  )
+
+df1_futime_negative <- df_patient_filter %>% filter(futime_adm_surg < 0 | is.na(futime_adm_surg))
+log_info(paste0('There are ', nrow(df1_futime_negative),' records where time from admission to surgery is negative or NA'))
+
+df_consort <- data.frame(
+  country_cd = descriptive_values$country_cd,
+  n_hospitalization_episode_id_total = nrow(df_patient),
+  n_hospitalization_episode_id_w_surgery = nrow(df_patient_filter)
+)
+
+rm(df1_futime_negative)
+df_patient_filter <- df_patient_filter %>% filter(futime_adm_surg>=0) # filter remove possible NAs too
+
+df1_futime_negative <- df_patient_filter %>% filter(futime_surg_end < 0)
+log_info(paste0('There are ', nrow(df1_futime_negative),' records where time from surgery to death (or end study date) is negative'))
+rm(df1_futime_negative)
+
+df_consort$n_hospitalization_episode_id_time_adm_surg_above_0 <- nrow(df_patient_filter)
+
+df_patient_filter <- df_patient_filter %>% filter(futime_surg_end>=0)
+
+
+df_consort$n_hospitalization_episode_id_time_surg_end_above_0 <- nrow(df_patient_filter)
+
+df_patient_filter <- df_patient_filter %>% mutate(
+  year = year(surgical_procedure_dt),
+  month = month(surgical_procedure_dt),
+  weekday = weekdays(as.POSIXlt(surgical_procedure_dt),abbreviate = FALSE),
+  day_month = day(surgical_procedure_dt)
+)
+
+
+table_descriptive_health_sys <- data.frame(
+  country_cd = descriptive_values$country_cd,
+  n_hospitalization_episode_id = nrow(df_patient_filter),
+  n_hospitals = length(unique(df_patient_filter$hospital_st)),
+  n_exitus_total = sum(df_patient_filter$exitus_bl,na.rm=TRUE),
+  n_exitus_inhosp = sum(df_patient_filter$exitus_hosp_bl,na.rm=TRUE),
+  n_exitus_7d = sum(df_patient_filter$exitus_7days_bl,na.rm=TRUE),
+  n_exitus_30d = sum(df_patient_filter$exitus_30days_bl,na.rm=TRUE),
+  n_exitus_180d = sum(df_patient_filter$exitus_180days_bl,na.rm=TRUE),
+  n_unplanned_7d = sum(df_patient_filter$unplanned_readmission_7d_bl,na.rm=TRUE),
+  n_unplanned_30d = sum(df_patient_filter$unplanned_readmission_30d_bl,na.rm=TRUE)
+  )
+
+write.table(table_descriptive_health_sys,paste0('../../outputs/table_descriptive_only_surgery_counts_exitus_before_models',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+rm(table_descriptive_health_sys)
+##### Select only important variables ####
+
+df_patient_filter <- df_patient_filter %>% mutate(
+  hospital_admission_type_cd_bl = case_when(
+    is.na(hospital_admission_type_cd) ~ NA,
+      hospital_admission_type_cd == 0 ~ 0,
+      TRUE ~ 1)
+)
+df_model <- df_patient_filter %>% dplyr::select(exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,exitus_180days_bl,
+                                                unplanned_readmission_30d_bl,unplanned_readmission_7d_bl,
+                                                futime_adm_surg,futime_adm_surg_cd,
+                                                length_of_stay_after_surgery,length_of_stay,hospital_st,sex_cd,obesity_overweight_bl,month,
+                                                previous_hospital_admission_bl,parkinson_huntington_diseases_bl,tobacco_copd_bl,
+                                            age_group,peripheral_vascular_disease_bl,traumatic_brain_injury_bl,
+                                            coronary_artery_disease_bl,surgical_procedure_cd,
+                                            congestive_heart_failure_bl,liver_disease_bl,
+                                          chronic_kidney_disease_bl,dementia_bl,icu_admission_bl,
+                                          cerebrovascular_disease_bl,age_nm)
+
+df_model$sex_cd <- factor(df_model$sex_cd,
+levels = c(0,1,2,9),
+labels = c("unknown", "male", "female",'not_applicable')) 
+df_model$surgical_procedure_cd <- as.integer(df_model$surgical_procedure_cd)
+df_model$surgical_procedure_cd <- factor(df_model$surgical_procedure_cd,
+                                         levels = c(0,1,2,3),
+labels = c("Total", "Partial", "Pinning",'Other')) 
+df_model$hospital_st <- as.factor(df_model$hospital_st)
+df_model$age_group <- as.factor(df_model$age_group)
+df_model$futime_adm_surg_cd <- factor(df_model$futime_adm_surg_cd,
+                                         levels = c(1,2,3,4),labels = c("x <=24h", "24h-48h", "48h-72h",">=72h"))
+#df_model$year <- as.factor(df_model$year)
+df_model$month <- as.factor(df_model$month)
+#df_model$day_month <- as.factor(df_model$day_month)
+### select variables for model with 20% or less of missings
+miss_threshold = 0.2
+df_model_aux <- df_model %>% select(!c(exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,exitus_180days_bl,length_of_stay_after_surgery,length_of_stay,
+                                       futime_adm_surg,futime_adm_surg_cd,hospital_st,unplanned_readmission_7d_bl,unplanned_readmission_30d_bl,age_nm))
+a <- names(df_model_aux)[sapply(df_model_aux, function(x) (sum(is.na(x))/nrow(df_model_aux)) <= miss_threshold)]
+df_model_aux <- df_model_aux %>% select(a)
+formula_model <- paste0(colnames(df_model_aux), collapse = ' + ')
+rm(df_model_aux)
+df_model <- df_model %>% select(c(a,exitus_hosp_bl,exitus_7days_bl,exitus_30days_bl,exitus_180days_bl,length_of_stay_after_surgery,length_of_stay,
+                                  futime_adm_surg,futime_adm_surg_cd,hospital_st,
+                                  unplanned_readmission_7d_bl,unplanned_readmission_30d_bl,
+                                  age_nm))
+
+```
+
+
+## Hospital performance
+
+
+### Models
+
+#### Adjusted mortality by time to surgery
+
+
+
+##### Exploratory models
+
+
+###### Generalized Linear Model (GLM)
+
+
+::: {.panel-tabset}
+
+###### Outcome: exitus in hospital
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLM exitus in hospital simple
+
+###### exitus in hospital #####
+
+
+model_exitus_hosp_bl_simple <- glm(exitus_hosp_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
+
+summary(model_exitus_hosp_bl_simple)
+
+
+```
+
+
+###### Outcome: exitus in 7 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLM exitus 7 days simple
+
+###### exitus 7 days #####
+
+model_exitus_7days_bl_simple <- glm(exitus_7days_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
+
+summary(model_exitus_7days_bl_simple)
+
+```
+
+
+###### Outcome: exitus in 30 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLM exitus 30 days simple
+
+###### exitus 30 days #####
+
+
+model_exitus_30days_bl_simple <- glm(exitus_30days_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
+
+summary(model_exitus_30days_bl_simple)
+
+```
+
+
+###### Outcome: exitus in 180 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLM exitus 180 days simple
+
+###### exitus 180 days #####
+
+
+model_exitus_180days_bl_simple <- glm(exitus_180days_bl ~ futime_adm_surg_cd, data = df_model, family = binomial(link = "logit"), method = "glm.fit")
+
+summary(model_exitus_180days_bl_simple)
+
+```
+
+
+:::
+
+```{r, echo=FALSE,warning=FALSE,output = FALSE}
+#| label: filter_hospital
+
+### Filter hospitals by patients
+
+
+
+log_info(paste0("Before the elimination of hospitals with less than 50 hospitalization episode, the number of records is: ",nrow(df_model),' which is a percentage of the sample of: ',round(100*(nrow(df_model)/nrow(df_patient)),2),'%. Including: ',
+length(unique(df_model$hospital_st)),' hospitals of: ',length(unique(variables_in_hospital$hospital_st)),' (',
+round(100*(length(unique(df_model$hospital_st))/length(unique(variables_in_hospital$hospital_st))),2),'%)'))
+
+df_consort$n_hospital_before_filter <- length(unique(df_model$hospital_st))
+df_consort$n_hospitalization_before_filter <- nrow(df_model)
+
+
+
+filter_hospital_by_npatients <- function(n_filter, variables_in_hospital, df_model,
+                                         n_min_hospital){
+  variables_in_hospital_filter <- variables_in_hospital %>% filter(n_hospitalization_episode_id >= n_filter)
+  if(length(unique(variables_in_hospital_filter$hospital_st)) < n_min_hospital){
+    n_total_episode <- sum(variables_in_hospital$n_hospitalization_episode_id,na.rm=TRUE)
+    hospitals_filter <- variables_in_hospital %>% dplyr::select(hospital_st,n_hospitalization_episode_id,n_patient) 
+    hospitals_filter <- hospitals_filter[order(hospitals_filter$n_hospitalization_episode_id,decreasing = TRUE),]
+    hospitals_filter <- hospitals_filter %>% mutate(perc_cumsum_n_hosp_episode = 100*(cumsum(n_hospitalization_episode_id)/n_total_episode))
+    #hospitals_filter <- hospitals_filter %>% filter(perc_cumsum_patient <= perc_sample)
+    df_model_filter <- df_model %>% filter(hospital_st %in% hospitals_filter$hospital_st)
+  }else{
+    df_model_filter <- df_model %>% filter(hospital_st %in% variables_in_hospital_filter$hospital_st)
+  }
+  return(df_model_filter)
+}
+df_model_filter <- filter_hospital_by_npatients(n_filter=50,variables_in_hospital,df_model,n_min_hospital=2)
+
+df_consort$n_hospital_after_filter <- length(unique(df_model_filter$hospital_st))
+df_consort$n_hospitalization_after_filter <- nrow(df_model_filter)
+
+df_model_filter <- na.omit(df_model_filter)
+
+log_info(paste0("For multilevel model, the number of records is: ",nrow(df_model_filter),' which is a percentage of the sample of: '
+,round(100*(nrow(df_model_filter)/sum(variables_in_hospital$n_hospitalization_episode_id, na.rm = TRUE)),2),'%. These models include: ',
+length(unique(df_model_filter$hospital_st)),' hospitals of: ',length(unique(variables_in_hospital$hospital_st)),' (',
+round(100*(length(unique(df_model_filter$hospital_st))/length(unique(variables_in_hospital$hospital_st))),2),'%)'))
+
+df_consort$n_hospitalization_after_na_omit <- nrow(df_model_filter)
+
+write.table(df_consort,paste0('../../outputs/table_consort_size',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+rm(df_consort)
+
+
+df_hist_futime <- df_model_filter %>% group_by(hospital_st,futime_adm_surg) %>% count()
+
+write.table(df_hist_futime,paste0('../../outputs/histogram_time_adm_to_surgery_byhospital',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+rm(df_hist_futime)
+
+
+
+```
+
+
+###### Generalized Linear Mixed Model (GLMM)
+
+::: {.panel-tabset}
+
+
+
+###### Outcome: exitus in hospital
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus in hospital simple
+
+###### exitus in hospital #####
+
+
+model_exitus_hosp_bl_simple <- glmer(exitus_hosp_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_hosp_bl_simple)
+
+tryCatch(
+  {
+  df_var <- calculate_ICC(model_exitus_hosp_bl_simple, variable_random_effect = 'hospital_st')
+    
+  },
+  error=function(cond) {
+    message(paste0("error by calculating ICC confidence intervals: exitus inhospital"))
+    print(paste0("error by calculating ICC confidence intervals: exitus inhospital"))
+  }
+) 
+
+
+MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_hosp_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+```
+
+
+###### Outcome: exitus in 7 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus 7 days simple
+
+###### exitus 7 days #####
+
+model_exitus_7days_bl_simple <- glmer(exitus_7days_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_7days_bl_simple)
+
+tryCatch(
+  {
+  df_var <- calculate_ICC(model_exitus_7days_bl_simple, variable_random_effect = 'hospital_st')
+    
+  },
+  error=function(cond) {
+    message(paste0("error by calculating ICC confidence intervals: exitus in 7 days"))
+    print(paste0("error by calculating ICC confidence intervals: exitus in 7 days"))
+  }
+) 
+
+
+
+MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_7days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+```
+
+
+###### Outcome: exitus in 30 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus 30 days simple
+
+###### exitus 30 days #####
+
+model_exitus_30days_bl_simple <- glmer(exitus_30days_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_30days_bl_simple)
+
+
+
+
+tryCatch(
+  {
+  df_var <- calculate_ICC(model_exitus_30days_bl_simple, variable_random_effect = 'hospital_st')
+    
+  },
+  error=function(cond) {
+    message(paste0("error by calculating ICC confidence intervals: exitus in 30 days"))
+    print(paste0("error by calculating ICC confidence intervals: exitus in 30 days"))
+  }
+) 
+
+
+
+MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_30days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+
+```
+
+
+
+###### Outcome: exitus in 180 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GLMM exitus 180 days simple
+
+###### exitus 180 days #####
+
+model_exitus_180days_bl_simple <- glmer(exitus_180days_bl ~ futime_adm_surg_cd + (1|hospital_st), data = df_model_filter, family = binomial(link="logit"))
+
+summary(model_exitus_180days_bl_simple)
+
+
+
+tryCatch(
+  {
+  df_var <- calculate_ICC(model_exitus_180days_bl_simple, variable_random_effect = 'hospital_st')
+
+  },
+  error=function(cond) {
+    message(paste0("error by calculating ICC confidence intervals: exitus in 180 days"))
+    print(paste0("error by calculating ICC confidence intervals: exitus in 180 days"))
+  }
+) 
+
+
+
+
+MOR <- round(exp(sqrt(2*(df_var$vcov))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_180days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+
+```
+
+
+:::
+
+###### Generalized Additive Model (GAM): _f(age)_
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: gam age
+
+model_exitus_180days_bl_simple <- mgcv::gam(exitus_180days_bl ~ s(age_nm, bs = 'tp'), data = df_model,family = binomial(link="logit"), method = "REML")
+
+gratia::draw(model_exitus_180days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Outcome: Exitus 180 days after surgery',x='Age') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+
+```
+
+
+
+###### Generalized Additive Model (GAM): _f(time_admin_to_surgery)_
+
+::: {.panel-tabset}
+
+###### Outcome: exitus in hospital
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAM exitus in hospital simple
+
+###### exitus in hospital #####
+
+
+model_exitus_hosp_bl_simple <- mgcv::gam(exitus_hosp_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model, family = binomial(link="logit"), method = "REML")
+
+summary(model_exitus_hosp_bl_simple)
+
+gratia::draw(model_exitus_hosp_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+variance_comp(model_exitus_hosp_bl_simple)
+```
+
+###### Outcome: exitus in 7 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAM exitus 7 days simple
+
+###### exitus 7 days #####
+
+model_exitus_7days_bl_simple <- mgcv::gam(exitus_7days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = binomial(link="logit"), method = "REML")
+
+summary(model_exitus_7days_bl_simple)
+
+
+gratia::draw(model_exitus_7days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+variance_comp(model_exitus_7days_bl_simple)
+```
+
+
+
+###### Outcome: exitus in 30 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAM exitus 30 days simple 
+
+###### exitus 30 days #####
+
+
+model_exitus_30days_bl_simple <- mgcv::gam(exitus_30days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = binomial(link="logit"), method = "REML")
+
+
+summary(model_exitus_30days_bl_simple)
+
+
+gratia::draw(model_exitus_30days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+variance_comp(model_exitus_30days_bl_simple)
+
+```
+
+
+
+
+###### Outcome: exitus in 180 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAM exitus 180 days simple 
+
+###### exitus 180 days #####
+
+
+model_exitus_180days_bl_simple <- mgcv::gam(exitus_180days_bl ~ s(futime_adm_surg, bs = 'tp'), data = df_model,family = binomial(link="logit"), method = "REML")
+
+
+summary(model_exitus_180days_bl_simple)
+
+
+gratia::draw(model_exitus_180days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+variance_comp(model_exitus_180days_bl_simple)
+
+```
+
+
+
+:::
+
+
+
+###### Generalized Additive Mixed Model (GAMM): _f(time_admission_to_surgery | hospital)_
+
+
+::: {.panel-tabset}
+
+###### Outcome: exitus in hospital
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus in hospital simple
+
+###### exitus in hospital #####
+
+model_exitus_hosp_bl_simple <- mgcv::gam(exitus_hosp_bl ~ s(futime_adm_surg, bs = 'tp') + s(hospital_st, bs = 're'), data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_exitus_hosp_bl_simple)
+
+
+
+gratia::draw(model_exitus_hosp_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+
+df_var_re <- calculate_ICC(model_exitus_hosp_bl_simple, variable_random_effect = 'hospital_st')
+
+
+
+MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_hosp_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+```
+
+###### Outcome: exitus in 7 days after surgery
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 7 days simple
+
+###### exitus 7 days #####
+
+
+model_exitus_7days_bl_simple <- mgcv::gam(exitus_7days_bl ~ s(futime_adm_surg, bs = 'tp') + s(hospital_st, bs = 're'), data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_exitus_7days_bl_simple)
+
+
+
+gratia::draw(model_exitus_7days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+
+df_var_re <- calculate_ICC(model_exitus_7days_bl_simple, variable_random_effect = 'hospital_st')
+
+MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_7days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+
+```
+
+
+
+###### Outcome: exitus in 30 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 30 days simple
+
+###### exitus 30 days #####
+
+
+model_exitus_30days_bl_simple <- mgcv::gam(exitus_30days_bl ~ s(futime_adm_surg, bs = 'tp') + s(hospital_st, bs = 're'), data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+
+summary(model_exitus_30days_bl_simple)
+
+
+
+gratia::draw(model_exitus_30days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+
+
+df_var_re <- calculate_ICC(model_exitus_30days_bl_simple, variable_random_effect = 'hospital_st')
+
+MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
+
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_30days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+```
+
+
+###### Outcome: exitus in 180 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 180 days simple
+
+###### exitus 180 days #####
+
+
+model_exitus_180days_bl_simple <- mgcv::gam(exitus_180days_bl ~ s(futime_adm_surg, bs = 'tp') + s(hospital_st, bs = 're'), data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+
+summary(model_exitus_180days_bl_simple)
+
+
+
+gratia::draw(model_exitus_180days_bl_simple,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+
+
+df_var_re <- calculate_ICC(model_exitus_180days_bl_simple, variable_random_effect = 'hospital_st')
+
+MOR <- round(exp(sqrt(2*(df_var_re$variance))*qnorm(.75)),5)
+
+print(paste0('Median odds ratio (MOR): ', MOR))
+
+
+MOR_w_CI <- calculate_MOR(model_exitus_180days_bl_simple,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI[2],5),' with lower_ci95=',round(MOR_w_CI[1],5),' and upper_ci95=',round(MOR_w_CI[3],5)))
+
+
+
+```
+
+:::
+
+
+
+##### GAMM - Final models
+
+
+
+::: {.panel-tabset}
+
+###### Outcome: exitus in hospital
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus in hospital complex model
+
+###### exitus in hospital #####
+
+formula_model_exitus_hosp_bl <- as.formula(paste0('exitus_hosp_bl ~ s(futime_adm_surg, bs = "tp") + length_of_stay_after_surgery +',formula_model, ' + s(hospital_st, bs = "re")'))
+
+
+model_exitus_hosp_bl <- mgcv::gam(formula_model_exitus_hosp_bl, data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_exitus_hosp_bl)
+
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: tidy coef model exitus inhospital
+
+tryCatch(
+  {
+  table_coef_parametric <- tidy(model_exitus_hosp_bl,parametric=TRUE,exponentiate=TRUE,conf.int = TRUE,conf.level = 0.95)
+  table_coef_parametric <- table_coef_parametric %>% dplyr::rename(exponentiated_estimate = estimate)
+  write.table(table_coef_parametric,paste0('../../outputs/table_coef_parametric_GAMM_exitus_inhospital',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  table_coef_smooth <- tidy(model_exitus_hosp_bl)
+  write.table(table_coef_smooth,paste0('../../outputs/table_coef_smooth_GAMM_exitus_inhospital',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  },
+  error=function(cond) {
+    message(paste0("error generating table coefficients GAMM: exitus inhospital"))
+    print(paste0("error generating table coefficients GAMM: exitus inhospital"))
+  }
+)
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+gratia::draw(model_exitus_hosp_bl,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+##### Not use function 'calculate_ICC' here to save variables #####
+
+var <- variance_comp(model_exitus_hosp_bl)
+var
+var_re_exitus_inhospital <- var %>% filter(component %in% "s(hospital_st)")
+
+icc_exitus_inhospital <- (var_re_exitus_inhospital$variance/(var_re_exitus_inhospital$variance + ((pi*pi)/3)))
+
+var_re_exitus_inhospital$variance_low <- var_re_exitus_inhospital$lower_ci * var_re_exitus_inhospital$lower_ci
+var_re_exitus_inhospital$variance_upp <- var_re_exitus_inhospital$upper_ci * var_re_exitus_inhospital$upper_ci
+
+
+if(sum(is.na(icc_exitus_inhospital))== 0){
+
+icc_lower_exitus_inhospital <-  (var_re_exitus_inhospital$variance_low)/((var_re_exitus_inhospital$variance_low)+((pi*pi)/3))
+icc_upper_exitus_inhospital <-  (var_re_exitus_inhospital$variance_upp)/((var_re_exitus_inhospital$variance_upp)+((pi*pi)/3))  
+             
+print(paste0('ICC ajusted: ', round(icc_exitus_inhospital,5),' with lower_ci95=',round(icc_lower_exitus_inhospital,5),' and upper_ci95=',round(icc_upper_exitus_inhospital,5)))  
+}else{
+  icc_lower_exitus_inhospital <- NA
+  icc_upper_exitus_inhospital <- NA
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+MOR_exitus_inhospital <- round(exp(sqrt(2*(var_re_exitus_inhospital$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_exitus_inhospital))
+
+
+MOR_w_CI_exitus_inhospital <- calculate_MOR(model_exitus_hosp_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_inhospital[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_exitus_inhospital[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_inhospital[3],5)))
+
+
+df_ICC_MOR <- data.frame(model = 'Model 1: exitus inhospital',
+                         ICC = icc_exitus_inhospital,
+                         ICC_low = icc_lower_exitus_inhospital,
+                         ICC_upp = icc_upper_exitus_inhospital,
+                         MOR = MOR_w_CI_exitus_inhospital[2],
+                         MOR_low = MOR_w_CI_exitus_inhospital[1],
+                         MOR_upp = MOR_w_CI_exitus_inhospital[3])
+
+df_model_filter[c('predict_model_exitus_hospital_bl','se_predict_model_exitus_hospital_bl')] <- model_exitus_hosp_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+
+df_model_filter$resid_model_exitus_hospital_bl <- resid(model_exitus_hosp_bl,type='response')
+
+output_model_exitus_hospital_bl <- df_model_filter
+
+df_patient_ <- df_patient %>% filter(!is.na(country_cd))
+output_model_exitus_hospital_bl$country_cd <- unique(df_patient_$country_cd)
+output_model_exitus_hospital_bl <- output_model_exitus_hospital_bl %>% 
+  group_by(country_cd,hospital_st) %>% 
+  summarise(
+            mean_predict_model = mean(predict_model_exitus_hospital_bl,na.rm=TRUE),
+            sd_predict_model= sd(predict_model_exitus_hospital_bl,na.rm=TRUE),
+            mean_residuals_model = mean(resid_model_exitus_hospital_bl,na.rm=TRUE),
+            sd_residuals_model = sd(resid_model_exitus_hospital_bl,na.rm=TRUE),
+            median_predict_model = median(predict_model_exitus_hospital_bl,na.rm=TRUE),
+            P25_predict_model = round(quantile(predict_model_exitus_hospital_bl,0.25,na.rm=TRUE),5),
+            P75_predict_model = round(quantile(predict_model_exitus_hospital_bl,0.75,na.rm=TRUE),5),
+            P05_predict_model = round(quantile(predict_model_exitus_hospital_bl,0.05,na.rm=TRUE),5),
+            P95_predict_model = round(quantile(predict_model_exitus_hospital_bl,0.95,na.rm=TRUE),5),
+            median_residuals_model = median(resid_model_exitus_hospital_bl,na.rm=TRUE),
+            P25_residuals_model = round(quantile(resid_model_exitus_hospital_bl,0.25,na.rm=TRUE),5),
+            P75_residuals_model = round(quantile(resid_model_exitus_hospital_bl,0.75,na.rm=TRUE),5),
+            P05_residuals_model = round(quantile(resid_model_exitus_hospital_bl,0.05,na.rm=TRUE),5),
+            P95_residuals_model = round(quantile(resid_model_exitus_hospital_bl,0.95,na.rm=TRUE),5)
+            )
+
+write.table(output_model_exitus_hospital_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_inhospital',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+ggplot(df_model_filter, aes(x = resid_model_exitus_hospital_bl, y = hospital_st, group = hospital_st)) + 
+  geom_density_ridges(alpha=0.7) +
+  labs(title = 'Density plot of residuals for each hospital',y= 'Hospital',x='Residuals') +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(color='black'))
+rm(output_model_exitus_hospital_bl)
+```
+
+
+
+###### Outcome: exitus in 7 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 7 days complex model
+
+###### exitus in 7 days #####
+
+formula_model_exitus_7days_bl <- as.formula(paste0('exitus_7days_bl ~ s(futime_adm_surg, bs = "tp") + length_of_stay_after_surgery + ',formula_model, ' + s(hospital_st, bs = "re")'))
+
+model_exitus_7days_bl <- mgcv::gam(formula_model_exitus_7days_bl, data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+
+summary(model_exitus_7days_bl)
+
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: tidy coef model exitus in 7 days
+
+tryCatch(
+  {
+  table_coef_parametric <- tidy(model_exitus_7days_bl,parametric=TRUE,exponentiate=TRUE,conf.int = TRUE,conf.level = 0.95)
+  table_coef_parametric <- table_coef_parametric %>% dplyr::rename(exponentiated_estimate = estimate)
+  write.table(table_coef_parametric,paste0('../../outputs/table_coef_parametric_GAMM_exitus_in7days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  table_coef_smooth <- tidy(model_exitus_7days_bl)
+  write.table(table_coef_smooth,paste0('../../outputs/table_coef_smooth_GAMM_exitus_in7days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  },
+  error=function(cond) {
+    message(paste0("error generating table coefficients GAMM: exitus in 7 days"))
+    print(paste0("error generating table coefficients GAMM: exitus in 7 days"))
+  }
+)
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+gratia::draw(model_exitus_7days_bl,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+##### Not use function 'calculate_ICC' here to save variables #####
+
+var <- variance_comp(model_exitus_7days_bl)
+var
+var_re_exitus_7d <- var %>% filter(component %in% "s(hospital_st)")
+
+var_re_exitus_7d$variance_low <- var_re_exitus_7d$lower_ci * var_re_exitus_7d$lower_ci
+var_re_exitus_7d$variance_upp <- var_re_exitus_7d$upper_ci * var_re_exitus_7d$upper_ci
+
+icc_exitus_7d <- (var_re_exitus_7d$variance/(var_re_exitus_7d$variance + ((pi*pi)/3)))
+if(sum(is.na(icc_exitus_7d))== 0){
+  
+icc_lower_exitus_7d <- (var_re_exitus_7d$variance_low)/((var_re_exitus_7d$variance_low)+((pi*pi)/3))
+icc_upper_exitus_7d <- (var_re_exitus_7d$variance_upp)/((var_re_exitus_7d$variance_upp)+((pi*pi)/3)) 
+             
+print(paste0('ICC ajusted: ', round(icc_exitus_7d,5),' with lower_ci95=',round(icc_lower_exitus_7d,5),' and upper_ci95=',round(icc_upper_exitus_7d,5)))  
+}else{
+  icc_lower_exitus_7d <- NA
+  icc_upper_exitus_7d <- NA
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+
+MOR_exitus_7d <- round(exp(sqrt(2*(var_re_exitus_7d$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_exitus_7d))
+
+
+
+
+MOR_w_CI_exitus_7d <- calculate_MOR(model_exitus_7days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_7d[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_exitus_7d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_7d[3],5)))
+
+
+df_ <- data.frame(model = 'Model 2: exitus in 7 days',
+                         ICC = icc_exitus_7d,
+                         ICC_low = icc_lower_exitus_7d,
+                         ICC_upp = icc_upper_exitus_7d,
+                         MOR = MOR_w_CI_exitus_7d[2],
+                         MOR_low = MOR_w_CI_exitus_7d[1],
+                         MOR_upp = MOR_w_CI_exitus_7d[3])
+
+df_ICC_MOR <- rbind(df_ICC_MOR,df_)
+rm(df_)
+
+
+df_model_filter[c('predict_model_exitus_7days_bl','se_predict_model_exitus_7days_bl')] <- model_exitus_7days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+df_model_filter$resid_model_exitus_7days_bl <- resid(model_exitus_7days_bl,type='response')
+
+output_model_exitus_7days_bl <- df_model_filter
+
+df_patient_ <- df_patient %>% filter(!is.na(country_cd))
+output_model_exitus_7days_bl$country_cd <- unique(df_patient_$country_cd)
+
+output_model_exitus_7days_bl <- output_model_exitus_7days_bl %>% 
+  group_by(country_cd,hospital_st) %>% 
+  summarise(
+            mean_predict_model = mean(predict_model_exitus_7days_bl,na.rm=TRUE),
+            sd_predict_model = sd(predict_model_exitus_7days_bl,na.rm=TRUE),
+            mean_residuals_model = mean(resid_model_exitus_7days_bl,na.rm=TRUE),
+            sd_residuals_model = sd(resid_model_exitus_7days_bl,na.rm=TRUE),
+            median_predict_model = median(predict_model_exitus_7days_bl,na.rm=TRUE),
+            P25_predict_model = round(quantile(predict_model_exitus_7days_bl,0.25,na.rm=TRUE),5),
+            P75_predict_model = round(quantile(predict_model_exitus_7days_bl,0.75,na.rm=TRUE),5),
+            P05_predict_model = round(quantile(predict_model_exitus_7days_bl,0.05,na.rm=TRUE),5),
+            P95_predict_model = round(quantile(predict_model_exitus_7days_bl,0.95,na.rm=TRUE),5),
+            median_residuals_model = median(resid_model_exitus_7days_bl,na.rm=TRUE),
+            P25_residuals_model = round(quantile(resid_model_exitus_7days_bl,0.25,na.rm=TRUE),5),
+            P75_residuals_model = round(quantile(resid_model_exitus_7days_bl,0.75,na.rm=TRUE),5),
+            P05_residuals_model = round(quantile(resid_model_exitus_7days_bl,0.05,na.rm=TRUE),5),
+            P95_residuals_model = round(quantile(resid_model_exitus_7days_bl,0.95,na.rm=TRUE),5)
+            )
+
+write.table(output_model_exitus_7days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in7days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+ggplot(df_model_filter, aes(x = resid_model_exitus_7days_bl, y = hospital_st, group = hospital_st)) + 
+  geom_density_ridges(alpha=0.7) +
+  labs(title = 'Density plot of residuals for each hospital',y= 'Hospital',x='Residuals') +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(color='black'))
+
+rm(output_model_exitus_7days_bl)
+```
+
+###### Outcome: exitus in 30 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 30 days complex 
+
+###### exitus 30 days #####
+
+formula_model_exitus_30days_bl <- as.formula(paste0('exitus_30days_bl ~ s(futime_adm_surg, bs = "tp") + length_of_stay_after_surgery + ',formula_model, ' + s(hospital_st, bs = "re")'))
+
+model_exitus_30days_bl <- mgcv::gam(formula_model_exitus_30days_bl, data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_exitus_30days_bl)
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: tidy coef model exitus in 30 days
+
+tryCatch(
+  {
+  table_coef_parametric <- tidy(model_exitus_30days_bl,parametric=TRUE,exponentiate=TRUE,conf.int = TRUE,conf.level = 0.95)
+  table_coef_parametric <- table_coef_parametric %>% dplyr::rename(exponentiated_estimate = estimate)
+  write.table(table_coef_parametric,paste0('../../outputs/table_coef_parametric_GAMM_exitus_in30days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  table_coef_smooth <- tidy(model_exitus_30days_bl)
+  write.table(table_coef_smooth,paste0('../../outputs/table_coef_smooth_GAMM_exitus_in30days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  },
+  error=function(cond) {
+    message(paste0("error generating table coefficients GAMM: exitus in 30 days"))
+    print(paste0("error generating table coefficients GAMM: exitus in 30 days"))
+  }
+)
+
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+gratia::draw(model_exitus_30days_bl,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+##### Not use function 'calculate_ICC' here to save variables #####
+
+var <- variance_comp(model_exitus_30days_bl)
+var
+var_re_exitus_30d <- var %>% filter(component %in% "s(hospital_st)")
+
+var_re_exitus_30d$variance_low <- var_re_exitus_30d$lower_ci * var_re_exitus_30d$lower_ci
+var_re_exitus_30d$variance_upp <- var_re_exitus_30d$upper_ci * var_re_exitus_30d$upper_ci
+
+
+icc_exitus_30d <- (var_re_exitus_30d$variance/(var_re_exitus_30d$variance + ((pi*pi)/3)))
+if(sum(is.na(icc_exitus_30d))== 0){
+  
+icc_lower_exitus_30d <- (var_re_exitus_30d$variance_low)/((var_re_exitus_30d$variance_low)+((pi*pi)/3))
+icc_upper_exitus_30d <- (var_re_exitus_30d$variance_upp)/((var_re_exitus_30d$variance_upp)+((pi*pi)/3)) 
+             
+print(paste0('ICC ajusted: ', round(icc_exitus_30d,5),' with lower_ci95=',round(icc_lower_exitus_30d,5),' and upper_ci95=',round(icc_upper_exitus_30d,5)))   
+
+}else{
+  icc_lower_exitus_30d <- NA
+  icc_upper_exitus_30d <- NA
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+
+
+MOR_exitus_30d <- round(exp(sqrt(2*(var_re_exitus_30d$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_exitus_30d))
+
+
+
+MOR_w_CI_exitus_30d <- calculate_MOR(model_exitus_30days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_30d[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_exitus_30d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_30d[3],5)))
+
+
+
+
+df_ <- data.frame(model = 'Model 3: exitus in 30 days',
+                         ICC = icc_exitus_30d,
+                         ICC_low = icc_lower_exitus_30d,
+                         ICC_upp = icc_upper_exitus_30d,
+                         MOR = MOR_w_CI_exitus_30d[2],
+                         MOR_low = MOR_w_CI_exitus_30d[1],
+                         MOR_upp = MOR_w_CI_exitus_30d[3])
+
+df_ICC_MOR <- rbind(df_ICC_MOR,df_)
+rm(df_)
+
+
+df_model_filter[c('predict_model_exitus_30days_bl','se_predict_model_exitus_30days_bl')] <- model_exitus_30days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+
+df_model_filter$resid_model_exitus_30days_bl <- resid(model_exitus_30days_bl,type='response')
+
+
+output_model_exitus_30days_bl <- df_model_filter
+
+df_patient_ <- df_patient %>% filter(!is.na(country_cd))
+output_model_exitus_30days_bl$country_cd <- unique(df_patient_$country_cd)
+
+
+output_model_exitus_30days_bl <- output_model_exitus_30days_bl %>% 
+  group_by(country_cd,hospital_st) %>% 
+  summarise(
+            mean_predict_model = mean(predict_model_exitus_30days_bl,na.rm=TRUE),
+            sd_predict_model = sd(predict_model_exitus_30days_bl,na.rm=TRUE),
+            mean_residuals_model = mean(resid_model_exitus_30days_bl,na.rm=TRUE),
+            sd_residuals_model = sd(resid_model_exitus_30days_bl,na.rm=TRUE),
+            median_predict_model = median(predict_model_exitus_30days_bl,na.rm=TRUE),
+            P25_predict_model = round(quantile(predict_model_exitus_30days_bl,0.25,na.rm=TRUE),5),
+            P75_predict_model = round(quantile(predict_model_exitus_30days_bl,0.75,na.rm=TRUE),5),
+            P05_predict_model = round(quantile(predict_model_exitus_30days_bl,0.05,na.rm=TRUE),5),
+            P95_predict_model = round(quantile(predict_model_exitus_30days_bl,0.95,na.rm=TRUE),5),
+            median_residuals_model = median(resid_model_exitus_30days_bl,na.rm=TRUE),
+            P25_residuals_model = round(quantile(resid_model_exitus_30days_bl,0.25,na.rm=TRUE),5),
+            P75_residuals_model = round(quantile(resid_model_exitus_30days_bl,0.75,na.rm=TRUE),5),
+            P05_residuals_model = round(quantile(resid_model_exitus_30days_bl,0.05,na.rm=TRUE),5),
+            P95_residuals_model = round(quantile(resid_model_exitus_30days_bl,0.95,na.rm=TRUE),5)
+            )
+
+write.table(output_model_exitus_30days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in30days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+ggplot(df_model_filter, aes(x = resid_model_exitus_30days_bl, y = hospital_st, group = hospital_st)) + 
+  geom_density_ridges(alpha=0.7) +
+  labs(title = 'Density plot of residuals for each hospital',y= 'Hospital',x='Residuals') +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(color='black'))
+rm(output_model_exitus_30days_bl)
+```
+
+
+
+###### Outcome: exitus in 180 days after surgery
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM exitus 180 days complex 
+
+###### exitus 180 days #####
+
+formula_model_exitus_180days_bl <- as.formula(paste0('exitus_180days_bl ~ s(futime_adm_surg, bs = "tp") + length_of_stay_after_surgery + ',formula_model, ' + s(hospital_st, bs = "re")'))
+
+model_exitus_180days_bl <- mgcv::gam(formula_model_exitus_180days_bl, data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_exitus_180days_bl)
+
+```
+
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: tidy coef model exitus in 180 days
+tryCatch(
+  {
+  table_coef_parametric <- tidy(model_exitus_180days_bl,parametric=TRUE,exponentiate=TRUE,conf.int = TRUE,conf.level = 0.95)
+  table_coef_parametric <- table_coef_parametric %>% dplyr::rename(exponentiated_estimate = estimate)
+  write.table(table_coef_parametric,paste0('../../outputs/table_coef_parametric_GAMM_exitus_in180days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  table_coef_smooth <- tidy(model_exitus_180days_bl)
+  write.table(table_coef_smooth,paste0('../../outputs/table_coef_smooth_GAMM_exitus_in180days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  },
+  error=function(cond) {
+    message(paste0("error generating table coefficients GAMM: exitus in 180 days"))
+    print(paste0("error generating table coefficients GAMM: exitus in 180 days"))
+  }
+)
+
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+gratia::draw(model_exitus_180days_bl,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+##### Not use function 'calculate_ICC' here to save variables #####
+
+var <- variance_comp(model_exitus_180days_bl)
+var
+var_re_exitus_180d <- var %>% filter(component %in% "s(hospital_st)")
+
+var_re_exitus_180d$variance_low <- var_re_exitus_180d$lower_ci * var_re_exitus_180d$lower_ci
+var_re_exitus_180d$variance_upp <- var_re_exitus_180d$upper_ci * var_re_exitus_180d$upper_ci
+
+
+icc_exitus_180d <- (var_re_exitus_180d$variance/(var_re_exitus_180d$variance + ((pi*pi)/3)))
+if(sum(is.na(icc_exitus_180d))== 0){
+  
+icc_lower_exitus_180d <- (var_re_exitus_180d$variance_low)/((var_re_exitus_180d$variance_low)+((pi*pi)/3))
+icc_upper_exitus_180d <- (var_re_exitus_180d$variance_upp)/((var_re_exitus_180d$variance_upp)+((pi*pi)/3)) 
+             
+print(paste0('ICC ajusted: ', round(icc_exitus_180d,5),' with lower_ci95=',round(icc_lower_exitus_180d,5),' and upper_ci95=',round(icc_upper_exitus_180d,5)))   
+
+}else{
+  icc_lower_exitus_180d <- NA
+  icc_upper_exitus_180d <- NA
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+
+
+MOR_exitus_180d <- round(exp(sqrt(2*(var_re_exitus_180d$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_exitus_180d))
+
+
+
+MOR_w_CI_exitus_180d <- calculate_MOR(model_exitus_180days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_exitus_180d[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_exitus_180d[1],5),' and upper_ci95=',round(MOR_w_CI_exitus_180d[3],5)))
+
+
+
+
+df_ <- data.frame(model = 'Model 4: exitus in 180 days',
+                         ICC = icc_exitus_180d,
+                         ICC_low = icc_lower_exitus_180d,
+                         ICC_upp = icc_upper_exitus_180d,
+                         MOR = MOR_w_CI_exitus_180d[2],
+                         MOR_low = MOR_w_CI_exitus_180d[1],
+                         MOR_upp = MOR_w_CI_exitus_180d[3])
+
+df_ICC_MOR <- rbind(df_ICC_MOR,df_)
+rm(df_)
+
+
+df_model_filter[c('predict_model_exitus_180days_bl','se_predict_model_exitus_180days_bl')] <- model_exitus_180days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+
+df_model_filter$resid_model_exitus_180days_bl <- resid(model_exitus_180days_bl,type='response')
+
+
+output_model_exitus_180days_bl <- df_model_filter
+
+df_patient_ <- df_patient %>% filter(!is.na(country_cd))
+output_model_exitus_180days_bl$country_cd <- unique(df_patient_$country_cd)
+
+
+output_model_exitus_180days_bl <- output_model_exitus_180days_bl %>% 
+  group_by(country_cd,hospital_st) %>% 
+  summarise(
+            mean_predict_model = mean(predict_model_exitus_180days_bl,na.rm=TRUE),
+            sd_predict_model = sd(predict_model_exitus_180days_bl,na.rm=TRUE),
+            mean_residuals_model = mean(resid_model_exitus_180days_bl,na.rm=TRUE),
+            sd_residuals_model = sd(resid_model_exitus_180days_bl,na.rm=TRUE),
+            median_predict_model = median(predict_model_exitus_180days_bl,na.rm=TRUE),
+            P25_predict_model = round(quantile(predict_model_exitus_180days_bl,0.25,na.rm=TRUE),5),
+            P75_predict_model = round(quantile(predict_model_exitus_180days_bl,0.75,na.rm=TRUE),5),
+            P05_predict_model = round(quantile(predict_model_exitus_180days_bl,0.05,na.rm=TRUE),5),
+            P95_predict_model = round(quantile(predict_model_exitus_180days_bl,0.95,na.rm=TRUE),5),
+            median_residuals_model = median(resid_model_exitus_180days_bl,na.rm=TRUE),
+            P25_residuals_model = round(quantile(resid_model_exitus_180days_bl,0.25,na.rm=TRUE),5),
+            P75_residuals_model = round(quantile(resid_model_exitus_180days_bl,0.75,na.rm=TRUE),5),
+            P05_residuals_model = round(quantile(resid_model_exitus_180days_bl,0.05,na.rm=TRUE),5),
+            P95_residuals_model = round(quantile(resid_model_exitus_180days_bl,0.95,na.rm=TRUE),5)
+            )
+
+write.table(output_model_exitus_180days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_exitus_in180days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+ggplot(df_model_filter, aes(x = resid_model_exitus_180days_bl, y = hospital_st, group = hospital_st)) + 
+  geom_density_ridges(alpha=0.7) +
+  labs(title = 'Density plot of residuals for each hospital',y= 'Hospital',x='Residuals') +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(color='black'))
+rm(output_model_exitus_180days_bl)
+```
+
+
+
+
+:::
+
+
+###### Performance comparison of complex GAMM models 
+
+
+```{r, warning=FALSE, echo=FALSE}
+#| label: performance model exitus
+
+p <- compare_performance(model_exitus_hosp_bl,model_exitus_7days_bl, model_exitus_30days_bl,model_exitus_180days_bl)
+
+p$Name[p$Name %in% 'model_exitus_hosp_bl'] <- 'Model 1: exitus in hospital'
+p$Name[p$Name %in% 'model_exitus_7days_bl'] <- 'Model 2: exitus in 7 days after surgery'
+p$Name[p$Name %in% 'model_exitus_30days_bl'] <- 'Model 3: exitus in 30 days after surgery'
+p$Name[p$Name %in% 'model_exitus_180days_bl'] <- 'Model 4: exitus in 180 days after surgery'
+p
+write.table(p,paste0('../../outputs/performance_GAMM_exitus',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+```
+ 
+
+#### Adjusted unplanned readmissions by time to surgery
+
+##### Final models
+::: {.panel-tabset}
+
+###### Outcome: unplanned readmission (for any cause) in the next 7 days after hospitalization
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM unplanned 7 days complex model
+
+##### unplanned 7 days ######
+
+formula_model_unplanned_7days_bl <- as.formula(paste0('unplanned_readmission_7d_bl ~ s(futime_adm_surg, bs = "tp") + length_of_stay_after_surgery + ',formula_model, ' + s(hospital_st, bs = "re")'))
+
+model_unplanned_7days_bl <- mgcv::gam(formula_model_unplanned_7days_bl, data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_unplanned_7days_bl)
+
+
+```
+
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: tidy coef model unplanned in 7 days
+tryCatch(
+  {
+  table_coef_parametric <- tidy(model_unplanned_7days_bl,parametric=TRUE,exponentiate=TRUE,conf.int = TRUE,conf.level = 0.95)
+  table_coef_parametric <- table_coef_parametric %>% dplyr::rename(exponentiated_estimate = estimate)
+  write.table(table_coef_parametric,paste0('../../outputs/table_coef_parametric_GAMM_unplanned_7days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  table_coef_smooth <- tidy(model_unplanned_7days_bl)
+  write.table(table_coef_smooth,paste0('../../outputs/table_coef_smooth_GAMM_unplanned_7days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  },
+  error=function(cond) {
+    message(paste0("error generating table coefficients GAMM: unplanned in 7 days"))
+    print(paste0("error generating table coefficients GAMM: unplanned in 7 days"))
+  }
+)
+
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+gratia::draw(model_unplanned_7days_bl,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+##### Not use function 'calculate_ICC' here to save variables #####
+
+var <- variance_comp(model_unplanned_7days_bl)
+var
+var_re_unplanned_7d <- var %>% filter(component %in% "s(hospital_st)")
+
+
+var_re_unplanned_7d$variance_low <- var_re_unplanned_7d$lower_ci * var_re_unplanned_7d$lower_ci
+var_re_unplanned_7d$variance_upp <- var_re_unplanned_7d$upper_ci * var_re_unplanned_7d$upper_ci
+
+
+icc_unplanned_7d <- (var_re_unplanned_7d$variance/(var_re_unplanned_7d$variance + ((pi*pi)/3)))
+if(sum(is.na(icc_unplanned_7d))== 0){
+  
+icc_lower_unplanned_7d <- (var_re_unplanned_7d$variance_low)/((var_re_unplanned_7d$variance_low)+((pi*pi)/3))
+icc_upper_unplanned_7d <- (var_re_unplanned_7d$variance_upp)/((var_re_unplanned_7d$variance_upp)+((pi*pi)/3)) 
+             
+print(paste0('ICC ajusted: ', round(icc_unplanned_7d,5),' with lower_ci95=',round(icc_lower_unplanned_7d,5),' and upper_ci95=',round(icc_upper_unplanned_7d,5)))    
+
+}else{
+  icc_lower_unplanned_7d <- NA
+  icc_upper_unplanned_7d <- NA
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+
+
+MOR_unplanned_7d <- round(exp(sqrt(2*(var_re_unplanned_7d$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_unplanned_7d))
+
+
+
+MOR_w_CI_unplanned_7d <- calculate_MOR(model_unplanned_7days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_7d[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_unplanned_7d[1],5),' and upper_ci95=',round(MOR_w_CI_unplanned_7d[3],5)))
+
+
+
+df_ <- data.frame(model = 'Model 1: unplanned in 7 days',
+                         ICC = icc_unplanned_7d,
+                         ICC_low = icc_lower_unplanned_7d,
+                         ICC_upp = icc_upper_unplanned_7d,
+                         MOR = MOR_w_CI_unplanned_7d[2],
+                         MOR_low = MOR_w_CI_unplanned_7d[1],
+                         MOR_upp = MOR_w_CI_unplanned_7d[3])
+
+df_ICC_MOR <- rbind(df_ICC_MOR,df_)
+rm(df_)
+
+df_model_filter[c('predict_model_unplanned_7days_bl','se_predict_model_unplanned_7days_bl')] <- model_unplanned_7days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+df_model_filter$resid_model_unplanned_7days_bl <- resid(model_unplanned_7days_bl,type='response')
+
+
+output_model_unplanned_7days_bl <- df_model_filter
+
+df_patient_ <- df_patient %>% filter(!is.na(country_cd))
+output_model_unplanned_7days_bl$country_cd <- unique(df_patient_$country_cd)
+
+output_model_unplanned_7days_bl <- output_model_unplanned_7days_bl %>% 
+  group_by(country_cd,hospital_st) %>% 
+  summarise(
+            mean_predict_model = mean(predict_model_unplanned_7days_bl,na.rm=TRUE),
+            sd_predict_model = sd(predict_model_unplanned_7days_bl,na.rm=TRUE),
+            mean_residuals_model = mean(resid_model_unplanned_7days_bl,na.rm=TRUE),
+            sd_residuals_model = sd(resid_model_unplanned_7days_bl,na.rm=TRUE),
+            median_predict_model = median(predict_model_unplanned_7days_bl,na.rm=TRUE),
+            P25_predict_model = round(quantile(predict_model_unplanned_7days_bl,0.25,na.rm=TRUE),5),
+            P75_predict_model = round(quantile(predict_model_unplanned_7days_bl,0.75,na.rm=TRUE),5),
+            P05_predict_model = round(quantile(predict_model_unplanned_7days_bl,0.05,na.rm=TRUE),5),
+            P95_predict_model = round(quantile(predict_model_unplanned_7days_bl,0.95,na.rm=TRUE),5),
+            median_residuals_model = median(resid_model_unplanned_7days_bl,na.rm=TRUE),
+            P25_residuals_model = round(quantile(resid_model_unplanned_7days_bl,0.25,na.rm=TRUE),5),
+            P75_residuals_model = round(quantile(resid_model_unplanned_7days_bl,0.75,na.rm=TRUE),5),
+            P05_residuals_model = round(quantile(resid_model_unplanned_7days_bl,0.05,na.rm=TRUE),5),
+            P95_residuals_model = round(quantile(resid_model_unplanned_7days_bl,0.95,na.rm=TRUE),5)
+            )
+
+
+write.table(output_model_unplanned_7days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_unplanned_7days',params$state,'.csv'), sep='|',row.names=FALSE)
+
+ggplot(df_model_filter, aes(x = resid_model_unplanned_7days_bl, y = hospital_st, group = hospital_st)) + 
+  geom_density_ridges(alpha=0.7) +
+  labs(title = 'Density plot of residuals for each hospital',y= 'Hospital',x='Residuals') +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(color='black'))
+rm(output_model_unplanned_7days_bl)
+```
+
+
+###### Outcome: unplanned readmission (for any cause) in the next 30 days after hospitalization
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: GAMM unplanned 30 days complex model
+
+###### unplanned 30 days #####
+
+formula_model_unplanned_30days_bl <- as.formula(paste0('unplanned_readmission_30d_bl ~ s(futime_adm_surg, bs = "tp") + length_of_stay_after_surgery + ',formula_model, ' + s(hospital_st, bs = "re")'))
+
+model_unplanned_30days_bl <- mgcv::gam(formula_model_unplanned_30days_bl, data = df_model_filter,family=binomial(link="logit"), method = "REML")
+
+summary(model_unplanned_30days_bl)
+
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+#| label: tidy coef model unplanned in 30 days
+tryCatch(
+  {
+  table_coef_parametric <- tidy(model_unplanned_30days_bl,parametric=TRUE,exponentiate=TRUE,conf.int = TRUE,conf.level = 0.95)
+  table_coef_parametric <- table_coef_parametric %>% dplyr::rename(exponentiated_estimate = estimate)
+  write.table(table_coef_parametric,paste0('../../outputs/table_coef_parametric_GAMM_unplanned_30days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  table_coef_smooth <- tidy(model_unplanned_30days_bl)
+write.table(table_coef_smooth,paste0('../../outputs/table_coef_smooth_GAMM_unplanned_30days',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+
+  },
+  error=function(cond) {
+    message(paste0("error generating table coefficients GAMM: unplanned in 30 days"))
+    print(paste0("error generating table coefficients GAMM: unplanned in 30 days"))
+  }
+)
+
+```
+
+
+```{r, echo=FALSE,warning=FALSE}
+gratia::draw(model_unplanned_30days_bl,select = 1,ci_level = 0.95) + 
+  geom_hline(yintercept = 0,colour = 'red', lty=2) + 
+  labs(title = 'Time from admission to surgery (spline)',x='Time from admission to surgery (days)') +
+  theme(panel.background = element_blank(), axis.line = element_line(color = 'black'))
+
+##### Not use function 'calculate_ICC' here to save variables #####
+
+var <- variance_comp(model_unplanned_30days_bl)
+var
+var_re_unplanned_30d <- var %>% filter(component %in% "s(hospital_st)")
+
+var_re_unplanned_30d$variance_low <- var_re_unplanned_30d$lower_ci * var_re_unplanned_30d$lower_ci
+var_re_unplanned_30d$variance_upp <- var_re_unplanned_30d$upper_ci * var_re_unplanned_30d$upper_ci
+
+
+
+icc_unplanned_30d <- (var_re_unplanned_30d$variance/(var_re_unplanned_30d$variance + ((pi*pi)/3)))
+if(sum(is.na(icc_unplanned_30d))== 0){
+  
+  
+icc_lower_unplanned_30d <- (var_re_unplanned_30d$variance_low)/((var_re_unplanned_30d$variance_low)+((pi*pi)/3))
+icc_upper_unplanned_30d <- (var_re_unplanned_30d$variance_upp)/((var_re_unplanned_30d$variance_upp)+((pi*pi)/3)) 
+             
+print(paste0('ICC ajusted: ', round(icc_unplanned_30d,5),' with lower_ci95=',round(icc_lower_unplanned_30d,5),' and upper_ci95=',round(icc_upper_unplanned_30d,5)))    
+
+}else{
+  icc_lower_unplanned_30d <- NA
+  icc_upper_unplanned_30d <- NA
+  print(paste0('ICC ajusted: ', 'It has not been possible to calculate'))
+}
+
+MOR_unplanned_30d <- round(exp(sqrt(2*(var_re_unplanned_30d$variance))*qnorm(.75)),5)
+print(paste0('Median odds ratio (MOR): ', MOR_unplanned_30d))
+
+
+
+MOR_w_CI_unplanned_30d <- calculate_MOR(model_unplanned_30days_bl,var_re = 'hospital_st',n_iter = 1000)
+print(paste0('MOR with bootsrapping: ',round(MOR_w_CI_unplanned_30d[2],5),
+             ' with lower_ci95=',round(MOR_w_CI_unplanned_30d[1],5),' and upper_ci95=',round(MOR_w_CI_unplanned_30d[3],5)))
+
+
+df_ <- data.frame(model = 'Model 2: unplanned in 30 days',
+                         ICC = icc_unplanned_30d,
+                         ICC_low = icc_lower_unplanned_30d,
+                         ICC_upp = icc_upper_unplanned_30d,
+                         MOR = MOR_w_CI_unplanned_30d[2],
+                         MOR_low = MOR_w_CI_unplanned_30d[1],
+                         MOR_upp = MOR_w_CI_unplanned_30d[3])
+
+df_ICC_MOR <- rbind(df_ICC_MOR,df_)
+rm(df_)
+write.table(df_ICC_MOR,paste0('../../outputs/table_ICC_MOR_with_CI_all_GAMM',params$state,'.csv'), sep='|',row.names=FALSE)
+rm(df_ICC_MOR)
+
+df_model_filter[c('predict_model_unplanned_30days_bl','se_predict_model_unplanned_30days_bl')] <- model_unplanned_30days_bl %>% predict(df_model_filter, type = "response",se.fit=TRUE)
+
+df_model_filter$resid_model_unplanned_30days_bl <- resid(model_unplanned_30days_bl,type='response')
+
+
+output_model_unplanned_30days_bl <- df_model_filter
+
+df_patient_ <- df_patient %>% filter(!is.na(country_cd))
+output_model_unplanned_30days_bl$country_cd <- unique(df_patient_$country_cd)
+
+output_model_unplanned_30days_bl <- output_model_unplanned_30days_bl %>% 
+  group_by(country_cd,hospital_st) %>% 
+  summarise(
+            mean_predict_model = mean(predict_model_unplanned_30days_bl,na.rm=TRUE),
+            sd_predict_model = sd(predict_model_unplanned_30days_bl,na.rm=TRUE),
+            mean_residuals_model = mean(resid_model_unplanned_30days_bl,na.rm=TRUE),
+            sd_residuals_model = sd(resid_model_unplanned_30days_bl,na.rm=TRUE),
+            median_predict_model = median(predict_model_unplanned_30days_bl,na.rm=TRUE),
+            P25_predict_model = round(quantile(predict_model_unplanned_30days_bl,0.25,na.rm=TRUE),5),
+            P75_predict_model = round(quantile(predict_model_unplanned_30days_bl,0.75,na.rm=TRUE),5),
+            P05_predict_model = round(quantile(predict_model_unplanned_30days_bl,0.05,na.rm=TRUE),5),
+            P95_predict_model = round(quantile(predict_model_unplanned_30days_bl,0.95,na.rm=TRUE),5),
+            median_residuals_model = median(resid_model_unplanned_30days_bl,na.rm=TRUE),
+            P25_residuals_model = round(quantile(resid_model_unplanned_30days_bl,0.25,na.rm=TRUE),5),
+            P75_residuals_model = round(quantile(resid_model_unplanned_30days_bl,0.75,na.rm=TRUE),5),
+            P05_residuals_model = round(quantile(resid_model_unplanned_30days_bl,0.05,na.rm=TRUE),5),
+            P95_residuals_model = round(quantile(resid_model_unplanned_30days_bl,0.95,na.rm=TRUE),5)
+            )
+
+write.table(output_model_unplanned_30days_bl,paste0('../../outputs/aggregated_outputs_byhospital_GAMM_unplanned_30days',params$state,'.csv'), sep='|',row.names=FALSE)
+
+
+
+ggplot(df_model_filter, aes(x = resid_model_unplanned_30days_bl, y = hospital_st, group = hospital_st)) + 
+  geom_density_ridges(alpha=0.7) +
+  labs(title = 'Density plot of residuals for each hospital',y= 'Hospital',x='Residuals') +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(color='black'))
+rm(output_model_unplanned_30days_bl)
+```
+
+
+:::
+
+
+```{r, warning=FALSE, echo=FALSE,output=FALSE}
+#| label: create table counts exitus models
+
+table_counts_health_sys <- data.frame(
+  country_cd = descriptive_values$country_cd,
+  n_hospitalization_episode_id = nrow(df_model_filter),
+  n_hospitals = length(unique(df_model_filter$hospital_st)),
+  n_exitus_inhosp = sum(df_model_filter$exitus_hosp_bl,na.rm=TRUE),
+  median_predict_exitus_inhosp = median(df_model_filter$predict_model_exitus_hospital_bl,na.rm=TRUE),
+  iqr_predict_exitus_inhosp = IQR(df_model_filter$predict_model_exitus_hospital_bl,na.rm=TRUE),
+  mean_predict_exitus_inhosp = mean(df_model_filter$predict_model_exitus_hospital_bl,na.rm=TRUE),
+  sd_predict_exitus_inhosp = sd(df_model_filter$predict_model_exitus_hospital_bl,na.rm=TRUE),
+  n_exitus_7d = sum(df_model_filter$exitus_7days_bl,na.rm=TRUE),
+  median_predict_exitus_7d = median(df_model_filter$predict_model_exitus_7days_bl,na.rm=TRUE),
+  iqr_predict_exitus_7d = IQR(df_model_filter$predict_model_exitus_7days_bl,na.rm=TRUE),
+  mean_predict_exitus_7d = mean(df_model_filter$predict_model_exitus_7days_bl,na.rm=TRUE),
+  sd_predict_exitus_7d = sd(df_model_filter$predict_model_exitus_7days_bl,na.rm=TRUE),
+  n_exitus_30d = sum(df_model_filter$exitus_30days_bl,na.rm=TRUE),
+  median_predict_exitus_30d = median(df_model_filter$predict_model_exitus_30days_bl,na.rm=TRUE),
+  iqr_predict_exitus_30d = IQR(df_model_filter$predict_model_exitus_30days_bl,na.rm=TRUE),
+  mean_predict_exitus_30d = mean(df_model_filter$predict_model_exitus_30days_bl,na.rm=TRUE),
+  sd_predict_exitus_30d = sd(df_model_filter$predict_model_exitus_30days_bl,na.rm=TRUE),
+  n_exitus_180d = sum(df_model_filter$exitus_180days_bl,na.rm=TRUE),
+  median_predict_exitus_180d = median(df_model_filter$predict_model_exitus_180days_bl,na.rm=TRUE),
+  iqr_predict_exitus_180d = IQR(df_model_filter$predict_model_exitus_180days_bl,na.rm=TRUE),
+  mean_predict_exitus_180d = mean(df_model_filter$predict_model_exitus_180days_bl,na.rm=TRUE),
+  sd_predict_exitus_180d = sd(df_model_filter$predict_model_exitus_180days_bl,na.rm=TRUE),
+  n_unplanned_7d = sum(df_model_filter$unplanned_readmission_7d_bl,na.rm=TRUE),
+  median_predict_unplanned_7d = median(df_model_filter$predict_model_unplanned_7days_bl,na.rm=TRUE),
+  iqr_predict_unplanned_7d = IQR(df_model_filter$predict_model_unplanned_7days_bl,na.rm=TRUE),
+  mean_predict_unplanned_7d = mean(df_model_filter$predict_model_unplanned_7days_bl,na.rm=TRUE),
+  sd_predict_unplanned_7d = sd(df_model_filter$predict_model_unplanned_7days_bl,na.rm=TRUE),
+  n_unplanned_30d = sum(df_model_filter$unplanned_readmission_30d_bl,na.rm=TRUE),
+  median_predict_unplanned_30d = median(df_model_filter$predict_model_unplanned_30days_bl,na.rm=TRUE),
+  iqr_predict_unplanned_30d = IQR(df_model_filter$predict_model_unplanned_30days_bl,na.rm=TRUE),
+  mean_predict_unplanned_30d = mean(df_model_filter$predict_model_unplanned_30days_bl,na.rm=TRUE),
+  sd_predict_unplanned_30d = sd(df_model_filter$predict_model_unplanned_30days_bl,na.rm=TRUE)
+  )
+
+write.table(table_counts_health_sys,paste0('../../outputs/table_counts_prediction_exitus_GAMM_models',params$state,'.csv'),row.names = FALSE, sep='|', na='',fileEncoding="UTF-8")
+rm(table_counts_health_sys)
+```
+
+
+##### Performance comparison of complex GAMM models 
+
+
+```{r, warning=FALSE, echo=FALSE}
+#| label: performance model unplanned
+
+p <- compare_performance(model_unplanned_7days_bl, model_unplanned_30days_bl)
+
+
+p$Name[p$Name %in% 'model_unplanned_7days_bl'] <- 'Model 1: unplanned readmission in the next 7 days after hospitalization'
+p$Name[p$Name %in% 'model_unplanned_30days_bl'] <- 'Model 2: unplanned readmission in the next 30 days after hospitalization'
+
+p
+write.table(p,paste0('../../outputs/performance_GAMM_unplanned_readmission',params$state,'.csv'), sep='|',row.names=FALSE,na='',fileEncoding="UTF-8")
+```
+
+
+
+```{r,echo=FALSE,warning=FALSE,output=FALSE}
+#| label: save summary
+
+source('./aux_script/save_summary_2_round.R')
+
+
+```
+
+
