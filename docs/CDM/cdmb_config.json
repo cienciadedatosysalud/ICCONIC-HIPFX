@@ -10,7 +10,7 @@
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "document": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.2.5",
+        "version_sem": "1.2.6",
         "authors": [
             {
                 "name": "Estupiñán-Romero, Francisco ",
@@ -1055,9 +1055,9 @@
                     "requirement_level": "Required",
                     "characteristic": "Observed",
                     "catalog_bl": true,
-                    "transformations_from_origin": "see 'outpatient_prescription_prescri' tab",
+                    "transformations_from_origin": "Please, pull all prescribed medications",
                     "possible_data_source": "Outpatient electronic prescription registry ",
-                    "observations_comments": "See 'outpatient_prescription_prescri' tab for futher information on what ATC codes are considerate relevant for the study",
+                    "observations_comments": "Please, pull all prescribed medications",
                     "examples": "",
                     "catalog": {
                         "column_name": "code",
