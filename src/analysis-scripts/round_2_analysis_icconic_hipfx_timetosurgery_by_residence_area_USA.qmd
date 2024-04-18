@@ -52,7 +52,7 @@ for (i in 1:length(residence_area_cd_list)) {
   tryCatch(
   {
     print(paste0('Running analysis for residence area: ',residence_area_cd_list[i]))
-    system(paste0("quarto render analysis_icconic_hipfx_timetosurgery_2_round.qmd -P state:\"_",residence_area_cd_list[i],"\" --to html --output analysis_icconic_hipfx_timetosurgery_",residence_area_cd_list[i],".html"))
+    system(paste0("quarto render round_2_analysis_icconic_hipfx_timetosurgery.qmd -P state:\"_",residence_area_cd_list[i],"\" --to html --output round_2_analysis_icconic_hipfx_timetosurgery_",residence_area_cd_list[i],".html"))
     reset_original_data()    
   },
   error=function(cond) {
