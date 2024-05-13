@@ -79,10 +79,12 @@ They also defined a risk class label, indicating whether the drug category incre
 ```{python drug_class_desc, echo=FALSE, warning=FALSE}
 
 ####(Updates)####
-Drug_class_desc = pd.DataFrame({'Drug_Category': ['Inhaled steroids', 'Oral Steroids', 'Proton Pump Inhibitors', 'H2 Antagonists/ Histamine 2 Receptor Antagonists', 'SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors', 'Tricyclic Antidepressants', 'Thiazolidinediones', 'Anticonvulsants', 'Gapapentinoids N02BF', 'Benzodiazepines', 'Barbiturates', 'Opioids', '1st Generation Antihistamines/ H1 Receptor Antagonists', 'Anti- Parkinson\'s Disease', 'Centrally-Acting Antihypertensives', '1st-Generation Antipsychotics (FGAP)', '2nd-Generation Antipsychotics (SGAP)', 'Nitrates', 'Loop Diuretics', 'Thiazide and Thiazide-like Diuretics', 'Sedative Hypnotics'], 
-                           'Drug_Category_Short': ['inhSteroids', 'oralSter', 'ppi', 'h2Antags', 'ssriSnri', 'tca', 'tzd', 'anticonv', 'gabaN02BF', 'benzos', 'barbs','Opioids', 'firstGenAH', 'antiPark', 'centrAntiHT', 'fgap', 'sgap', 'nitrates', 'loopDiur', 'thiazDiur', 'sedHyp'],
-                           'Grandparent_Class': ['Respiratory agents', 'Hormones/hormone modifiers', 'Gastrointestinal agents', 'Gastrointestinal agents', 'Psychotherapeutic agents', 'Psychotherapeutic agents', 'Metabolic agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Central nervous system agents', 'Cardiovascular agents', 'Psychotherapeutic agents', 'Psychotherapeutic agents', 'Cardiovascular agents', 'Cardiovascular agents', 'Cardiovascular agents', 'Central nervous system agents'],
-                           'Risk_Class': ['Bone_mass_decrese_moderate', 'Bone_mass_decrese_high', 'Bone_mass_decrese_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high']})
+Drug_class_desc = pd.DataFrame({
+'Drug_Category' : ['Aldehydes', 'Alkylamines', 'Aminoalkyl Ethers', 'Antacids', 'Anticholinergic Agents', 'Azaspirodecanediones', 'Barbiturates', 'Barbiturates', 'Benzodiazepines', 'Benzodiazepines', 'Benzodiazepines', 'Butyrophenones', 'Carbamates', 'Carboxamides', 'Centrally-Acting Antihypertensives', 'Dibenzoxazepines', 'Dibenzoxazepines', 'Diphenylbutylpiperidines', 'Dopaminergic Agents', 'Ethylene Diamines', 'Fatty Acid Derivatives', 'Gabapentinoids', 'H1-Receptor Antagonists', 'H2-Receptor Antagonists', 'Hydantoins', 'Indole Derivatives', 'Indole Derivatives', 'Inhaled Corticosteroids', 'Loop Diuretics', 'Melatonin-Agonists', 'Muscle Relaxers', 'Nitrates', 'Opioids', 'Opioids', 'Oral Steroids', 'Orexin Antagonists', 'Other Antiepileptics', 'Other Antihistamines', 'Other Antipsychotics', 'Other Hypnotics and Sedatives', 'Phenothiazine Derivatives', 'Phenothiazines', 'Piperazines', 'Proton Pump Inhibitors', 'SSRI - Selective Serotonin Reuptake Inhibitors', 'Sodium-glucose Co-transporter 2 Inhibitors', 'Succinimides', 'Sulfonylureas', 'Thiazides and Other Low-Ceiling Drugs', 'Thiazolidinediones', 'Thioxanthenes', 'Tricyclic Antidepressants'],
+'Cate_short_name' : ['ALD', 'ALKAM', 'AAE', 'ACIDS', 'ACH', 'AZA', 'BRBT', 'BRBT', 'BZD', 'BZD', 'BZD', 'BUTY', 'CARB', 'CBX', 'CAA', 'DBZ', 'DBZ', 'DPBP', 'DOPA', 'EDIAM', 'FAD', 'GPTN', 'H1-RA', 'H2-RA', 'HYDAN', 'INDOL', 'INDOL', 'ICS', 'LPD', 'MEL', 'MUSREL', 'NIT', 'OPI', 'OPI', 'ORST', 'OREX', 'OAE', 'OAH', 'OAP', 'OHS', 'PHED', 'PHEN', 'PIP', 'PPI', 'SSRI', 'SGLT2', 'SUCC', 'SU', 'THZLC', 'TZD', 'THIOX', 'TCA'],
+'Grandparent_Class' : ['hypnotics_and_sedatives', 'antihistamines', 'antihistamines', 'Acid_related_disorders', 'anti_parkinson_drugs', 'anxiolytics', 'hypnotics_and_sedatives', 'antiepileptics', 'hypnotics_and_sedatives', 'anxiolytics', 'antiepileptics', 'typical_antipsychotics', 'anxiolytics', 'antiepileptics', 'Hypertension', 'typical_antipsychotics', 'atypical_antipsychotics', 'typical_antipsychotics', 'anti_parkinson_drugs', 'antihistamines', 'antiepileptics', 'analgesics', 'anxiolytics', 'Acid_related_disorders', 'antiepileptics', 'atypical_antipsychotics', 'typical_antipsychotics', 'obstructive_airway_diseases', 'Diuretic', 'hypnotics_and_sedatives', 'musculo_skeletal_system', 'Angina_pectoris', 'anesthetics', 'anelgesics', 'hormones_hormone_modifiers', 'hypnotics_and_sedatives', 'antiepileptics', 'antihistamines', 'atypical_antipsychotics', 'hypnotics_and_sedatives', 'antihistamines', 'typical_antipsychotics', 'antihistamines', 'Acid_related_disorders', 'antidepressant', 'Diabetes', 'antiepileptics', 'Diabetes', 'Diuretic', 'Diabetes', 'typical_antipsychotics', 'antidepressant'],
+'Risk_Class' : ['Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_moderate', 'Bone_mass_decrese_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_high', 'Fall_increase_moderate', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high']
+                           }) ###change_0505
 Drug_class_desc
 ```
 
@@ -204,21 +206,21 @@ Risk = pres_df_by_level(pres_1, 'Risk_Class')
 DrugCate = pres_df_by_level(pres_1, 'Cate_short')
 
 ######Updates(0402)###### Start ##### 1
-Grandparent_collist = ['Central nervous system agents', 'Cardiovascular agents', 'Hormones/hormone modifiers', 'Psychotherapeutic agents', 'Gastrointestinal agents', 'Respiratory agents', 'Metabolic agents']
-Grandparent_collist = [x + '_Pre' for x in Grandparent_collist] + [x + '_Post' for x in Grandparent_collist]
-for col in Grandparent_collist:
+Grandparent_collist = pres_1['Grandparent_Class'].unique().tolist() ###change_0505
+Grandparent_collist_2 = [x + '_Pre' for x in Grandparent_collist] + [x + '_Post' for x in Grandparent_collist] ###change_0510
+for col in Grandparent_collist_2: ###change_0510
     if col not in Grandparent.columns:
         Grandparent[col] = pd.NA 
 
-Risk_collist = ['Bone_mass_decrese_moderate', 'Bone_mass_decrese_high', 'Fall_increase_moderate', 'Fall_increase_high']
-Risk_collist = [x + '_Pre' for x in Risk_collist] + [x + '_Post' for x in Risk_collist]
-for col in Risk_collist:
+Risk_collist = pres_1['Risk_Class'].unique().tolist()###change_0505
+Risk_collist_2 = [x + '_Pre' for x in Risk_collist] + [x + '_Post' for x in Risk_collist] ###change_0510
+for col in Risk_collist_2: ###change_0510
     if col not in Risk.columns:
         Risk[col] = pd.NA
 
-DrugCate_collist = ['Opioids', 'centrAntiHT', 'oralSter', 'barbs', 'sedHyp', 'benzos', 'gabaN02BF', 'firstGenAH', 'anticonv', 'thiazDiur', 'sgap', 'tca', 'ssriSnri', 'nitrates', 'antiPark', 'ppi', 'loopDiur', 'h2Antags', 'inhSteroids', 'fgap', 'tzd']
-DrugCate_collist = [x + '_Pre' for x in DrugCate_collist] + [x + '_Post' for x in DrugCate_collist]
-for col in DrugCate_collist:
+DrugCate_collist = pres_1['Cate_short'].unique().tolist()###change_0505
+DrugCate_collist_2 = [x + '_Pre' for x in DrugCate_collist] + [x + '_Post' for x in DrugCate_collist] ###change_0510
+for col in DrugCate_collist_2: ###change_0510
     if col not in DrugCate.columns:
         DrugCate[col] = pd.NA
 ######Updates(0402)###### End #####
@@ -243,7 +245,7 @@ def pres_pattern (df, Drug):
 
     return df2
 
-DrugCate_list = ['Opioids', 'centrAntiHT', 'oralSter', 'barbs', 'sedHyp', 'benzos', 'gabaN02BF', 'firstGenAH', 'anticonv', 'thiazDiur', 'sgap', 'tca', 'ssriSnri', 'nitrates', 'antiPark', 'ppi', 'loopDiur', 'h2Antags', 'inhSteroids', 'fgap', 'tzd']
+DrugCate_list = DrugCate_collist###change_0505
 DrugCate_dfs = [pres_pattern(DrugCate, Drug) for Drug in DrugCate_list]
 DrugCate_patterns = DrugCate_dfs[0]
 
@@ -251,7 +253,7 @@ for df in DrugCate_dfs[1:]:
     DrugCate_patterns = DrugCate_patterns.merge(df, how='left', on='patient_id')
 DrugCate_patterns = DrugCate_patterns.merge(DrugCate[['patient_id', 'Cate_short_Count_Pre', 'Cate_short_Count_Post']], on='patient_id', how='left')
 
-Grandparent_list = ['Central nervous system agents', 'Cardiovascular agents', 'Hormones/hormone modifiers', 'Psychotherapeutic agents', 'Gastrointestinal agents', 'Respiratory agents', 'Metabolic agents']
+Grandparent_list = Grandparent_collist###change_0505
 Grandparent_dfs = [pres_pattern(Grandparent, Drug) for Drug in Grandparent_list]
 Grandparent_patterns = Grandparent_dfs[0]
 
@@ -259,7 +261,7 @@ for df in Grandparent_dfs[1:]:
     Grandparent_patterns = Grandparent_patterns.merge(df, how='left', on='patient_id')
 Grandparent_patterns = Grandparent_patterns.merge(Grandparent[['patient_id', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post']], on='patient_id', how='left')
 
-Risk_list = ['Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_high', 'Bone_mass_decrese_moderate']
+Risk_list = Risk_collist###change_0505
 Risk_dfs = [pres_pattern(Risk, Drug) for Drug in Risk_list]
 Risk_patterns = Risk_dfs[0]
 
@@ -383,6 +385,28 @@ hip_polypharm['Length_of_stay'] = (hip_polypharm['hospital_discharge_dt'] - hip_
 
 comorbidities_list = ['chronic_kidney_disease_bl', 'tobacco_copd_bl', 'depression_bl', 'serious_mental_illness_bl', 'alcohol_abuse_bl', 'obesity_overweight_bl', 'osteoporosis_osteopenia_bl', 'dementia_bl', 'diabetes_bl', 'liver_disease_bl', 'pancreatic_disease_bl', 'inflamatory_bowel_disease_bl', 'rheumatology_disease_bl', 'spinal_cord_disease_injury_bl', 'serious_neurological_disease_bl', 'parkinson_huntington_diseases_bl', 'seizure_disorder_convulsions_bl', 'congestive_heart_failure_bl', 'coronary_artery_disease_bl', 'cerebrovascular_disease_bl', 'peripheral_vascular_disease_bl', 'traumatic_brain_injury_bl', 'amputee_bl']
 hip_polypharm['Comorbidities_Count'] = hip_polypharm[comorbidities_list].sum(axis=1)
+
+###change_0505
+atc_5_full = pres_0[['prescription_atc_cd']].drop_duplicates()
+atc_5_desc = pres_0[['patient_id', 'pres_window_start', 'hospital_admission_dt', 'wash_out_end', 'observation_end', 'prescription_start_dt', 'prescription_atc_cd']]
+atc_5_desc['Med_Time'] = None
+atc_5_desc.loc[(atc_5_desc['prescription_start_dt'] >= atc_5_desc['pres_window_start']) & (atc_5_desc['prescription_start_dt'] < atc_5_desc['hospital_admission_dt']), 'Med_Time'] = 'Pre' # Falg prescription during pre admission period
+atc_5_desc.loc[(atc_5_desc['prescription_start_dt'] > atc_5_desc['wash_out_end']) & (atc_5_desc['prescription_start_dt'] <= atc_5_desc['observation_end']), 'Med_Time'] = 'Post' # Flag prescription during observation period
+atc_5_desc = atc_5_desc[atc_5_desc['Med_Time'].isnull() == False] 
+atc_5_desc = atc_5_desc[['patient_id', 'prescription_atc_cd', 'Med_Time']].drop_duplicates().reset_index(drop=True)
+atc_5_desc_agg = atc_5_desc.groupby(['patient_id', 'Med_Time']).agg({'prescription_atc_cd':'nunique'}).reset_index()
+atc_5_desc_agg_wide = atc_5_desc_agg.pivot(index='patient_id', columns='Med_Time', values='prescription_atc_cd').reset_index()
+atc_5_desc_agg_wide.columns = ['patient_id', 'All_Med_Count_Pre', 'All_Med_Count_Post']
+hip_polypharm = hip_polypharm.merge(atc_5_desc_agg_wide, how='left', on='patient_id')
+hip_polypharm.loc[(hip_polypharm['All_Med_Count_Pre'] <5) | (hip_polypharm['All_Med_Count_Pre'].isnull()), 'Burden_of_Med_Pre'] = 'Low'
+hip_polypharm.loc[(hip_polypharm['All_Med_Count_Pre'] >=5) & (hip_polypharm['All_Med_Count_Pre'] <10), 'Burden_of_Med_Pre'] = 'Mid'
+hip_polypharm.loc[hip_polypharm['All_Med_Count_Pre'] >=10, 'Burden_of_Med_Pre'] = 'High'
+
+cate_short_list = (Drug_class_desc['Cate_short_name'] + '_Patterns').unique().tolist()
+Grandparent_list = (Drug_class_desc['Grandparent_Class'] + '_Patterns').unique().tolist()
+Risk_list = (Drug_class_desc['Risk_Class'] + '_Patterns').unique().tolist()
+
+###change_0505
 ```
 
 ```{python exitus_filtering, echo=FALSE, warning=FALSE}
@@ -491,7 +515,7 @@ def desc_continous(df, col):
     return desc
 
 ############################################################### continuous variables, basic result ############################################################### 
-continuous_variable_list = ['age_nm', 'Length_of_stay', 'Comorbidities_Count', 'Cate_short_Count_Pre', 'Cate_short_Count_Post', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post', 'Risk_Class_Count_Pre', 'Risk_Class_Count_Post']
+continuous_variable_list = ['age_nm', 'Length_of_stay', 'Comorbidities_Count', 'Cate_short_Count_Pre', 'Cate_short_Count_Post', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post', 'Risk_Class_Count_Pre', 'Risk_Class_Count_Post', 'All_Med_Count_Pre', 'All_Med_Count_Post'] ###change_0505
 for cohort in cohort_list:
     globals()['desc_continuous_result_' + cohort] = pd.DataFrame()
     for variable in continuous_variable_list:
@@ -503,7 +527,7 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
 desc_continuous_result_dx_combined = desc_continuous_result_dx_full.merge(desc_continuous_result_dx_S720, how='left', on='variable').merge(desc_continuous_result_dx_S721, how='left', on='variable').merge(desc_continuous_result_dx_S722, how='left', on='variable')
 
 ############################################################### categorical variables, basic result ############################################################### 
-categorical_variable_list = ['sex_cd', 'exitus_bl', 'exitus_outcome', 'readm_washout', 'readm_observation', 'readm_outcome', 'refracture_washout', 'refracture_observation', 'refracture_outcome', 'exitus_readm_outcome']
+categorical_variable_list = ['sex_cd', 'exitus_bl', 'exitus_outcome', 'readm_washout', 'readm_observation', 'readm_outcome', 'refracture_washout', 'refracture_observation', 'refracture_outcome', 'exitus_readm_outcome', 'Burden_of_Med_Pre'] ###change_0505
 
 for cohort in cohort_list:
     globals()['desc_categorical_result_' + cohort] = pd.DataFrame()
@@ -531,7 +555,7 @@ Comorbidities_result_dx_combined = Comorbidities_result_dx_full.merge(Comorbidit
 ############################################################### polypharmacy distribution outcome ############################################################### 
 
 # By Drug Category
-cate_short_prepost_list = ['Opioids_Pre','Opioids_Post','antiPark_Pre','antiPark_Post','anticonv_Pre','anticonv_Post','barbs_Pre','barbs_Post','benzos_Pre','benzos_Post','centrAntiHT_Pre','centrAntiHT_Post','fgap_Pre','fgap_Post','firstGenAH_Pre','firstGenAH_Post','gabaN02BF_Pre','gabaN02BF_Post','h2Antags_Pre','h2Antags_Post','inhSteroids_Pre','inhSteroids_Post','loopDiur_Pre','loopDiur_Post','nitrates_Pre','nitrates_Post','oralSter_Pre','oralSter_Post','ppi_Pre','ppi_Post','sedHyp_Pre','sedHyp_Post','sgap_Pre','sgap_Post','ssriSnri_Pre','ssriSnri_Post','tca_Pre','tca_Post','thiazDiur_Pre','thiazDiur_Post','tzd_Pre','tzd_Post']
+cate_short_prepost_list = DrugCate_collist_2 ###change_0505
 for cohort in cohort_list:
     id_list = globals()[cohort][['patient_id']]
     df_sub = DrugCate.merge(id_list, how='right', on='patient_id')
@@ -548,7 +572,7 @@ drug_cate_count_dx_combined = drug_cate_count_dx_full.merge(drug_cate_count_dx_S
 
 
 # By Grandparent Class
-Grandparent_prepost_list = ['Cardiovascular agents_Pre','Cardiovascular agents_Post','Central nervous system agents_Pre','Central nervous system agents_Post','Gastrointestinal agents_Pre','Gastrointestinal agents_Post','Hormones/hormone modifiers_Pre','Hormones/hormone modifiers_Post','Metabolic agents_Pre','Metabolic agents_Post','Psychotherapeutic agents_Pre','Psychotherapeutic agents_Post','Respiratory agents_Pre','Respiratory agents_Post']
+Grandparent_prepost_list = Grandparent_collist_2 ###change_0505
 for cohort in cohort_list:
     id_list = globals()[cohort][['patient_id']]
     df_sub = Grandparent.merge(id_list, how='right', on='patient_id')
@@ -565,7 +589,7 @@ Grandparent_count_dx_combined = Grandparent_count_dx_full.merge(Grandparent_coun
 
 
 # By Risk Class
-Risk_count_prepost_list = ['Bone_mass_decrese_high_Pre','Bone_mass_decrese_high_Post','Bone_mass_decrese_moderate_Pre','Bone_mass_decrese_moderate_Post','Fall_increase_high_Pre','Fall_increase_high_Post','Fall_increase_moderate_Pre','Fall_increase_moderate_Post']
+Risk_count_prepost_list = Risk_collist_2 ###change_0505
 for cohort in cohort_list:
     id_list = globals()[cohort][['patient_id']]
     df_sub = Risk.merge(id_list, how='right', on='patient_id')
@@ -587,7 +611,7 @@ desc_distribution_result_combined = pd.concat([drug_cate_count_dx_combined, blan
 
 ############################################################### polypharmacy patterns outcome ############################################################### 
 # By Drug Category
-cate_short_patterns_list = ['Opioids_Patterns','centrAntiHT_Patterns','oralSter_Patterns','barbs_Patterns','sedHyp_Patterns','benzos_Patterns','gabaN02BF_Patterns','firstGenAH_Patterns','anticonv_Patterns','thiazDiur_Patterns','sgap_Patterns','tca_Patterns','ssriSnri_Patterns','nitrates_Patterns','antiPark_Patterns','ppi_Patterns','loopDiur_Patterns','h2Antags_Patterns','inhSteroids_Patterns','fgap_Patterns','tzd_Patterns']
+cate_short_patterns_list = DrugCate_patterns.columns.tolist()[1:][:-2] ###change_0505
 for cohort in cohort_list:
     globals()['desc_drugcate_result_' + cohort] = pd.DataFrame()
     for variable in cate_short_patterns_list:
@@ -599,7 +623,7 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
 desc_drugcate_result_dx_combined = desc_drugcate_result_dx_full.merge(desc_drugcate_result_dx_S720, how='left', on=['variable','value']).merge(desc_drugcate_result_dx_S721, how='left', on=['variable','value']).merge(desc_drugcate_result_dx_S722, how='left', on=['variable','value'])
 
 # By Grantparent Class
-Grandparent_patterns_list = ['Central nervous system agents_Patterns','Cardiovascular agents_Patterns','Hormones/hormone modifiers_Patterns','Psychotherapeutic agents_Patterns','Gastrointestinal agents_Patterns','Respiratory agents_Patterns','Metabolic agents_Patterns']    
+Grandparent_patterns_list = Grandparent_patterns.columns.tolist()[1:][:-2] ###change_0505
 for cohort in cohort_list:
     globals()['desc_Grantparent_result_' + cohort] = pd.DataFrame()
     for variable in Grandparent_patterns_list:
@@ -612,7 +636,7 @@ desc_Grantparent_result_dx_combined = desc_Grantparent_result_dx_full.merge(desc
 
 
 # By Risk Class
-Risk_patterns_list = ['Fall_increase_moderate_Patterns','Fall_increase_high_Patterns','Bone_mass_decrese_high_Patterns','Bone_mass_decrese_moderate_Patterns']    
+Risk_patterns_list = Risk_patterns.columns.tolist()[1:][:-2] ###change_0505
 for cohort in cohort_list:
     globals()['desc_Risk_result_' + cohort] = pd.DataFrame()
     for variable in Risk_patterns_list:
@@ -629,7 +653,12 @@ desc_drug_pattern_result_combined = pd.concat([desc_drugcate_result_dx_combined,
 
 
 ############################################################### Ploypharmacy duration outcome, total ############################################################### 
-cate_short_duration_list = ['Opioids_Duration_Pre','Opioids_Duration_Post','antiPark_Duration_Pre','antiPark_Duration_Post','anticonv_Duration_Pre','anticonv_Duration_Post','barbs_Duration_Pre','barbs_Duration_Post','benzos_Duration_Pre','benzos_Duration_Post','centrAntiHT_Duration_Pre','centrAntiHT_Duration_Post','fgap_Duration_Pre','fgap_Duration_Post','firstGenAH_Duration_Pre','firstGenAH_Duration_Post','gabaN02BF_Duration_Pre','gabaN02BF_Duration_Post','h2Antags_Duration_Pre','h2Antags_Duration_Post','inhSteroids_Duration_Pre','inhSteroids_Duration_Post','loopDiur_Duration_Pre','loopDiur_Duration_Post','nitrates_Duration_Pre','nitrates_Duration_Post','oralSter_Duration_Pre','oralSter_Duration_Post','ppi_Duration_Pre','ppi_Duration_Post','sedHyp_Duration_Pre','sedHyp_Duration_Post','sgap_Duration_Pre','sgap_Duration_Post','ssriSnri_Duration_Pre','ssriSnri_Duration_Post','tca_Duration_Pre','tca_Duration_Post','thiazDiur_Duration_Pre','thiazDiur_Duration_Post','tzd_Duration_Pre','tzd_Duration_Post']
+###change_0505
+def add_duration_suffix(strings):
+    return [s[:s.rfind('_')] + "_Duration" + s[s.rfind('_'):] if '_' in s else s + "_Duration" for s in strings]  
+###change_0505
+
+cate_short_duration_list = add_duration_suffix(DrugCate_collist_2) ###change_0505
 
 ####### START UPDATE IACS #####
 cate_short_duration_list_left = list(set(cate_short_duration_list)-set(Cate_short_duration.columns))
@@ -650,8 +679,7 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
     globals()['duration_drugcate_result_' + cohort] = add_cohort_suffix(globals()['duration_drugcate_result_' + cohort], suffix, 1)
 duration_drugcate_result_dx_combined = duration_drugcate_result_dx_full.merge(duration_drugcate_result_dx_S720, how='left', on='variable').merge(duration_drugcate_result_dx_S721, how='left', on='variable').merge(duration_drugcate_result_dx_S722, how='left', on='variable')
 
-Grandparent_duration_list = ['Cardiovascular agents_Duration_Pre','Cardiovascular agents_Duration_Post','Central nervous system agents_Duration_Pre','Central nervous system agents_Duration_Post','Gastrointestinal agents_Duration_Pre','Gastrointestinal agents_Duration_Post','Hormones/hormone modifiers_Duration_Pre','Hormones/hormone modifiers_Duration_Post','Metabolic agents_Duration_Pre','Metabolic agents_Duration_Post','Psychotherapeutic agents_Duration_Pre','Psychotherapeutic agents_Duration_Post','Respiratory agents_Duration_Pre','Respiratory agents_Duration_Post']
-
+Grandparent_duration_list = add_duration_suffix(Grandparent_collist_2) ###change_0505
 
 ####### START UPDATE IACS #####
 Grandparent_duration_list_left = list(set(Grandparent_duration_list)-set(Grandparent_Class_duration.columns))
@@ -673,7 +701,8 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
     globals()['duration_Grandparent_result_' + cohort] = add_cohort_suffix(globals()['duration_Grandparent_result_' + cohort], suffix, 1)
 duration_Grandparent_result_dx_combined = duration_Grandparent_result_dx_full.merge(duration_Grandparent_result_dx_S720, how='left', on='variable').merge(duration_Grandparent_result_dx_S721, how='left', on='variable').merge(duration_Grandparent_result_dx_S722, how='left', on='variable')
 
-Risk_duration_list = ['Bone_mass_decrese_high_Duration_Pre','Bone_mass_decrese_high_Duration_Post','Bone_mass_decrese_moderate_Duration_Pre','Bone_mass_decrese_moderate_Duration_Post','Fall_increase_high_Duration_Pre','Fall_increase_high_Duration_Post','Fall_increase_moderate_Duration_Pre','Fall_increase_moderate_Duration_Post']
+Risk_duration_list = add_duration_suffix(Risk_collist_2) ###change_0505
+
 for cohort in cohort_list:
     globals()['duration_Risk_result_' + cohort] = pd.DataFrame()
     for variable in Risk_duration_list:
@@ -1085,10 +1114,7 @@ plt.show()
 ############################################################### Result Save for Manuscript ###############################################################
 data_path = '../../inputs/data.duckdb' 
 # Cohort dataset saving for modeling
-dx_full_model = dx_full[['patient_id', 'exitus_readm_outcome', 'refracture_outcome', 'age_nm', 'Length_of_stay','sex_cd', 'residence_area_cd', 'previous_hospital_admission_bl', 'hospital_admission_type_cd',
-                         'Opioids_Patterns', 'antiPark_Patterns', 'anticonv_Patterns', 'barbs_Patterns', 'benzos_Patterns', 'centrAntiHT_Patterns', 'fgap_Patterns', 'firstGenAH_Patterns', 'gabaN02BF_Patterns', 'h2Antags_Patterns', 'inhSteroids_Patterns', 'loopDiur_Patterns', 'nitrates_Patterns', 'oralSter_Patterns', 'ppi_Patterns', 'sedHyp_Patterns', 'sgap_Patterns', 'ssriSnri_Patterns', 'tca_Patterns', 'thiazDiur_Patterns', 'tzd_Patterns',
-                         'Central nervous system agents_Patterns', 'Cardiovascular agents_Patterns', 'Hormones/hormone modifiers_Patterns', 'Psychotherapeutic agents_Patterns', 'Gastrointestinal agents_Patterns', 'Respiratory agents_Patterns', 'Metabolic agents_Patterns',
-                         'Fall_increase_moderate_Patterns', 'Fall_increase_high_Patterns', 'Bone_mass_decrese_high_Patterns', 'Bone_mass_decrese_moderate_Patterns']]
+dx_full_model = dx_full[['patient_id', 'exitus_readm_outcome', 'refracture_outcome', 'age_nm', 'Length_of_stay','sex_cd', 'residence_area_cd', 'previous_hospital_admission_bl', 'hospital_admission_type_cd', 'All_Med_Count_Pre', 'All_Med_Count_Post', 'Burden_of_Med_Pre'] + cate_short_patterns_list + Grandparent_patterns_list + Risk_patterns_list] ###change_0505
 dx_full_model['exitus_readm_outcome'] = dx_full_model['exitus_readm_outcome'].astype(int)
 dx_full_model['refracture_outcome'] = dx_full_model['refracture_outcome'].astype(int)
 
@@ -1106,7 +1132,7 @@ con.execute("CREATE OR REPLACE TABLE full_model AS SELECT * FROM dataset")
 con.close()
 
 # Descriptives Output Saving for manuscript and visualization
-desc_result_file_list = ['desc_continuous_result_dx_combined', 'desc_categorical_result_dx_combined', 'Comorbidities_result_dx_combined', 'desc_distribution_result_combined', 'desc_drug_pattern_result_combined', 'duration_result_combined', 'duration_drug_pattern_result_combined', 'outcome_drug_pattern_result_combined']
+desc_result_file_list = ['atc_5_full','desc_continuous_result_dx_combined', 'desc_categorical_result_dx_combined', 'Comorbidities_result_dx_combined', 'desc_distribution_result_combined', 'desc_drug_pattern_result_combined', 'duration_result_combined', 'duration_drug_pattern_result_combined', 'outcome_drug_pattern_result_combined'] ###change_0505
 
 #folder_name = "../../outputs" # dir_flag
 #os.makedirs(folder_name, exist_ok=True)
@@ -1205,119 +1231,157 @@ check_matching(matched_refracture$refracture_outcome, matched_refracture$pscore_
 
 #### Model result on outcome 1: exitus_readm_outcome, by different drug classification
 ```{r model_outcome_1, echo=FALSE, warning=FALSE}
-# Model m1_1a: outcome 1, by Risk, neareast mathch 
-m1_1a <- glm(exitus_readm_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)   
+###change_0505
+### create model strings, only select exist drug columns
+cate_cols <- c('ACIDS_Patterns', 'H2_RA_Patterns', 'PPI_Patterns', 'TZD_Patterns', 'SU_Patterns', 'SGLT2_Patterns', 'NIT_Patterns', 'CAA_Patterns', 'THZLC_Patterns', 'LPD_Patterns', 'ORST_Patterns', 'MUSREL_Patterns', 'OPI_Patterns', 'GPTN_Patterns', 'BRBT_Patterns', 'HYDAN_Patterns', 'SUCC_Patterns', 'BZD_Patterns', 'CBX_Patterns', 'FAD_Patterns', 'OAE_Patterns', 'ACH_Patterns', 'DOPA_Patterns', 'PHEN_Patterns', 'BUTY_Patterns', 'INDOL_Patterns', 'THIOX_Patterns', 'DPBP_Patterns', 'DBZ_Patterns', 'OAP_Patterns', 'H1_RA_Patterns', 'CARB_Patterns', 'AZA_Patterns', 'ALD_Patterns', 'MEL_Patterns', 'OREX_Patterns', 'OHS_Patterns', 'TCA_Patterns', 'SSRI_Patterns', 'ICS_Patterns', 'AAE_Patterns', 'ALKAM_Patterns', 'EDIAM_Patterns', 'PHED_Patterns', 'PIP_Patterns', 'OAH_Patterns')
+cate_exist <- intersect(cate_cols, names(hip_poly))
+cate_missing <- sapply(hip_poly[cate_exist], function(x) n_distinct(x) == 1)
+cate_use <- cate_exist[!cate_missing]
+formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+
+gp_cols <- c('musculo_skeletal_system_Patterns', 'Hypertension_Patterns', 'hormones_hormone_modifiers_Patterns', 'anxiolytics_Patterns', 'anelgesics_Patterns', 'antiepileptics_Patterns', 'antihistamines_Patterns', 'Diuretic_Patterns', 'atypical_antipsychotics_Patterns', 'antidepressant_Patterns', 'Angina_pectoris_Patterns', 'hypnotics_and_sedatives_Patterns', 'analgesics_Patterns', 'anti_parkinson_drugs_Patterns', 'Acid_related_disorders_Patterns', 'obstructive_airway_diseases_Patterns', 'typical_antipsychotics_Patterns', 'Diabetes_Patterns', 'anesthetics_Patterns')
+gp_exist <- intersect(gp_cols, names(hip_poly))
+gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
+gp_use <- gp_exist[!gp_missing]
+formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+
+risk_cols <- c('Fall_increase_moderate_Patterns', 'Fall_increase_high_Patterns', 'Bone_mass_decrese_high_Patterns', 'Bone_mass_decrese_moderate_Patterns')
+risk_exist <- intersect(risk_cols, names(hip_poly))
+risk_missing <- sapply(hip_poly[risk_exist], function(x) n_distinct(x) == 1)
+risk_use <- risk_exist[!risk_missing]
+formula_risk_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
+formula_risk_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
+
+# construct Model Cohorts by burden level
+Poly_exre_high <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'High', ]
+Poly_exre_mid <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'Mid', ]
+Poly_exre_low <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'Low', ]
+
+Poly_refr_high <- matched_exitus_readm[matched_refracture$Burden_of_Med_Pre == 'High', ]
+Poly_refr_mid <- matched_exitus_readm[matched_refracture$Burden_of_Med_Pre == 'Mid', ]
+Poly_refr_low <- matched_exitus_readm[matched_refracture$Burden_of_Med_Pre == 'Low', ]
+
+###change_0512
+# Function to conditionally run glm if data is not empty
+glm_notnull <- function(formula, data, family) {
+  if (nrow(data) == 0) {
+    cat("The dataset is empty. Skipping glm.\n")
+    return(NULL)
+  }
+  
+  tryCatch({
+    glm(formula = formula, family = family, data = data)
+  }, error = function(e) {
+    cat("Error in glm: ", e$message, "\n")
+    return(NULL)
+  })
+}
+
+
+# Model m1_1a: outcome 1, by Risk, nearest match 
+m1_1a = glm(as.formula(formula_risk_1), family = binomial(link = "logit"), data = matched_exitus_readm) 
 summary(m1_1a)
 
+m1_1a_high = glm_notnull(as.formula(formula_risk_1), family = binomial(link = "logit"), data = Poly_exre_high) # model by burden level ###change_0512
+m1_1a_mid = glm_notnull(as.formula(formula_risk_1), family = binomial(link = "logit"), data = Poly_exre_mid)   # model by burden level ###change_0512
+m1_1a_low = glm_notnull(as.formula(formula_risk_1), family = binomial(link = "logit"), data = Poly_exre_low)   # model by burden level ###change_0512
+
 # Model m1_1b: outcome 1, by Risk, no match
-m1_1b <- glm(exitus_readm_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = hip_poly)   
+m1_1b = glm(as.formula(formula_risk_1), family = binomial(link = "logit"), data = hip_poly)
+summary(m1_1b)
 
-
-# Model m1_2a: outcome 1, by Grandparent, neareast mathch 
-
-####### START UPDATE IACS #####
-cols <- c("Central_nervous_system_agents_Patterns", "Cardiovascular_agents_Patterns", "Hormones_hormone_modifiers_Patterns", "Psychotherapeutic_agents_Patterns", "Gastrointestinal_agents_Patterns", "Respiratory_agents_Patterns", "Metabolic_agents_Patterns")
-
-missing <- sapply(matched_exitus_readm[cols], function(x) n_distinct(x) == 1)
-use <- cols[!missing]
-
-formula_str_1_2a <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(use, collapse = " + "))
-
-# m1_2a <- glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns +
-#                Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_exitus_readm)
-
-m1_2a <- glm(as.formula(formula_str_1_2a), family = binomial(link = "logit"), data = matched_exitus_readm)
+# Model m1_2a: outcome 1, by Grandparent, nearest match 
+m1_2a = glm(as.formula(formula_gp_1), family = binomial(link = "logit"), data = matched_exitus_readm)
 summary(m1_2a)
 
-
-######## END UPDATE IACS ########
+m1_2a_high = glm_notnull(as.formula(formula_gp_1), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
+m1_2a_mid = glm_notnull(as.formula(formula_gp_1), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
+m1_2a_low = glm_notnull(as.formula(formula_gp_1), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
 
 # Model m1_2b: outcome 1, by Grandparent, no match 
-m1_2b = glm(exitus_readm_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = hip_poly)
+m1_2b = glm(as.formula(formula_gp_1), family = binomial(link = "logit"), data = hip_poly)
+summary(m1_2b)
 
-######Updates(0328)###### Start ##### 5
-cate_cols <- c("Opioids_Patterns", "centrAntiHT_Patterns", "oralSter_Patterns", "barbs_Patterns", "sedHyp_Patterns", "benzos_Patterns", "gabaN02BF_Patterns", "firstGenAH_Patterns", "anticonv_Patterns", "thiazDiur_Patterns", "sgap_Patterns", "tca_Patterns", "ssriSnri_Patterns", "nitrates_Patterns", "antiPark_Patterns", "ppi_Patterns", "loopDiur_Patterns", "h2Antags_Patterns", "inhSteroids_Patterns", "fgap_Patterns", "tzd_Patterns")
-
-####### START UPDATE IACS #####
-
-cate_missing <- sapply(matched_exitus_readm[cate_cols], function(x) n_distinct(x) == 1)
-cate_use_1 <- cate_cols[!cate_missing]
-
-cate_missing <- sapply(hip_poly[cate_cols], function(x) n_distinct(x) == 1)
-cate_use_2 <- cate_cols[!cate_missing]
-
-
-formula_str_1_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use_1, collapse = " + "))
-formula_str_1_2 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use_2, collapse = " + "))
-
-# Model m1_3a: outcome 1, by Drug Category, neareast mathch 
-m1_3a = glm(as.formula(formula_str_1_1), family = binomial(link = "logit"), data = matched_exitus_readm)
+# Model m1_3a: outcome 1, by Drug Category, nearest match 
+m1_3a = glm(as.formula(formula_cate_1), family = binomial(link = "logit"), data = matched_exitus_readm)
 summary(m1_3a)
 
-# Model m1_3b: outcome 1, by Drug Category, no mathch
-m1_3b = glm(as.formula(formula_str_1_2), family = binomial(link = "logit"), data = hip_poly)
-summary(m1_3b)
-######Updates(0328)###### End #####
+m1_3a_high = glm_notnull(as.formula(formula_cate_1), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
+m1_3a_mid = glm_notnull(as.formula(formula_cate_1), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
+m1_3a_low = glm_notnull(as.formula(formula_cate_1), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
 
-######## END UPDATE IACS ########
+# Model m1_3b: outcome 1, by Drug Category, no mathch
+m1_3b = glm(as.formula(formula_cate_1), family = binomial(link = "logit"), data = hip_poly)
+summary(m1_3b)
+
+###change_0505
 
 ```
 
 #### Model result on outcome 2: refracture_outcome, by different drug classification
 ```{r model_outcome_2, echo=FALSE, warning=FALSE}
-# Model m2_1a: outcome 1, by Risk, neareast mathch 
-m2_1a = glm(refracture_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = matched_refracture)   
+###change_0505
+
+# Model m2_1a: outcome 1, by Risk, nearest match 
+m2_1a = glm(as.formula(formula_risk_2), family = binomial(link = "logit"), data = matched_refracture)   
 summary(m2_1a)
 
+m2_1a_high = glm_notnull(as.formula(formula_risk_2), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
+m2_1a_mid = glm_notnull(as.formula(formula_risk_2), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
+m2_1a_low = glm_notnull(as.formula(formula_risk_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+
 # Model m2_1b: outcome 1, by Risk, no match
-m2_1b = glm(refracture_outcome ~  Length_of_stay + Fall_increase_moderate_Patterns + Fall_increase_high_Patterns + Bone_mass_decrese_high_Patterns + Bone_mass_decrese_moderate_Patterns, family = binomial(link = "logit"), data = hip_poly)   
+m2_1b = glm(as.formula(formula_risk_2), family = binomial(link = "logit"), data = hip_poly)  
+summary(m2_1b)
 
-# Model m2_2a: outcome 1, by Grandparent, neareast mathch 
 
-
-####### START UPDATE IACS #####
-cols <- c("Central_nervous_system_agents_Patterns", "Cardiovascular_agents_Patterns", "Hormones_hormone_modifiers_Patterns", "Psychotherapeutic_agents_Patterns", "Gastrointestinal_agents_Patterns", "Respiratory_agents_Patterns", "Metabolic_agents_Patterns")
-
-missing <- sapply(matched_refracture[cols], function(x) n_distinct(x) == 1)
-use <- cols[!missing]
-
-formula_str_2_2a <- paste("refracture_outcome ~ Length_of_stay +", paste(use, collapse = " + "))
-
-# m2_2a = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = matched_refracture)
-
-m2_2a <- glm(as.formula(formula_str_2_2a), family = binomial(link = "logit"), data = matched_refracture)
-######## END UPDATE IACS ########
+# Model m2_2a: outcome 1, by Grandparent, nearest match 
+m2_2a = glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = matched_refracture)
 summary(m2_2a)
 
+m2_2a_high = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
+m2_2a_mid = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
+m2_2a_low = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
 
 # Model m2_2b: outcome 1, by Grandparent, no match 
-m2_2b = glm(refracture_outcome ~ Length_of_stay + Central_nervous_system_agents_Patterns + Cardiovascular_agents_Patterns + Hormones_hormone_modifiers_Patterns + Psychotherapeutic_agents_Patterns + Gastrointestinal_agents_Patterns + Respiratory_agents_Patterns + Metabolic_agents_Patterns, family = binomial(link = "logit"), data = hip_poly)
+m2_2b =glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = hip_poly)
+summary(m2_2b)
 
-######Updates(0328)###### Start ##### 6
-# Model m2_3a: outcome 1, by Drug Category, neareast mathch 
+# Model m2_3a: outcome 1, by Drug Category, nearest match 
 
-####### START UPDATE IACS #####
+####### START UPDATE IACS (0513) #####
+cate_exist <- intersect(cate_cols, names(matched_refracture))
+cate_missing <- sapply(matched_refracture[cate_exist], function(x) n_distinct(x) == 1)
+cate_use <- cate_exist[!cate_missing]
+formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
 
-cate_missing <- sapply(matched_refracture[cate_cols], function(x) n_distinct(x) == 1)
-cate_use_1 <- cate_cols[!cate_missing]
+####### END UPDATE IACS (0513) #####
 
-cate_missing <- sapply(hip_poly[cate_cols], function(x) n_distinct(x) == 1)
-cate_use_2 <- cate_cols[!cate_missing]
-
-formula_str_2_1 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use_1, collapse = " + "))
-formula_str_2_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use_2, collapse = " + "))
-
-m2_3a = glm(as.formula(formula_str_2_1), family = binomial(link = "logit"), data = matched_refracture)
+m2_3a = glm(as.formula(formula_cate_2), family = binomial(link = "logit"), data = matched_refracture)
 summary(m2_3a)
 
-# Model m2_3b: outcome 1, by Drug Category, no mathch
-m2_3b = glm(as.formula(formula_str_2_2), family = binomial(link = "logit"), data = hip_poly)
+m2_3a_high = glm_notnull(as.formula(formula_cate_2), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
+m2_3a_mid = glm_notnull(as.formula(formula_cate_2), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
+m2_3a_low = glm_notnull(as.formula(formula_cate_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+
+# Model m2_3b: outcome 1, by Drug Category, no match
+
+####### START UPDATE IACS (0513) #####
+cate_exist <- intersect(cate_cols, names(hip_poly))
+cate_missing <- sapply(hip_poly[cate_exist], function(x) n_distinct(x) == 1)
+cate_use <- cate_exist[!cate_missing]
+formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+
+####### END UPDATE IACS (0513) #####
+
+m2_3b = glm(as.formula(formula_cate_2), family = binomial(link = "logit"), data = hip_poly)
 summary(m2_3b)
-######Updates(0328)###### End #####
 
-
-######## END UPDATE IACS ########
-
+###change_0505
 ```
 
 
@@ -1424,4 +1488,59 @@ for (i in 1:length(outcome_2_list)) {
   write.csv(model_info$results, file.path(output_folder, paste0("model_outcome_2_", i, "_estimates.csv")), row.names = TRUE)
   
 }
+```
+
+
+
+```{r result_saving_model_2, echo=FALSE, warning=FALSE}
+###change_0512
+extract_model_info_2 <- function(model) {
+  
+  if (is.null(model)) {
+  cat("Provided model is NULL. Returning NULL.\n")
+  return(NULL)
+  }
+  
+  # Get summary
+  model_summary <- capture.output(summary(model))
+  
+  list(summary = model_summary)
+}
+
+outcome_1_list_poly <- list(m1_1a_high, m1_1a_mid, m1_1a_low, m1_2a_high, m1_2a_mid, m1_2a_low, m1_3a_high, m1_3a_mid, m1_3a_low)
+outcome_2_list_poly <- list(m2_1a_high, m2_1a_mid, m2_1a_low, m2_2a_high, m2_2a_mid, m2_2a_low, m2_3a_high, m2_3a_mid, m2_3a_low)
+
+
+#output_folder <- "../../outputs" # dir_flag
+
+for (i in 1:length(outcome_1_list_poly)) {
+  output_name_txt <- file.path(output_folder, paste0("model_poly_summary_1_", i, ".txt"))
+  
+  model_info <- extract_model_info_2(outcome_1_list_poly[[i]])
+  # Write Summary
+
+  if (is.null(model_info)) {
+    writeLines("Model information is NULL.", output_name_txt)
+  } else {
+    # Write Summary
+    writeLines(model_info$summary, output_name_txt)
+  }
+
+}
+
+for (i in 1:length(outcome_2_list_poly)) {
+  output_name_txt <- file.path(output_folder, paste0("model_poly_summary_2_", i, ".txt"))
+  
+  model_info <- extract_model_info_2(outcome_2_list_poly[[i]])
+  # Write Summary
+
+  if (is.null(model_info)) {
+    writeLines("Model information is NULL.", output_name_txt)
+  } else {
+    # Write Summary
+    writeLines(model_info$summary, output_name_txt)
+  }
+
+}
+###change_0512
 ```
