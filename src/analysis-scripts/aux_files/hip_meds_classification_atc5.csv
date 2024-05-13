@@ -1,353 +1,660 @@
 Category,prescription_atc_cd,Grandparent_Class,Risk_Class,Cate_short
-Inhaled steroids,R03BA01,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R01AD05,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03BA02,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03AK07,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03AL11,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03AK12,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R01AD03,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R01AD53,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03BA03,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03BA05,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03BA07,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03BA06,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R01AD13,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Inhaled steroids,R03BA08,Respiratory agents,Bone_mass_decrese_moderate,inhSteroids
-Oral Steroids,H02AB01,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AB10,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AB02,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AA02,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,A01AC03,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AB04,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02BX01,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AB06,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AB07,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Oral Steroids,H02AB08,Hormones/hormone modifiers,Bone_mass_decrese_high,oralSter
-Proton Pump Inhibitors,A02BC06,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC05,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC03,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC53,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC01,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC02,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC04,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-Proton Pump Inhibitors,A02BC54,Gastrointestinal agents,Bone_mass_decrese_high,ppi
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA01,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA51,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA03,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA53,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA04,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA02,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-H2 Antagonists/ Histamine 2 Receptor Antagonists,A02BA07,Gastrointestinal agents,Bone_mass_decrese_moderate,h2Antags
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AB04,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AX23,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AB10,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AB03,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06CA03,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AB08,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AB05,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AB06,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AX16,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AX26,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AX28,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AX17,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-SSRI/SNRI Selective Serotonin and Selective Noradrenergic Reuptake Inhibitors,N06AX21,Psychotherapeutic agents,Fall_increase_moderate,ssriSnri
-Tricyclic Antidepressants,N06AA09,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06CA01,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA17,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA04,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA01,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA02,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA03,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA10,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA11,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA06,Psychotherapeutic agents,Fall_increase_high,tca
-Tricyclic Antidepressants,N06AA12,Psychotherapeutic agents,Fall_increase_high,tca
-Thiazolidinediones,A10BG03,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BD09,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BD12,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BD05,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BD06,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BG02,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BD03,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Thiazolidinediones,A10BD04,Metabolic agents,Bone_mass_decrese_moderate,tzd
-Anticonvulsants,N03AX10,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AG06,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AX11,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,A08AA51,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AG04,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AG01,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AF01,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AF04,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AD01,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AD51,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AB01,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AX21,Central nervous system agents,Fall_increase_high,anticonv
-Anticonvulsants,N03AB05,Central nervous system agents,Fall_increase_high,anticonv
-Gapapentinoids N02BF,N02BF01,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AX18,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AX09,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AX14,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AB04,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AB54,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AD03,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AF02,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AX22,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AD02,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AB02,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AB52,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N02BF02,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AF03,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Gapapentinoids N02BF,N03AX15,Central nervous system agents,Fall_increase_moderate,gabaN02BF
-Benzodiazepines,N05BA12,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA02,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA09,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N03AE01,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA05,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA01,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05CD04,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05CD01,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA13,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA06,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA56,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05CD08,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA04,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05BA11,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05CD10,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05CD07,Central nervous system agents,Fall_increase_high,benzos
-Benzodiazepines,N05CD05,Central nervous system agents,Fall_increase_high,benzos
-Barbiturates,N05CA03,Central nervous system agents,Fall_increase_high,barbs
-Barbiturates,N03AA01,Central nervous system agents,Fall_increase_high,barbs
-Barbiturates,N05CA01,Central nervous system agents,Fall_increase_high,barbs
-Barbiturates,N03AA02,Central nervous system agents,Fall_increase_high,barbs
-Barbiturates,N05CA06,Central nervous system agents,Fall_increase_high,barbs
-Barbiturates,N03AA03,Central nervous system agents,Fall_increase_high,barbs
-Opioids,N01AH02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AF01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,R05DA04,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ07,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ08,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ09,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ06,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA59,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA79,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AX03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA08,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA58,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AB03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N01AH01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N01AH51,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,R05DA03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AG04,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA53,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N01AH04,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N07BC02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AC52,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AG01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,A07DA52,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA51,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AF02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,A07DA02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,R05DA05,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,R05FA02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,R05FA01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA05,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ18,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ19,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA55,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA56,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ17,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AA11,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AD01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AC04,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AC54,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AC74,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N01AH06,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N01AH03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AX06,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AX02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ16,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ14,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ15,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AJ13,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,A06AH04,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,V03AB15,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AX51,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N02AE01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N07BC01,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,N07BC51,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,M03BA03,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,M03BA53,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,M03BA73,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,M03BA02,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,M03BA52,Central nervous system agents,Fall_increase_moderate,Opioids
-Opioids,M03BA72,Central nervous system agents,Fall_increase_moderate,Opioids
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AX09,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB01,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB51,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA08,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AE04,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB02,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB52,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA04,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA54,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AE03,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AE53,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AX02,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB06,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB56,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA11,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA61,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA02,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA52,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA09,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AA59,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,N05BB01,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,N05BB51,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AE01,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AE51,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AB05,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AD02,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AD52,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AC01,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R03DA12,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AX07,Central nervous system agents,Fall_increase_high,firstGenAH
-1st Generation Antihistamines/ H1 Receptor Antagonists,R06AD03,Central nervous system agents,Fall_increase_high,firstGenAH
-Anti- Parkinson's Disease,N04BB01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC07,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC06,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BX02,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BA01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BA02,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BA03,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC02,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC05,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BD02,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC04,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC09,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BD01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BX01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04BC03,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04AC01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04AA02,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04AB02,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,M03BC01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,M03BC51,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04AA04,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04AA01,Central nervous system agents,Fall_increase_moderate,antiPark
-Anti- Parkinson's Disease,N04AA05,Central nervous system agents,Fall_increase_moderate,antiPark
-Centrally-Acting Antihypertensives,C02AC01,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,N02CX02,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,C02LC01,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,C02LC51,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,C02AC02,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,C02AB01,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,C02AB02,Cardiovascular agents,Fall_increase_high,centrAntiHT
-Centrally-Acting Antihypertensives,M03BX02,Cardiovascular agents,Fall_increase_high,centrAntiHT
-1st-Generation Antipsychotics (FGAP),N05AA01,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AD08,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AB02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AD01,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AH01,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AC03,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AA02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AE02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AB03,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AG02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AB04,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AC02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AF01,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AF02,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AF03,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AF04,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AF05,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AB06,Psychotherapeutic agents,Fall_increase_high,fgap
-1st-Generation Antipsychotics (FGAP),N05AA05,Psychotherapeutic agents,Fall_increase_high,fgap
-2nd-Generation Antipsychotics (SGAP),N05AX12,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AH05,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AH02,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AX14,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AE05,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AH03,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AH53,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AX13,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AH04,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AX08,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AE04,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AX16,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AX15,Psychotherapeutic agents,Fall_increase_moderate,sgap
-2nd-Generation Antipsychotics (SGAP),N05AX17,Psychotherapeutic agents,Fall_increase_moderate,sgap
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA13,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA63,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA05,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA55,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA02,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C05AE01,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA08,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C05AE02,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA58,Cardiovascular agents,Fall_increase_high,nitrates
-"Nitrates* (do not include sublingual tablets, oral and transdermal only)",C01DA14,Cardiovascular agents,Fall_increase_high,nitrates
-Loop Diuretics,C03CA02,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03CB02,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03EB02,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03CA01,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03CB01,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03EB01,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03CA04,Cardiovascular agents,Fall_increase_high,loopDiur
-Loop Diuretics,C03CC01,Cardiovascular agents,Fall_increase_high,loopDiur
-Thiazide and Thiazide-like Diuretics,C03AA01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AB01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03EA13,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AA04,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AB04,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AH01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03BA04,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AA03,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AB03,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03EA01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AX01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09DX07,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09DX03,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09BX03,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09DX08,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09DX01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09XA52,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09XA54,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09DX06,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03BA11,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C09BX01,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C10BX13,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AA08,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AB08,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03BA08,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03EA12,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AA05,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,C03AB05,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Thiazide and Thiazide-like Diuretics,G01AE10,Cardiovascular agents,Fall_increase_moderate,thiazDiur
-Sedative Hypnotics,N05CM04,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05BE01,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CC01,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,M03BB02,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,M03BB52,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,M03BB72,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CM08,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CH01,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05BC01,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05BC51,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CX01,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CC05,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CH02,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N07XX04,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CH03,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CC04,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CM19,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CF04,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CF03,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CF02,Central nervous system agents,Fall_increase_high,sedHyp
-Sedative Hypnotics,N05CF01,Central nervous system agents,Fall_increase_high,sedHyp
+Antacids,A02AA01,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AA02,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AA03,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AA04,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AA05,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AA10,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB01,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB02,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB03,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB04,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB05,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB06,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB07,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AB10,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AC01,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AC02,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AC03,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AD01,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AD02,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AD03,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AD04,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+Antacids,A02AD05,Acid_related_disorders,Bone_mass_decrese_moderate,ACIDS
+H2-Receptor Antagonists,A02BA01,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA02,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA03,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA04,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA05,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA06,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA07,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA08,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA51,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+H2-Receptor Antagonists,A02BA53,Acid_related_disorders,Bone_mass_decrese_moderate,H2_RA
+Proton Pump Inhibitors,A02BC01,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC02,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC03,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC04,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC05,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC06,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC07,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC08,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC09,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC51,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC53,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Proton Pump Inhibitors,A02BC54,Acid_related_disorders,Bone_mass_decrese_high,PPI
+Thiazolidinediones,A10BD03,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BD04,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BD05,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BD06,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BD09,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BD12,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BD26,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BG01,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BG02,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BG03,Diabetes,Bone_mass_decrese_moderate,TZD
+Thiazolidinediones,A10BG04,Diabetes,Bone_mass_decrese_moderate,TZD
+Sulfonylureas,A10BB01,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB02,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB03,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB04,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB05,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB06,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB07,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB08,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB09,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB10,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB11,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB12,Diabetes,Fall_increase_high,SU
+Sulfonylureas,A10BB31,Diabetes,Fall_increase_high,SU
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK01,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK02,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK03,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK04,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK05,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK06,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK07,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Sodium-glucose Co-transporter 2 Inhibitors,A10BK08,Diabetes,Bone_mass_decrese_moderate,SGLT2
+Nitrates,C01DA02 ,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA04,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA05,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA07,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA08,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA09,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA13,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA14,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA20,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA38,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA52,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA54,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA55,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA57,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA58,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA59,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA63,Angina_pectoris,Fall_increase_high,NIT
+Nitrates,C01DA70,Angina_pectoris,Fall_increase_high,NIT
+Centrally-Acting Antihypertensives,C02AB01,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02AB02,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02AC01,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02AC02,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02AC03,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02AC04,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02AC05,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02LB01,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02LC01,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02LC05,Hypertension,Fall_increase_high,CAA
+Centrally-Acting Antihypertensives,C02LC51,Hypertension,Fall_increase_high,CAA
+Thiazides and Other Low-Ceiling Drugs,C03AA01,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA02,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA03,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA04,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA05,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA06,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA07,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA08,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA09,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AA13,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB01,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB02,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB03,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB04,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB05,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB06,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB07,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB08,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AB09,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AH01,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AH02,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03AX01,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA02,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA03,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA04,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA05,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA06,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA07,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA08,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA09,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA10,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA11,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA12,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA13,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BA82,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BB02,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BB03,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BB04,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BB05,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03BB07,Diuretic,Fall_increase_moderate,THZLC
+Loop Diuretics,C03CA01,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CA02,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CA03,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CA04 ,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CB01,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CB02,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CC01,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03CC02,Diuretic,Fall_increase_high,LPD
+Thiazides and Other Low-Ceiling Drugs,C03EA01,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA02,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA03,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA04,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA05,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA06,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA07,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA12,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA13,Diuretic,Fall_increase_moderate,THZLC
+Thiazides and Other Low-Ceiling Drugs,C03EA14,Diuretic,Fall_increase_moderate,THZLC
+Loop Diuretics,C03EB01,Diuretic,Fall_increase_high,LPD
+Loop Diuretics,C03EB02,Diuretic,Fall_increase_high,LPD
+Oral Steroids,H02AA01,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AA02,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AA03,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB01,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB02,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB03,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB04,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB05,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB06,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB07,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB08,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB09,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB10,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB11,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB12,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB13,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB14,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB15,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB17,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02AB18,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Oral Steroids,H02BX01,hormones_hormone_modifiers,Bone_mass_decrese_high,ORST
+Muscle Relaxers,M03BA01,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA02,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA03,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA04,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA05,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA51,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA52,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA53,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA71,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA72,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BA73,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BB02,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BB03,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BB52,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BB53,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BB72,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BB73,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BC01,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BC51,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX01,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX02,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX03,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX04,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX05,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX06,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX07,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX08,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX09,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX30,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX53,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Muscle Relaxers,M03BX55,musculo_skeletal_system,Fall_increase_moderate,MUSREL
+Opioids,N01AH01,anesthetics,Fall_increase_moderate,OPI
+Opioids,N01AH02,anesthetics,Fall_increase_moderate,OPI
+Opioids,N01AH03,anesthetics,Fall_increase_moderate,OPI
+Opioids,N01AH04,anesthetics,Fall_increase_moderate,OPI
+Opioids,N01AH05,anesthetics,Fall_increase_moderate,OPI
+Opioids,N01AH06,anesthetics,Fall_increase_moderate,OPI
+Opioids,N01AH51,anesthetics,Fall_increase_moderate,OPI
+Opioids,N02AA01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA04,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA05,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA08,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA10,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA11,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA51,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA53,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA55,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA56,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA58,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA59,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AA79,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AB01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AB02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AB03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AB52,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AB72,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AC01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AC03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AC04,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AC52,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AC54,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AC74,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AD01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AD02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AD03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AE01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AF01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AF02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AG01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AG02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AG03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AG04,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ06,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ07,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ08,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ09,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ13,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ14,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ15,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ16,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ17,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ18,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ19,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ22,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AJ23,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX01,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX02,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX03,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX05,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX06,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX07,anelgesics,Fall_increase_moderate,OPI
+Opioids,N02AX51,anelgesics,Fall_increase_moderate,OPI
+Gabapentinoids,N02BF01,analgesics,Fall_increase_moderate,GPTN
+Gabapentinoids,N02BF02,analgesics,Fall_increase_moderate,GPTN
+Gabapentinoids,N02BF03,analgesics,Fall_increase_moderate,GPTN
+Barbiturates,N03AA01,antiepileptics,Fall_increase_high,BRBT
+Barbiturates,N03AA02,antiepileptics,Fall_increase_high,BRBT
+Barbiturates,N03AA03,antiepileptics,Fall_increase_high,BRBT
+Barbiturates,N03AA04,antiepileptics,Fall_increase_high,BRBT
+Barbiturates,N03AA30,antiepileptics,Fall_increase_high,BRBT
+Hydantoins,N03AB01,antiepileptics,Fall_increase_high,HYDAN
+Hydantoins,N03AB02,antiepileptics,Fall_increase_high,HYDAN
+Hydantoins,N03AB03,antiepileptics,Fall_increase_high,HYDAN
+Hydantoins,N03AB04,antiepileptics,Fall_increase_high,HYDAN
+Hydantoins,N03AB05,antiepileptics,Fall_increase_high,HYDAN
+Hydantoins,N03AB52,antiepileptics,Fall_increase_high,HYDAN
+Hydantoins,N03AB54,antiepileptics,Fall_increase_high,HYDAN
+Succinimides,N03AD01,antiepileptics,Fall_increase_high,SUCC
+Succinimides,N03AD02,antiepileptics,Fall_increase_high,SUCC
+Succinimides,N03AD03,antiepileptics,Fall_increase_high,SUCC
+Succinimides,N03AD51,antiepileptics,Fall_increase_high,SUCC
+Benzodiazepines,N03AE01,antiepileptics,Fall_increase_high,BZD
+Carboxamides,N03AF01,antiepileptics,Fall_increase_high,CBX
+Carboxamides,N03AF02,antiepileptics,Fall_increase_high,CBX
+Carboxamides,N03AF03,antiepileptics,Fall_increase_high,CBX
+Carboxamides,N03AF04,antiepileptics,Fall_increase_high,CBX
+Fatty Acid Derivatives,N03AG01,antiepileptics,Fall_increase_high,FAD
+Fatty Acid Derivatives,N03AG02,antiepileptics,Fall_increase_high,FAD
+Fatty Acid Derivatives,N03AG03,antiepileptics,Fall_increase_high,FAD
+Fatty Acid Derivatives,N03AG04,antiepileptics,Fall_increase_high,FAD
+Fatty Acid Derivatives,N03AG05,antiepileptics,Fall_increase_high,FAD
+Fatty Acid Derivatives,N03AG06,antiepileptics,Fall_increase_high,FAD
+Other Antiepileptics,N03AX03,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX07,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX09,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX10,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX11,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX13,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX14,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX15,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX17,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX18,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX19,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX21,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX22,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX23,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX24,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX25,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX26,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX27,antiepileptics,Fall_increase_high,OAE
+Other Antiepileptics,N03AX30,antiepileptics,Fall_increase_high,OAE
+Anticholinergic Agents,N04AA01,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA02,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA03,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA04,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA05,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA08,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA09,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA10,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA11,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AA12,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AB01,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AB02,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AC01,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Anticholinergic Agents,N04AC30,anti_parkinson_drugs,Fall_increase_moderate,ACH
+Dopaminergic Agents,N04BA01,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BA02,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BA03,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BA04,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BA05,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BA06,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BA07,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BB01,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC01,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC02,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC03,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC04,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC05,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC06,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC07,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC08,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BC09,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BD01,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BD02,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BD03,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BX01,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BX02,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BX03,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Dopaminergic Agents,N04BX04,anti_parkinson_drugs,Fall_increase_moderate,DOPA
+Phenothiazines,N05AA01,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AA02,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AA03,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AA04,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AA05,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AA06,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AA07,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB01,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB02,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB03,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB04,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB05,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB06,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB07,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB08,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB09,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AB10,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AC01,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AC02,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AC03,typical_antipsychotics,Fall_increase_high,PHEN
+Phenothiazines,N05AC04,typical_antipsychotics,Fall_increase_high,PHEN
+Butyrophenones,N05AD01,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD02,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD03,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD04,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD05,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD06,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD07,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD08,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD09,typical_antipsychotics,Fall_increase_high,BUTY
+Butyrophenones,N05AD10,typical_antipsychotics,Fall_increase_high,BUTY
+Indole Derivatives,N05AE01,typical_antipsychotics,Fall_increase_high,INDOL
+Indole Derivatives,N05AE02,typical_antipsychotics,Fall_increase_high,INDOL
+Indole Derivatives,N05AE03,atypical_antipsychotics,Fall_increase_moderate,INDOL
+Indole Derivatives,N05AE04,atypical_antipsychotics,Fall_increase_moderate,INDOL
+Indole Derivatives,N05AE05,atypical_antipsychotics,Fall_increase_moderate,INDOL
+Thioxanthenes,N05AF01,typical_antipsychotics,Fall_increase_high,THIOX
+Thioxanthenes,N05AF02,typical_antipsychotics,Fall_increase_high,THIOX
+Thioxanthenes,N05AF03,typical_antipsychotics,Fall_increase_high,THIOX
+Thioxanthenes,N05AF04,typical_antipsychotics,Fall_increase_high,THIOX
+Thioxanthenes,N05AF05,typical_antipsychotics,Fall_increase_high,THIOX
+Diphenylbutylpiperidines,N05AG01,typical_antipsychotics,Fall_increase_high,DPBP
+Diphenylbutylpiperidines,N05AG02,typical_antipsychotics,Fall_increase_high,DPBP
+Diphenylbutylpiperidines,N05AG03,typical_antipsychotics,Fall_increase_high,DPBP
+Dibenzoxazepines,N05AH01,typical_antipsychotics,Fall_increase_high,DBZ
+Dibenzoxazepines,N05AH02,atypical_antipsychotics,Fall_increase_moderate,DBZ
+Dibenzoxazepines,N05AH03,atypical_antipsychotics,Fall_increase_moderate,DBZ
+Dibenzoxazepines,N05AH04,atypical_antipsychotics,Fall_increase_moderate,DBZ
+Dibenzoxazepines,N05AH05,atypical_antipsychotics,Fall_increase_moderate,DBZ
+Dibenzoxazepines,N05AH06,atypical_antipsychotics,Fall_increase_moderate,DBZ
+Dibenzoxazepines,N05AH53,atypical_antipsychotics,Fall_increase_moderate,DBZ
+Other Antipsychotics,N05AX07,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX08,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX10,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX11,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX12,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX13,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX14,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX15,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX16,atypical_antipsychotics,Fall_increase_moderate,OAP
+Other Antipsychotics,N05AX17,atypical_antipsychotics,Fall_increase_moderate,OAP
+Benzodiazepines,N05BA01,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA02,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA03,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA04,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA05,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA06,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA07,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA08,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA09,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA10,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA11,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA12,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA13,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA14,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA15,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA16,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA17,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA18,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA19,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA21,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA22,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA23,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA24,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA25,anxiolytics,Fall_increase_high,BZD
+Benzodiazepines,N05BA56,anxiolytics,Fall_increase_high,BZD
+H1-Receptor Antagonists,N05BB01,anxiolytics,Fall_increase_high,H1_RA
+H1-Receptor Antagonists,N05BB02,anxiolytics,Fall_increase_high,H1_RA
+H1-Receptor Antagonists,N05BB51,anxiolytics,Fall_increase_high,H1_RA
+Carbamates,N05BC01,anxiolytics,Fall_increase_high,CARB
+Carbamates,N05BC03,anxiolytics,Fall_increase_high,CARB
+Carbamates,N05BC04,anxiolytics,Fall_increase_high,CARB
+Carbamates,N05BC51,anxiolytics,Fall_increase_high,CARB
+Azaspirodecanediones,N05BE01,anxiolytics,Fall_increase_high,AZA
+Barbiturates,N05CA01,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA02,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA03,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA04,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA05,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA06,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA07,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA08,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA09,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA10,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA11,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA12,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA15,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA16,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA19,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA20,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA21,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Barbiturates,N05CA22,hypnotics_and_sedatives,Fall_increase_high,BRBT
+Aldehydes,N05CC01,hypnotics_and_sedatives,Fall_increase_high,ALD
+Aldehydes,N05CC02,hypnotics_and_sedatives,Fall_increase_high,ALD
+Aldehydes,N05CC03,hypnotics_and_sedatives,Fall_increase_high,ALD
+Aldehydes,N05CC04,hypnotics_and_sedatives,Fall_increase_high,ALD
+Aldehydes,N05CC05,hypnotics_and_sedatives,Fall_increase_high,ALD
+Benzodiazepines,N05CD01,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD02,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD03,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD04,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD05,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD06,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD07,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD08,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD09,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD10,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD11,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD12,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD13,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD14,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CD15,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CF01,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CF02,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CF03,hypnotics_and_sedatives,Fall_increase_high,BZD
+Benzodiazepines,N05CF04,hypnotics_and_sedatives,Fall_increase_high,BZD
+Melatonin-Agonists,N05CH01,hypnotics_and_sedatives,Fall_increase_high,MEL
+Melatonin-Agonists,N05CH02,hypnotics_and_sedatives,Fall_increase_high,MEL
+Melatonin-Agonists,N05CH03,hypnotics_and_sedatives,Fall_increase_high,MEL
+Orexin Antagonists,N05CJ01,hypnotics_and_sedatives,Fall_increase_high,OREX
+Orexin Antagonists,N05CJ02,hypnotics_and_sedatives,Fall_increase_high,OREX
+Orexin Antagonists,N05CJ03,hypnotics_and_sedatives,Fall_increase_high,OREX
+Other Hypnotics and Sedatives,N05CM01,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM02,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM03,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM04,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM05,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM06,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM07,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM08,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM09,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM10,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM11,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM12,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM13,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM15,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM16,hypnotics_and_sedatives,Fall_increase_high,OHS
+Other Hypnotics and Sedatives,N05CM18,hypnotics_and_sedatives,Fall_increase_high,OHS
+Tricyclic Antidepressants,N06AA01,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA02,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA03,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA04,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA05,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA06,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA07,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA08,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA09,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA10,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA11,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA12,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA13,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA14,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA15,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA16,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA17,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA18,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA19,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA21,antidepressant,Fall_increase_high,TCA
+Tricyclic Antidepressants,N06AA23,antidepressant,Fall_increase_high,TCA
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB02,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB03,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB04,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB05,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB06,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB07,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB08,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB09,antidepressant,Fall_increase_moderate,SSRI
+SSRI - Selective Serotonin Reuptake Inhibitors,N06AB10,antidepressant,Fall_increase_moderate,SSRI
+Inhaled Corticosteroids,R03AK06,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK07,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK08,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK09,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK10,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK11,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK12,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK13,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK14,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03AK15,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA01,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA02,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA03,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA05,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA06,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA07,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA08,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Inhaled Corticosteroids,R03BA09,obstructive_airway_diseases,Bone_mass_decrese_moderate,ICS
+Aminoalkyl Ethers,R06AA01,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA02,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA04,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA06,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA07,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA08,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA09,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA10,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA11,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA52,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA54,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA56,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA57,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA59,antihistamines,Fall_increase_high,AAE
+Aminoalkyl Ethers,R06AA61,antihistamines,Fall_increase_high,AAE
+Alkylamines,R06AB01,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB02,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB03,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB04,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB05,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB06,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB07,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB51,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB52,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB54,antihistamines,Fall_increase_high,ALKAM
+Alkylamines,R06AB56,antihistamines,Fall_increase_high,ALKAM
+Ethylene Diamines,R06AC01,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC02,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC03,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC04,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC05,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC06,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC52,antihistamines,Fall_increase_high,EDIAM
+Ethylene Diamines,R06AC53,antihistamines,Fall_increase_high,EDIAM
+Phenothiazine Derivatives,R06AD01,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD02,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD03,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD04,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD05,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD06,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD07,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD08,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD09,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R06AD52,antihistamines,Fall_increase_high,PHED
+Phenothiazine Derivatives,R05AD55,antihistamines,Fall_increase_high,PHED
+Piperazines,R06AE01,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE03,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE04,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE05,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE06,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE07,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE09,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE51,antihistamines,Fall_increase_high,PIP
+Piperazines,R06AE53,antihistamines,Fall_increase_high,PIP
+Other Antihistamines,R06AX01,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX02,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX03,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX04,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX05,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX07,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX08,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX09,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX11,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX12,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX13,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX15,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX16,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX17,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX18,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX19,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX21,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX22,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX23,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX24,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX25,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX26,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX27,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX28,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX29,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX31,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX32,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX53,antihistamines,Fall_increase_high,OAH
+Other Antihistamines,R06AX58,antihistamines,Fall_increase_high,OAH
