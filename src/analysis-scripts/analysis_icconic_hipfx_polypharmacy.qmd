@@ -82,9 +82,9 @@ They also defined a risk class label, indicating whether the drug category incre
 Drug_class_desc = pd.DataFrame({
 'Drug_Category' : ['Aldehydes', 'Alkylamines', 'Aminoalkyl Ethers', 'Antacids', 'Anticholinergic Agents', 'Azaspirodecanediones', 'Barbiturates', 'Barbiturates', 'Benzodiazepines', 'Benzodiazepines', 'Benzodiazepines', 'Butyrophenones', 'Carbamates', 'Carboxamides', 'Centrally-Acting Antihypertensives', 'Dibenzoxazepines', 'Dibenzoxazepines', 'Diphenylbutylpiperidines', 'Dopaminergic Agents', 'Ethylene Diamines', 'Fatty Acid Derivatives', 'Gabapentinoids', 'H1-Receptor Antagonists', 'H2-Receptor Antagonists', 'Hydantoins', 'Indole Derivatives', 'Indole Derivatives', 'Inhaled Corticosteroids', 'Loop Diuretics', 'Melatonin-Agonists', 'Muscle Relaxers', 'Nitrates', 'Opioids', 'Opioids', 'Oral Steroids', 'Orexin Antagonists', 'Other Antiepileptics', 'Other Antihistamines', 'Other Antipsychotics', 'Other Hypnotics and Sedatives', 'Phenothiazine Derivatives', 'Phenothiazines', 'Piperazines', 'Proton Pump Inhibitors', 'SSRI - Selective Serotonin Reuptake Inhibitors', 'Sodium-glucose Co-transporter 2 Inhibitors', 'Succinimides', 'Sulfonylureas', 'Thiazides and Other Low-Ceiling Drugs', 'Thiazolidinediones', 'Thioxanthenes', 'Tricyclic Antidepressants'],
 'Cate_short_name' : ['ALD', 'ALKAM', 'AAE', 'ACIDS', 'ACH', 'AZA', 'BRBT', 'BRBT', 'BZD', 'BZD', 'BZD', 'BUTY', 'CARB', 'CBX', 'CAA', 'DBZ', 'DBZ', 'DPBP', 'DOPA', 'EDIAM', 'FAD', 'GPTN', 'H1-RA', 'H2-RA', 'HYDAN', 'INDOL', 'INDOL', 'ICS', 'LPD', 'MEL', 'MUSREL', 'NIT', 'OPI', 'OPI', 'ORST', 'OREX', 'OAE', 'OAH', 'OAP', 'OHS', 'PHED', 'PHEN', 'PIP', 'PPI', 'SSRI', 'SGLT2', 'SUCC', 'SU', 'THZLC', 'TZD', 'THIOX', 'TCA'],
-'Grandparent_Class' : ['hypnotics_and_sedatives', 'antihistamines', 'antihistamines', 'Acid_related_disorders', 'anti_parkinson_drugs', 'anxiolytics', 'hypnotics_and_sedatives', 'antiepileptics', 'hypnotics_and_sedatives', 'anxiolytics', 'antiepileptics', 'typical_antipsychotics', 'anxiolytics', 'antiepileptics', 'Hypertension', 'typical_antipsychotics', 'atypical_antipsychotics', 'typical_antipsychotics', 'anti_parkinson_drugs', 'antihistamines', 'antiepileptics', 'analgesics', 'anxiolytics', 'Acid_related_disorders', 'antiepileptics', 'atypical_antipsychotics', 'typical_antipsychotics', 'obstructive_airway_diseases', 'Diuretic', 'hypnotics_and_sedatives', 'musculo_skeletal_system', 'Angina_pectoris', 'anesthetics', 'anelgesics', 'hormones_hormone_modifiers', 'hypnotics_and_sedatives', 'antiepileptics', 'antihistamines', 'atypical_antipsychotics', 'hypnotics_and_sedatives', 'antihistamines', 'typical_antipsychotics', 'antihistamines', 'Acid_related_disorders', 'antidepressant', 'Diabetes', 'antiepileptics', 'Diabetes', 'Diuretic', 'Diabetes', 'typical_antipsychotics', 'antidepressant'],
+'Grandparent_Class' : ['hypnotics_and_sedatives', 'antihistamines', 'antihistamines', 'Acid_related_disorders', 'anti_parkinson_drugs', 'anxiolytics', 'hypnotics_and_sedatives', 'antiepileptics', 'hypnotics_and_sedatives', 'anxiolytics', 'antiepileptics', 'typical_antipsychotics', 'anxiolytics', 'antiepileptics', 'Hypertension', 'typical_antipsychotics', 'atypical_antipsychotics', 'typical_antipsychotics', 'anti_parkinson_drugs', 'antihistamines', 'antiepileptics', 'analgesics', 'anxiolytics', 'Acid_related_disorders', 'antiepileptics', 'atypical_antipsychotics', 'typical_antipsychotics', 'obstructive_airway_diseases', 'Diuretic', 'hypnotics_and_sedatives', 'musculo_skeletal_system', 'Angina_pectoris', 'anesthetics', 'analgesics', 'hormones_hormone_modifiers', 'hypnotics_and_sedatives', 'antiepileptics', 'antihistamines', 'atypical_antipsychotics', 'hypnotics_and_sedatives', 'antihistamines', 'typical_antipsychotics', 'antihistamines', 'Acid_related_disorders', 'antidepressant', 'Diabetes', 'antiepileptics', 'Diabetes', 'Diuretic', 'Diabetes', 'typical_antipsychotics', 'antidepressant'],
 'Risk_Class' : ['Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_moderate', 'Bone_mass_decrese_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_high', 'Fall_increase_moderate', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high']
-                           }) ###change_0505
+                           })  ###change_0513
 Drug_class_desc
 ```
 
@@ -1240,7 +1240,7 @@ cate_use <- cate_exist[!cate_missing]
 formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
 formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
 
-gp_cols <- c('musculo_skeletal_system_Patterns', 'Hypertension_Patterns', 'hormones_hormone_modifiers_Patterns', 'anxiolytics_Patterns', 'anelgesics_Patterns', 'antiepileptics_Patterns', 'antihistamines_Patterns', 'Diuretic_Patterns', 'atypical_antipsychotics_Patterns', 'antidepressant_Patterns', 'Angina_pectoris_Patterns', 'hypnotics_and_sedatives_Patterns', 'analgesics_Patterns', 'anti_parkinson_drugs_Patterns', 'Acid_related_disorders_Patterns', 'obstructive_airway_diseases_Patterns', 'typical_antipsychotics_Patterns', 'Diabetes_Patterns', 'anesthetics_Patterns')
+gp_cols <- c('musculo_skeletal_system_Patterns', 'Hypertension_Patterns', 'hormones_hormone_modifiers_Patterns', 'anxiolytics_Patterns', 'antiepileptics_Patterns', 'antihistamines_Patterns', 'Diuretic_Patterns', 'atypical_antipsychotics_Patterns', 'antidepressant_Patterns', 'Angina_pectoris_Patterns', 'hypnotics_and_sedatives_Patterns', 'analgesics_Patterns', 'anti_parkinson_drugs_Patterns', 'Acid_related_disorders_Patterns', 'obstructive_airway_diseases_Patterns', 'typical_antipsychotics_Patterns', 'Diabetes_Patterns', 'anesthetics_Patterns') ###change_0513
 gp_exist <- intersect(gp_cols, names(hip_poly))
 gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
 gp_use <- gp_exist[!gp_missing]
@@ -1259,9 +1259,9 @@ Poly_exre_high <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre ==
 Poly_exre_mid <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'Mid', ]
 Poly_exre_low <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'Low', ]
 
-Poly_refr_high <- matched_exitus_readm[matched_refracture$Burden_of_Med_Pre == 'High', ]
-Poly_refr_mid <- matched_exitus_readm[matched_refracture$Burden_of_Med_Pre == 'Mid', ]
-Poly_refr_low <- matched_exitus_readm[matched_refracture$Burden_of_Med_Pre == 'Low', ]
+Poly_refr_high <- matched_refracture[matched_refracture$Burden_of_Med_Pre == 'High', ]###change_0514
+Poly_refr_mid <- matched_refracture[matched_refracture$Burden_of_Med_Pre == 'Mid', ]###change_0514
+Poly_refr_low <- matched_refracture[matched_refracture$Burden_of_Med_Pre == 'Low', ]###change_0514
 
 ###change_0512
 # Function to conditionally run glm if data is not empty
@@ -1338,6 +1338,16 @@ summary(m2_1b)
 
 
 # Model m2_2a: outcome 1, by Grandparent, nearest match 
+
+###change_0514
+gp_exist <- intersect(gp_cols, names(matched_refracture))
+gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
+gp_use <- gp_exist[!gp_missing]
+formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+
+###change_0514
+
 m2_2a = glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = matched_refracture)
 summary(m2_2a)
 
@@ -1346,6 +1356,15 @@ m2_2a_mid = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logi
 m2_2a_low = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
 
 # Model m2_2b: outcome 1, by Grandparent, no match 
+
+###change_0514
+gp_exist <- intersect(gp_cols, names(hip_poly))
+gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
+gp_use <- gp_exist[!gp_missing]
+formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+###change_0514
+
 m2_2b =glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = hip_poly)
 summary(m2_2b)
 
