@@ -1173,16 +1173,18 @@ hospital_admtype_notnull  <- any(!is.na(hip_poly$hospital_admission_type_cd))
 
 hip_poly <- na.omit(hip_poly)
 ######## END UPDATE IACS ########
+
+###change_0601
 ps_score <- function(outcome_variable, df) {
   
   if (previous_adm_bl_notnull & hospital_admtype_notnull) {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, family = "binomial")
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, family = "binomial")
 } else if (previous_adm_bl_notnull) {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl, data = df, family = "binomial")
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl, data = df, family = "binomial")
 } else if (hospital_admtype_notnull) {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd + hospital_admission_type_cd, data = df, family = "binomial")
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + hospital_admission_type_cd, data = df, family = "binomial")
 } else {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + residence_area_cd, data = hip_poly, family = "binomial")
+    ps_model <- glm(outcome_variable ~ age_nm + sex_cd, data = hip_poly, family = "binomial")
 }
   return(ps_model)
 }
@@ -1197,16 +1199,18 @@ hip_poly$pscore_refracture <- predict(ps_model_refracture, type = "response")
 ps_matching <- function(outcome_variable, df) {
 
     if (previous_adm_bl_notnull & hospital_admtype_notnull) {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
 } else if (previous_adm_bl_notnull) {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd + previous_hospital_admission_bl, data = df, method = "nearest", ratio = 1)
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl, data = df, method = "nearest", ratio = 1)
 } else if (hospital_admtype_notnull) {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
 } else {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + residence_area_cd, data = df, method = "nearest", ratio = 1)
+    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd, data = df, method = "nearest", ratio = 1)
 }
   matched_exitus_readm <- match.data(matchit_model_exitus_readm)
 }
+
+###change_0601
 
 matched_exitus_readm <-  ps_matching(hip_poly$exitus_readm_outcome, hip_poly)
 matched_refracture <-  ps_matching(hip_poly$refracture_outcome, hip_poly)
@@ -1231,28 +1235,63 @@ check_matching(matched_refracture$refracture_outcome, matched_refracture$pscore_
 
 #### Model result on outcome 1: exitus_readm_outcome, by different drug classification
 ```{r model_outcome_1, echo=FALSE, warning=FALSE}
-###change_0505
+###change_0601
 ### create model strings, only select exist drug columns
 cate_cols <- c('ACIDS_Patterns', 'H2_RA_Patterns', 'PPI_Patterns', 'TZD_Patterns', 'SU_Patterns', 'SGLT2_Patterns', 'NIT_Patterns', 'CAA_Patterns', 'THZLC_Patterns', 'LPD_Patterns', 'ORST_Patterns', 'MUSREL_Patterns', 'OPI_Patterns', 'GPTN_Patterns', 'BRBT_Patterns', 'HYDAN_Patterns', 'SUCC_Patterns', 'BZD_Patterns', 'CBX_Patterns', 'FAD_Patterns', 'OAE_Patterns', 'ACH_Patterns', 'DOPA_Patterns', 'PHEN_Patterns', 'BUTY_Patterns', 'INDOL_Patterns', 'THIOX_Patterns', 'DPBP_Patterns', 'DBZ_Patterns', 'OAP_Patterns', 'H1_RA_Patterns', 'CARB_Patterns', 'AZA_Patterns', 'ALD_Patterns', 'MEL_Patterns', 'OREX_Patterns', 'OHS_Patterns', 'TCA_Patterns', 'SSRI_Patterns', 'ICS_Patterns', 'AAE_Patterns', 'ALKAM_Patterns', 'EDIAM_Patterns', 'PHED_Patterns', 'PIP_Patterns', 'OAH_Patterns')
+
 cate_exist <- intersect(cate_cols, names(hip_poly))
 cate_missing <- sapply(hip_poly[cate_exist], function(x) n_distinct(x) == 1)
 cate_use <- cate_exist[!cate_missing]
 formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
 formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
 
+cate_exist <- intersect(cate_cols, names(matched_exitus_readm))
+cate_missing <- sapply(matched_exitus_readm[cate_exist], function(x) n_distinct(x) == 1)
+cate_use <- cate_exist[!cate_missing]
+formula_cate_3 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+
+cate_exist <- intersect(cate_cols, names(matched_refracture))
+cate_missing <- sapply(matched_refracture[cate_exist], function(x) n_distinct(x) == 1)
+cate_use <- cate_exist[!cate_missing]
+formula_cate_4 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+
+
 gp_cols <- c('musculo_skeletal_system_Patterns', 'Hypertension_Patterns', 'hormones_hormone_modifiers_Patterns', 'anxiolytics_Patterns', 'antiepileptics_Patterns', 'antihistamines_Patterns', 'Diuretic_Patterns', 'atypical_antipsychotics_Patterns', 'antidepressant_Patterns', 'Angina_pectoris_Patterns', 'hypnotics_and_sedatives_Patterns', 'analgesics_Patterns', 'anti_parkinson_drugs_Patterns', 'Acid_related_disorders_Patterns', 'obstructive_airway_diseases_Patterns', 'typical_antipsychotics_Patterns', 'Diabetes_Patterns', 'anesthetics_Patterns') ###change_0513
+
 gp_exist <- intersect(gp_cols, names(hip_poly))
 gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
 gp_use <- gp_exist[!gp_missing]
 formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
 formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
 
+gp_exist <- intersect(gp_cols, names(matched_exitus_readm))
+gp_missing <- sapply(matched_exitus_readm[gp_exist], function(x) n_distinct(x) == 1)
+gp_use <- gp_exist[!gp_missing]
+formula_gp_3 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+
+gp_exist <- intersect(gp_cols, names(matched_refracture))
+gp_missing <- sapply(matched_refracture[gp_exist], function(x) n_distinct(x) == 1)
+gp_use <- gp_exist[!gp_missing]
+formula_gp_4 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+
+
 risk_cols <- c('Fall_increase_moderate_Patterns', 'Fall_increase_high_Patterns', 'Bone_mass_decrese_high_Patterns', 'Bone_mass_decrese_moderate_Patterns')
+
 risk_exist <- intersect(risk_cols, names(hip_poly))
 risk_missing <- sapply(hip_poly[risk_exist], function(x) n_distinct(x) == 1)
 risk_use <- risk_exist[!risk_missing]
 formula_risk_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
 formula_risk_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
+
+risk_exist <- intersect(risk_cols, names(matched_exitus_readm))
+risk_missing <- sapply(matched_exitus_readm[risk_exist], function(x) n_distinct(x) == 1)
+risk_use <- risk_exist[!risk_missing]
+formula_risk_3 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
+
+risk_exist <- intersect(risk_cols, names(matched_refracture))
+risk_missing <- sapply(matched_refracture[risk_exist], function(x) n_distinct(x) == 1)
+risk_use <- risk_exist[!risk_missing]
+formula_risk_4 <- paste("refracture_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
 
 # construct Model Cohorts by burden level
 Poly_exre_high <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'High', ]
@@ -1281,56 +1320,55 @@ glm_notnull <- function(formula, data, family) {
 
 
 # Model m1_1a: outcome 1, by Risk, nearest match 
-m1_1a = glm(as.formula(formula_risk_1), family = binomial(link = "logit"), data = matched_exitus_readm) 
+m1_1a = glm(as.formula(formula_risk_3), family = binomial(link = "logit"), data = matched_exitus_readm) 
 summary(m1_1a)
 
-m1_1a_high = glm_notnull(as.formula(formula_risk_1), family = binomial(link = "logit"), data = Poly_exre_high) # model by burden level ###change_0512
-m1_1a_mid = glm_notnull(as.formula(formula_risk_1), family = binomial(link = "logit"), data = Poly_exre_mid)   # model by burden level ###change_0512
-m1_1a_low = glm_notnull(as.formula(formula_risk_1), family = binomial(link = "logit"), data = Poly_exre_low)   # model by burden level ###change_0512
+m1_1a_high = glm_notnull(as.formula(formula_risk_3), family = binomial(link = "logit"), data = Poly_exre_high) # model by burden level ###change_0512
+m1_1a_mid = glm_notnull(as.formula(formula_risk_3), family = binomial(link = "logit"), data = Poly_exre_mid)   # model by burden level ###change_0512
+m1_1a_low = glm_notnull(as.formula(formula_risk_3), family = binomial(link = "logit"), data = Poly_exre_low)   # model by burden level ###change_0512
 
 # Model m1_1b: outcome 1, by Risk, no match
 m1_1b = glm(as.formula(formula_risk_1), family = binomial(link = "logit"), data = hip_poly)
 summary(m1_1b)
 
 # Model m1_2a: outcome 1, by Grandparent, nearest match 
-m1_2a = glm(as.formula(formula_gp_1), family = binomial(link = "logit"), data = matched_exitus_readm)
+m1_2a = glm(as.formula(formula_gp_3), family = binomial(link = "logit"), data = matched_exitus_readm)
 summary(m1_2a)
 
-m1_2a_high = glm_notnull(as.formula(formula_gp_1), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
-m1_2a_mid = glm_notnull(as.formula(formula_gp_1), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
-m1_2a_low = glm_notnull(as.formula(formula_gp_1), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
+m1_2a_high = glm_notnull(as.formula(formula_gp_3), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
+m1_2a_mid = glm_notnull(as.formula(formula_gp_3), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
+m1_2a_low = glm_notnull(as.formula(formula_gp_3), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
 
 # Model m1_2b: outcome 1, by Grandparent, no match 
 m1_2b = glm(as.formula(formula_gp_1), family = binomial(link = "logit"), data = hip_poly)
 summary(m1_2b)
 
 # Model m1_3a: outcome 1, by Drug Category, nearest match 
-m1_3a = glm(as.formula(formula_cate_1), family = binomial(link = "logit"), data = matched_exitus_readm)
+m1_3a = glm(as.formula(formula_cate_3), family = binomial(link = "logit"), data = matched_exitus_readm)
 summary(m1_3a)
 
-m1_3a_high = glm_notnull(as.formula(formula_cate_1), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
-m1_3a_mid = glm_notnull(as.formula(formula_cate_1), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
-m1_3a_low = glm_notnull(as.formula(formula_cate_1), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
+m1_3a_high = glm_notnull(as.formula(formula_cate_3), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
+m1_3a_mid = glm_notnull(as.formula(formula_cate_3), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
+m1_3a_low = glm_notnull(as.formula(formula_cate_3), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
 
 # Model m1_3b: outcome 1, by Drug Category, no mathch
 m1_3b = glm(as.formula(formula_cate_1), family = binomial(link = "logit"), data = hip_poly)
 summary(m1_3b)
 
-###change_0505
-
+###change_0601
 ```
 
 #### Model result on outcome 2: refracture_outcome, by different drug classification
 ```{r model_outcome_2, echo=FALSE, warning=FALSE}
-###change_0505
+###change_0601
 
 # Model m2_1a: outcome 1, by Risk, nearest match 
-m2_1a = glm(as.formula(formula_risk_2), family = binomial(link = "logit"), data = matched_refracture)   
+m2_1a = glm(as.formula(formula_risk_4), family = binomial(link = "logit"), data = matched_refracture)   
 summary(m2_1a)
 
-m2_1a_high = glm_notnull(as.formula(formula_risk_2), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
-m2_1a_mid = glm_notnull(as.formula(formula_risk_2), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
-m2_1a_low = glm_notnull(as.formula(formula_risk_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+m2_1a_high = glm_notnull(as.formula(formula_risk_4), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
+m2_1a_mid = glm_notnull(as.formula(formula_risk_4), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
+m2_1a_low = glm_notnull(as.formula(formula_risk_4), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
 
 # Model m2_1b: outcome 1, by Risk, no match
 m2_1b = glm(as.formula(formula_risk_2), family = binomial(link = "logit"), data = hip_poly)  
@@ -1339,68 +1377,35 @@ summary(m2_1b)
 
 # Model m2_2a: outcome 1, by Grandparent, nearest match 
 
-###change_0514
-gp_exist <- intersect(gp_cols, names(matched_refracture))
-gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
-gp_use <- gp_exist[!gp_missing]
-formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-
-###change_0514
-
-m2_2a = glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = matched_refracture)
+m2_2a = glm(as.formula(formula_gp_4), family = binomial(link = "logit"), data = matched_refracture)
 summary(m2_2a)
 
-m2_2a_high = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
-m2_2a_mid = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
-m2_2a_low = glm_notnull(as.formula(formula_gp_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+m2_2a_high = glm_notnull(as.formula(formula_gp_4), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
+m2_2a_mid = glm_notnull(as.formula(formula_gp_4), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
+m2_2a_low = glm_notnull(as.formula(formula_gp_4), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
 
 # Model m2_2b: outcome 1, by Grandparent, no match 
 
-###change_0514
-gp_exist <- intersect(gp_cols, names(hip_poly))
-gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
-gp_use <- gp_exist[!gp_missing]
-formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-###change_0514
 
 m2_2b =glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = hip_poly)
 summary(m2_2b)
 
 # Model m2_3a: outcome 1, by Drug Category, nearest match 
 
-####### START UPDATE IACS (0513) #####
-cate_exist <- intersect(cate_cols, names(matched_refracture))
-cate_missing <- sapply(matched_refracture[cate_exist], function(x) n_distinct(x) == 1)
-cate_use <- cate_exist[!cate_missing]
-formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
-formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
 
-####### END UPDATE IACS (0513) #####
-
-m2_3a = glm(as.formula(formula_cate_2), family = binomial(link = "logit"), data = matched_refracture)
+m2_3a = glm(as.formula(formula_cate_4), family = binomial(link = "logit"), data = matched_refracture)
 summary(m2_3a)
 
-m2_3a_high = glm_notnull(as.formula(formula_cate_2), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
-m2_3a_mid = glm_notnull(as.formula(formula_cate_2), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
-m2_3a_low = glm_notnull(as.formula(formula_cate_2), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+m2_3a_high = glm_notnull(as.formula(formula_cate_4), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
+m2_3a_mid = glm_notnull(as.formula(formula_cate_4), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
+m2_3a_low = glm_notnull(as.formula(formula_cate_4), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
 
 # Model m2_3b: outcome 1, by Drug Category, no match
-
-####### START UPDATE IACS (0513) #####
-cate_exist <- intersect(cate_cols, names(hip_poly))
-cate_missing <- sapply(hip_poly[cate_exist], function(x) n_distinct(x) == 1)
-cate_use <- cate_exist[!cate_missing]
-formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
-formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
-
-####### END UPDATE IACS (0513) #####
 
 m2_3b = glm(as.formula(formula_cate_2), family = binomial(link = "logit"), data = hip_poly)
 summary(m2_3b)
 
-###change_0505
+###change_0601
 ```
 
 
