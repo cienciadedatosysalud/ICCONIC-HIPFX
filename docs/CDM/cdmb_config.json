@@ -1,16 +1,16 @@
 {
-    "created_dt": "20240117095924_cdmb",
+    "created_dt": "20240806103313_cdmb",
     "cdmb_version": "1.3.6",
-    "uuid": "f74ae43b-3e11-45ba-aaca-47f0be9e5bff",
+    "uuid": "54c95f28-b92d-4653-a516-6ee420e536f1",
     "metadata": {
-        "uuid": "c54c3517-e7ca-4c8f-8187-c21b111b6568",
+        "uuid": "a284de90-4ed6-4b2f-8975-02011f72e8dd",
         "project": "ICCONIC_Hip_Fracture",
         "funder": "",
         "url_project": "www.atlasvpm.org",
         "work_package": "1",
         "use_case": "Variations in hospital episode (inpatient) with a main diagnosis ('main_diagnosis_cd') of hip fracture",
         "document": "Data model specification documenting both individual-level data required to respond to the three (3) research questions related to the hip fracture persona in ICCONIC",
-        "version_sem": "1.2.6",
+        "version_sem": "1.2.7",
         "authors": [
             {
                 "name": "Estupiñán-Romero, Francisco ",
@@ -30,7 +30,12 @@
             {
                 "name": "Wei, Jinru",
                 "affiliation": "Brown University School of Public Health",
-                "id": ""
+                "id": "0009-0007-4514-9967"
+            },
+            {
+                "name": "Astrid Van Wilder",
+                "affiliation": "Brown University School of Public Health",
+                "id": "0000-0001-7475-4890"
             },
             {
                 "name": "Papanicolas, Irene ",
@@ -69,7 +74,7 @@
     },
     "entities": [
         {
-            "uuid": "641e6820-cc60-4b97-910d-9e848df83750",
+            "uuid": "163a9425-9f0a-49fe-b297-ac7139832834",
             "name": "patient_cohort",
             "time_varying": false,
             "variables": [
@@ -429,7 +434,7 @@
                 },
                 {
                     "label": "unplanned_readmission_7d_bl",
-                    "description": "Have the patient had an unplanned readmission (for any cause) in the next 7 days after hospitalization",
+                    "description": "Have the patient had an unplanned readmission(for any cause)in the next 7 days after hospitalization",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -445,7 +450,7 @@
                 },
                 {
                     "label": "unplanned_readmission_30d_bl",
-                    "description": "Have the patient had an unplanned readmission(for any cause) in the next 30 days after hospitalization",
+                    "description": "Have the patient had an unplanned readmission(for any cause)in the next 30days after hospitalization",
                     "standard_classification": "",
                     "format": "Boolean",
                     "type": "Categorical",
@@ -1025,7 +1030,7 @@
             ]
         },
         {
-            "uuid": "dfbdff9e-a098-4f48-973d-d377f6871125",
+            "uuid": "f3d508fd-36af-48da-8681-4cff6d5a8a21",
             "name": "outpatient_prescription",
             "time_varying": false,
             "variables": [
@@ -1046,13 +1051,29 @@
                     "catalog": null
                 },
                 {
+                    "label": "prescription_national_code_cd",
+                    "description": "National code of the drug prescribed to the patient in the cohort",
+                    "standard_classification": "UTF-8",
+                    "format": "String",
+                    "type": "Categorical",
+                    "units": "",
+                    "requirement_level": "Required",
+                    "characteristic": "Observed",
+                    "catalog_bl": false,
+                    "transformations_from_origin": "",
+                    "possible_data_source": "Outpatient electronic prescription registry ",
+                    "observations_comments": "Please, pull all prescribed medications. The national code has to have a correspondance with a national drug code registry publicly available (i.e., nomenclator)",
+                    "examples": "",
+                    "catalog": null
+                },
+                {
                     "label": "prescription_atc_cd",
                     "description": "Outpatient prescription ATC code",
                     "standard_classification": "ATC",
                     "format": "String",
                     "type": "Categorical",
                     "units": "",
-                    "requirement_level": "Required",
+                    "requirement_level": "Recommended",
                     "characteristic": "Observed",
                     "catalog_bl": true,
                     "transformations_from_origin": "Please, pull all prescribed medications",
@@ -1111,7 +1132,7 @@
             ]
         },
         {
-            "uuid": "b24cf912-23f0-44d4-8a67-b2d5157037f0",
+            "uuid": "88343bb0-296c-4c9e-817c-efc0e2463835",
             "name": "post_index_hospital_episode",
             "time_varying": false,
             "variables": [

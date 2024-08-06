@@ -107,6 +107,8 @@ graph ER {
 	node [shape=ellipse]
 	outpatient_prescription_patient_id [label=patient_id fontsize="8pt"]
 	outpatient_prescription_patient_id -- outpatient_prescription [len=1.5]
+	outpatient_prescription_prescription_national_code_cd [label=prescription_national_code_cd fontsize="8pt"]
+	outpatient_prescription_prescription_national_code_cd -- outpatient_prescription [len=2.1]
 	outpatient_prescription_prescription_atc_cd [label=prescription_atc_cd fontsize="8pt"]
 	outpatient_prescription_prescription_atc_cd -- outpatient_prescription [len=2.1]
 	outpatient_prescription_prescription_start_dt [label=prescription_start_dt fontsize="8pt"]
