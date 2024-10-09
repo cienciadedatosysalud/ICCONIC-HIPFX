@@ -4,6 +4,12 @@ title: "ICCONIC Hip Fracture - Variations in hospital episode (inpatient) with a
 version: "1.1.9"
 date-released: "2024-06-03" 
 authors:
+  - family-names: "González-Galindo"
+    given-names: "Javier"
+    orcid: "https://orcid.org/0000-0002-8783-5478"
+  - family-names: "Royo-Sierra"
+    given-names: "Santiago"
+    orcid: "https://orcid.org/0000-0002-0048-4370"
   - family-names: "Estupiñán-Romero"
     given-names: "Francisco"
     orcid: "https://orcid.org/0000-0002-6285-8120"
