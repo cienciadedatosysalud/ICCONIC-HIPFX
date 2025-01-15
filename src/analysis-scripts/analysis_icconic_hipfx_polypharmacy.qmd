@@ -78,14 +78,15 @@ They also defined a risk class label, indicating whether the drug category incre
 
 ```{python drug_class_desc, echo=FALSE, warning=FALSE}
 
-####(Updates)####
+####(New Updates)####
 Drug_class_desc = pd.DataFrame({
-'Drug_Category' : ['Aldehydes', 'Alkylamines', 'Aminoalkyl Ethers', 'Antacids', 'Anticholinergic Agents', 'Azaspirodecanediones', 'Barbiturates', 'Barbiturates', 'Benzodiazepines', 'Benzodiazepines', 'Benzodiazepines', 'Butyrophenones', 'Carbamates', 'Carboxamides', 'Centrally-Acting Antihypertensives', 'Dibenzoxazepines', 'Dibenzoxazepines', 'Diphenylbutylpiperidines', 'Dopaminergic Agents', 'Ethylene Diamines', 'Fatty Acid Derivatives', 'Gabapentinoids', 'H1-Receptor Antagonists', 'H2-Receptor Antagonists', 'Hydantoins', 'Indole Derivatives', 'Indole Derivatives', 'Inhaled Corticosteroids', 'Loop Diuretics', 'Melatonin-Agonists', 'Muscle Relaxers', 'Nitrates', 'Opioids', 'Opioids', 'Oral Steroids', 'Orexin Antagonists', 'Other Antiepileptics', 'Other Antihistamines', 'Other Antipsychotics', 'Other Hypnotics and Sedatives', 'Phenothiazine Derivatives', 'Phenothiazines', 'Piperazines', 'Proton Pump Inhibitors', 'SSRI - Selective Serotonin Reuptake Inhibitors', 'Sodium-glucose Co-transporter 2 Inhibitors', 'Succinimides', 'Sulfonylureas', 'Thiazides and Other Low-Ceiling Drugs', 'Thiazolidinediones', 'Thioxanthenes', 'Tricyclic Antidepressants'],
-'Cate_short_name' : ['ALD', 'ALKAM', 'AAE', 'ACIDS', 'ACH', 'AZA', 'BRBT', 'BRBT', 'BZD', 'BZD', 'BZD', 'BUTY', 'CARB', 'CBX', 'CAA', 'DBZ', 'DBZ', 'DPBP', 'DOPA', 'EDIAM', 'FAD', 'GPTN', 'H1-RA', 'H2-RA', 'HYDAN', 'INDOL', 'INDOL', 'ICS', 'LPD', 'MEL', 'MUSREL', 'NIT', 'OPI', 'OPI', 'ORST', 'OREX', 'OAE', 'OAH', 'OAP', 'OHS', 'PHED', 'PHEN', 'PIP', 'PPI', 'SSRI', 'SGLT2', 'SUCC', 'SU', 'THZLC', 'TZD', 'THIOX', 'TCA'],
-'Grandparent_Class' : ['hypnotics_and_sedatives', 'antihistamines', 'antihistamines', 'Acid_related_disorders', 'anti_parkinson_drugs', 'anxiolytics', 'hypnotics_and_sedatives', 'antiepileptics', 'hypnotics_and_sedatives', 'anxiolytics', 'antiepileptics', 'typical_antipsychotics', 'anxiolytics', 'antiepileptics', 'Hypertension', 'typical_antipsychotics', 'atypical_antipsychotics', 'typical_antipsychotics', 'anti_parkinson_drugs', 'antihistamines', 'antiepileptics', 'analgesics', 'anxiolytics', 'Acid_related_disorders', 'antiepileptics', 'atypical_antipsychotics', 'typical_antipsychotics', 'obstructive_airway_diseases', 'Diuretic', 'hypnotics_and_sedatives', 'musculo_skeletal_system', 'Angina_pectoris', 'anesthetics', 'analgesics', 'hormones_hormone_modifiers', 'hypnotics_and_sedatives', 'antiepileptics', 'antihistamines', 'atypical_antipsychotics', 'hypnotics_and_sedatives', 'antihistamines', 'typical_antipsychotics', 'antihistamines', 'Acid_related_disorders', 'antidepressant', 'Diabetes', 'antiepileptics', 'Diabetes', 'Diuretic', 'Diabetes', 'typical_antipsychotics', 'antidepressant'],
-'Risk_Class' : ['Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_moderate', 'Bone_mass_decrese_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_high', 'Fall_increase_moderate', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Bone_mass_decrese_moderate', 'Fall_increase_high', 'Fall_increase_high']
-                           })  ###change_0513
-Drug_class_desc
+'Drug_Category' : ['benzodiazepines', 'centrally-acting antihypertensives', 'anticonvulsants', 'anticonvulsants', 'antidepressants', 'antidepressants', 'Antidiabetic agents', 'Antidiabetic agents', 'diuretics', 'diuretics', 'antihistamines', 'H2-receptor antagonists', 'muscle relaxers', 'Nitrates', 'opioids', 'antiparkinson agents', 'Proton Pump Inhibitors', 'antipsychotics', 'antipsychotics', 'other sedatives, anxiolytics and hypnotics', 'steroids', 'steroids', 'steroids'],
+'Cate_short_name' : ['BZD', 'CAA', 'CONV', 'CONV', 'DEP', 'DEP', 'DIAB', 'DIAB', 'DIUR', 'DIUR', 'H1_RA', 'H2_RA', 'MUSREL', 'NIT', 'OPI', 'PD', 'PPI', 'PSY', 'PSY', 'SED', 'STER', 'STER', 'STER'],
+'Grandparent_Class' : ['nervous_system_agents', 'cardiovascular_agents', 'nervous_system_agents', 'nervous_system_agents', 'nervous_system_agents', 'nervous_system_agents', 'metabolic_agents', 'metabolic_agents', 'cardiovascular_agents', 'cardiovascular_agents', 'respiratory_system', 'gastrointestinal_agents', 'nervous_system_agents', 'cardiovascular_agents', 'nervous_system_agents', 'nervous_system_agents', 'nervous_system_agents', 'nervous_system_agents', 'nervous_system_agents', 'nervous_system_agents', 'hormones', 'hormones', 'hormones'],
+'Risk_Class' : ['Fall_increase_high', 'Fall_increase_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_moderate', 'Bone_mass_decrese_high', 'Fall_increase_high', 'Fall_increase_moderate', 'Fall_increase_high', 'Bone_mass_decrese_high', 'Bone_mass_decrese_moderate', 'Fall_increase_moderate']
+      }) 
+Drug_class_desc  
+####(New Updates)#### 
 ```
 
 ### Prescription patterns:
@@ -132,6 +133,10 @@ hip_cohort = con.sql("SELECT * FROM patient_cohort").df() # original cohort
 hip_meds_list = pd.read_csv('./aux_files/hip_meds_classification_atc5.csv')   # Hip meds list with ATC5 codes
 hip_main_dx_code = pd.read_csv('./aux_files/hip_dx_code.csv')                 # Hip main dx code
 
+####(New Updates)####
+hip_meds_list = hip_meds_list[hip_meds_list['country_cd'].isin(hip_cohort['country_cd'].unique())]  #Obtain national level crosswalk for country cohort
+####(New Updates)####
+
 p_count_0 = len(hip_cohort['patient_id'].unique()) ####(Updates)####
 
 # convert columns to datetime format
@@ -165,13 +170,19 @@ p_count_0_1 = len(hip_cohort_date['patient_id'].unique())
 
 #hip_prescription  
 
-pres_0 = con.execute("SELECT a.*, b.prescription_atc_cd, b.prescription_start_dt, b.prescription_end_dt FROM hip_cohort_date as a inner join outpatient_prescription as b on a.patient_id = b.patient_id where prescription_start_dt >=pres_window_start and prescription_start_dt<=pres_window_end").fetchdf()
+####(New Updates)####
+pres_0 = con.execute("SELECT a.*, b. prescription_national_code_cd, b.prescription_start_dt, b.prescription_end_dt FROM hip_cohort_date as a inner join outpatient_prescription as b on a.patient_id = b.patient_id where prescription_start_dt >=pres_window_start and prescription_start_dt<=pres_window_end").fetchdf()
 #con.close()
 # 9,999 patients left in synthetic data
 
-pres_1 = pres_0[['patient_id','pres_window_start','hospital_admission_dt','hospital_discharge_dt','wash_out_end','observation_end','pres_window_end','prescription_atc_cd','prescription_start_dt','prescription_end_dt']]
-pres_1 = pres_1.merge(hip_meds_list, how='left', on='prescription_atc_cd')  # bring drug name and classifications into the dataset
-pres_1 = pres_1[pres_1['Category'].isnull() == False]   
+pres_0['prescription_end_dt'] = pd.to_datetime(pres_0['prescription_end_dt'])
+pres_0['prescription_start_dt'] = pd.to_datetime(pres_0['prescription_start_dt']) 
+
+pres_1 = pres_0[['patient_id','pres_window_start','hospital_admission_dt','hospital_discharge_dt','wash_out_end','observation_end','pres_window_end', 'prescription_national_code_cd','prescription_start_dt','prescription_end_dt']]
+pres_1 = pres_1.merge(hip_meds_list, how='left', on='prescription_national_code_cd')  # bring drug name and classifications into the dataset
+pres_1 = pres_1[pres_1['Category'].isnull() == False]
+####(New Updates)####
+
 # 9,996 patients left in synthetic data
 p_count_1 = len(pres_1['patient_id'].unique()) ####(Updates)#### 
 
@@ -233,7 +244,7 @@ def pres_pattern (df, Drug):
     col_post = Drug + '_Post'
     df2 = df[['patient_id', col_pre, col_post]]
 
-    col_patterns_name = Drug + '_Patterns'
+    col_patterns_name = Drug + '_patterns'
     df2 = df2.copy()
     df2[col_patterns_name] = None
     df2.loc[(df2[col_pre].isnull() == False) & (df2[col_post].isnull() == False), col_patterns_name] = 'Continuing'
@@ -386,27 +397,50 @@ hip_polypharm['Length_of_stay'] = (hip_polypharm['hospital_discharge_dt'] - hip_
 comorbidities_list = ['chronic_kidney_disease_bl', 'tobacco_copd_bl', 'depression_bl', 'serious_mental_illness_bl', 'alcohol_abuse_bl', 'obesity_overweight_bl', 'osteoporosis_osteopenia_bl', 'dementia_bl', 'diabetes_bl', 'liver_disease_bl', 'pancreatic_disease_bl', 'inflamatory_bowel_disease_bl', 'rheumatology_disease_bl', 'spinal_cord_disease_injury_bl', 'serious_neurological_disease_bl', 'parkinson_huntington_diseases_bl', 'seizure_disorder_convulsions_bl', 'congestive_heart_failure_bl', 'coronary_artery_disease_bl', 'cerebrovascular_disease_bl', 'peripheral_vascular_disease_bl', 'traumatic_brain_injury_bl', 'amputee_bl']
 hip_polypharm['Comorbidities_Count'] = hip_polypharm[comorbidities_list].sum(axis=1)
 
-###change_0505
-atc_5_full = pres_0[['prescription_atc_cd']].drop_duplicates()
-atc_5_desc = pres_0[['patient_id', 'pres_window_start', 'hospital_admission_dt', 'wash_out_end', 'observation_end', 'prescription_start_dt', 'prescription_atc_cd']]
-atc_5_desc['Med_Time'] = None
+
+####(New Updates)####
+pres_all = pres_0[['patient_id','pres_window_start','hospital_admission_dt','hospital_discharge_dt','wash_out_end','observation_end','pres_window_end', 'prescription_national_code_cd','prescription_start_dt','prescription_end_dt']]
+pres_all = pres_all[pres_all['patient_id'].isin(hip_polypharm['patient_id'])]
+pres_all = pres_all.merge(hip_meds_list, how='left', on='prescription_national_code_cd')
+atc_5_full = pres_all[['prescription_national_code_cd', 'prescription_atc_cd']].drop_duplicates()  # bring drug name and classifications into the dataset
+
+atc_5_desc = pres_all[['patient_id', 'pres_window_start', 'hospital_admission_dt', 'wash_out_end', 'observation_end', 'prescription_start_dt', 'prescription_atc_cd']]
+atc_5_desc = atc_5_desc.copy()
+atc_5_desc.loc[:, 'Med_Time'] = None
 atc_5_desc.loc[(atc_5_desc['prescription_start_dt'] >= atc_5_desc['pres_window_start']) & (atc_5_desc['prescription_start_dt'] < atc_5_desc['hospital_admission_dt']), 'Med_Time'] = 'Pre' # Falg prescription during pre admission period
 atc_5_desc.loc[(atc_5_desc['prescription_start_dt'] > atc_5_desc['wash_out_end']) & (atc_5_desc['prescription_start_dt'] <= atc_5_desc['observation_end']), 'Med_Time'] = 'Post' # Flag prescription during observation period
-atc_5_desc = atc_5_desc[atc_5_desc['Med_Time'].isnull() == False] 
+atc_5_desc = atc_5_desc[atc_5_desc['Med_Time'].isnull() == False]
 atc_5_desc = atc_5_desc[['patient_id', 'prescription_atc_cd', 'Med_Time']].drop_duplicates().reset_index(drop=True)
 atc_5_desc_agg = atc_5_desc.groupby(['patient_id', 'Med_Time']).agg({'prescription_atc_cd':'nunique'}).reset_index()
 atc_5_desc_agg_wide = atc_5_desc_agg.pivot(index='patient_id', columns='Med_Time', values='prescription_atc_cd').reset_index()
-atc_5_desc_agg_wide.columns = ['patient_id', 'All_Med_Count_Pre', 'All_Med_Count_Post']
+atc_5_desc_agg_wide.columns = ['patient_id', 'All_Med_Count_Post','All_Med_Count_Pre']
+atc_5_desc_agg_wide['All_Med_Count_Pre'] = atc_5_desc_agg_wide['All_Med_Count_Pre'].fillna(0)
+atc_5_desc_agg_wide['All_Med_Count_Post'] = atc_5_desc_agg_wide['All_Med_Count_Post'].fillna(0)
+
+ntl_5_desc = pres_all[['patient_id', 'pres_window_start', 'hospital_admission_dt', 'wash_out_end', 'observation_end', 'prescription_start_dt', 'prescription_national_code_cd']]
+ntl_5_desc = ntl_5_desc.copy()
+ntl_5_desc['Med_Time'] = None
+ntl_5_desc.loc[(ntl_5_desc['prescription_start_dt'] >= ntl_5_desc['pres_window_start']) & (ntl_5_desc['prescription_start_dt'] < ntl_5_desc['hospital_admission_dt']), 'Med_Time'] = 'Pre' # Flag prescription during pre admission period
+ntl_5_desc.loc[(ntl_5_desc['prescription_start_dt'] > ntl_5_desc['wash_out_end']) & (ntl_5_desc['prescription_start_dt'] <= ntl_5_desc['observation_end']), 'Med_Time'] = 'Post' # Flag prescription during observation period
+ntl_5_desc = ntl_5_desc[ntl_5_desc['Med_Time'].isnull() == False] 
+ntl_5_desc = ntl_5_desc[['patient_id', 'prescription_national_code_cd', 'Med_Time']].drop_duplicates().reset_index(drop=True)
+ntl_5_desc_agg = ntl_5_desc.groupby(['patient_id', 'Med_Time']).agg({'prescription_national_code_cd':'nunique'}).reset_index()
+ntl_5_desc_agg_wide = ntl_5_desc_agg.pivot(index='patient_id', columns='Med_Time', values='prescription_national_code_cd').reset_index()
+ntl_5_desc_agg_wide.columns = ['patient_id', 'All_Med_Count_Post_NTL','All_Med_Count_Pre_NTL']
+ntl_5_desc_agg_wide['All_Med_Count_Pre_NTL'] = ntl_5_desc_agg_wide['All_Med_Count_Pre_NTL'].fillna(0)
+ntl_5_desc_agg_wide['All_Med_Count_Post_NTL'] = ntl_5_desc_agg_wide['All_Med_Count_Post_NTL'].fillna(0)
+
 hip_polypharm = hip_polypharm.merge(atc_5_desc_agg_wide, how='left', on='patient_id')
 hip_polypharm.loc[(hip_polypharm['All_Med_Count_Pre'] <5) | (hip_polypharm['All_Med_Count_Pre'].isnull()), 'Burden_of_Med_Pre'] = 'Low'
 hip_polypharm.loc[(hip_polypharm['All_Med_Count_Pre'] >=5) & (hip_polypharm['All_Med_Count_Pre'] <10), 'Burden_of_Med_Pre'] = 'Mid'
 hip_polypharm.loc[hip_polypharm['All_Med_Count_Pre'] >=10, 'Burden_of_Med_Pre'] = 'High'
+hip_polypharm = hip_polypharm.merge(ntl_5_desc_agg_wide, how='left', on='patient_id') # 1006
 
-cate_short_list = (Drug_class_desc['Cate_short_name'] + '_Patterns').unique().tolist()
-Grandparent_list = (Drug_class_desc['Grandparent_Class'] + '_Patterns').unique().tolist()
-Risk_list = (Drug_class_desc['Risk_Class'] + '_Patterns').unique().tolist()
+cate_short_list = (Drug_class_desc['Cate_short_name'] + '_patterns').unique().tolist()
+Grandparent_list = (Drug_class_desc['Grandparent_Class'] + '_patterns').unique().tolist()
+Risk_list = (Drug_class_desc['Risk_Class'] + '_patterns').unique().tolist()
+####(New Updates)####
 
-###change_0505
 ```
 
 ```{python exitus_filtering, echo=FALSE, warning=FALSE}
@@ -433,12 +467,17 @@ exitus_before_outcome
 
 ```{python Final_cohort_size, echo=FALSE, warning=FALSE}
 ####(Updates)####
+
+
+####(New Updates)####
 hip_polypharm = hip_polypharm[~((hip_polypharm['exitus_hospitalization']==True) | (hip_polypharm['exitus_washout']==True) | (hip_polypharm['exitus_observation']==True))]
 p_count_3 = len(hip_polypharm['patient_id'].unique())
 
-hip_polypharm = hip_polypharm[~hip_polypharm['age_nm'].isnull() == True]
-hip_polypharm = hip_polypharm[~(hip_polypharm['sex_cd'] == 0) | (hip_polypharm['sex_cd'] == 9)]
+hip_polypharm = hip_polypharm[~hip_polypharm['age_nm'].isnull()]
+hip_polypharm = hip_polypharm[~((hip_polypharm['sex_cd'] == 0) | (hip_polypharm['sex_cd'] == 9))]
 p_count_4 = len(hip_polypharm['patient_id'].unique())
+####(New Updates)####
+
 
 ######Updates(0328)###### Start ##### 4
 # Correct patient count info based on new cohort design
@@ -514,8 +553,9 @@ def desc_continous(df, col):
     desc = pd.DataFrame({'variable':[col], 'Count':[count],'Mean':[mean], 'STD':[std], 'Median':[median], 'Q1':[Q1], 'Q3':[Q3]})
     return desc
 
-############################################################### continuous variables, basic result ############################################################### 
-continuous_variable_list = ['age_nm', 'Length_of_stay', 'Comorbidities_Count', 'Cate_short_Count_Pre', 'Cate_short_Count_Post', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post', 'Risk_Class_Count_Pre', 'Risk_Class_Count_Post', 'All_Med_Count_Pre', 'All_Med_Count_Post'] ###change_0505
+############################################################### continuous variables, basic result ###############################################################  
+####(New Updates)####
+continuous_variable_list = ['age_nm', 'Length_of_stay', 'Comorbidities_Count', 'Cate_short_Count_Pre', 'Cate_short_Count_Post', 'Grandparent_Class_Count_Pre', 'Grandparent_Class_Count_Post', 'Risk_Class_Count_Pre', 'Risk_Class_Count_Post', 'All_Med_Count_Pre', 'All_Med_Count_Post', 'All_Med_Count_Pre_NTL', 'All_Med_Count_Post_NTL']
 for cohort in cohort_list:
     globals()['desc_continuous_result_' + cohort] = pd.DataFrame()
     for variable in continuous_variable_list:
@@ -525,6 +565,7 @@ for cohort in cohort_list:
 for cohort, suffix in zip(cohort_list[1:], suffix_list):
     globals()['desc_continuous_result_' + cohort] = add_cohort_suffix(globals()['desc_continuous_result_' + cohort], suffix, 1)
 desc_continuous_result_dx_combined = desc_continuous_result_dx_full.merge(desc_continuous_result_dx_S720, how='left', on='variable').merge(desc_continuous_result_dx_S721, how='left', on='variable').merge(desc_continuous_result_dx_S722, how='left', on='variable')
+####(New Updates)####
 
 ############################################################### categorical variables, basic result ############################################################### 
 categorical_variable_list = ['sex_cd', 'exitus_bl', 'exitus_outcome', 'readm_washout', 'readm_observation', 'readm_outcome', 'refracture_washout', 'refracture_observation', 'refracture_outcome', 'exitus_readm_outcome', 'Burden_of_Med_Pre'] ###change_0505
@@ -715,7 +756,7 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
     globals()['duration_Risk_result_' + cohort] = add_cohort_suffix(globals()['duration_Risk_result_' + cohort], suffix, 1)
 duration_Risk_result_dx_combined = duration_Risk_result_dx_full.merge(duration_Risk_result_dx_S720, how='left', on='variable').merge(duration_Risk_result_dx_S721, how='left', on='variable').merge(duration_Risk_result_dx_S722, how='left', on='variable')
 
-blank_row = pd.DataFrame([['', '', '', '', '', '']], columns=['variable', 'Count', 'Mean', 'STD', 'Q1', 'Q3'])
+blank_row = pd.DataFrame([['', '', '', '', '', '', '']], columns=['variable', 'Count', 'Mean', 'STD', 'Median', 'Q1', 'Q3'])
 duration_result = pd.concat([duration_drugcate_result_dx_full, blank_row, duration_Grandparent_result_dx_full, blank_row, duration_Risk_result_dx_full], axis=0).reset_index(drop=True)
 duration_result_combined = pd.concat([duration_drugcate_result_dx_combined, blank_row, duration_Grandparent_result_dx_combined, blank_row, duration_Risk_result_dx_combined], axis=0).reset_index(drop=True)
 
@@ -788,7 +829,7 @@ for cohort, suffix in zip(cohort_list[1:], suffix_list):
     globals()['duration_Risk_pat_' + cohort] = add_cohort_suffix(globals()['duration_Risk_pat_' + cohort], suffix, 2)
 duration_Risk_pat_dx_combined = duration_Risk_pat_dx_full.merge(duration_Risk_pat_dx_S720, how='left', on=['patterns_cate', 'variable']).merge(duration_Risk_pat_dx_S721, how='left', on=['patterns_cate', 'variable']).merge(duration_Risk_pat_dx_S722, how='left', on=['patterns_cate', 'variable'])
 
-blank_row = pd.DataFrame([['', '', '', '', '', '', '', '']], columns=['patterns_cate', 'variable', 'Count','Mean', 'STD', 'Median', 'Q1', 'Q3'])
+blank_row = pd.DataFrame([['', '', '', '', '', '', '', '']], columns=['patterns_cate', 'variable', 'Count', 'Mean', 'STD', 'Median', 'Q1', 'Q3'])
 duration_drug_pattern_result = pd.concat([duration_drugcate_pat_dx_full, blank_row, duration_Grandparent_pat_dx_full, blank_row, duration_Risk_pat_dx_full], axis=0).reset_index(drop=True)
 duration_drug_pattern_result_combined = pd.concat([duration_drugcate_pat_dx_combined, blank_row, duration_Grandparent_pat_dx_combined, blank_row, duration_Risk_pat_dx_combined], axis=0).reset_index(drop=True)
 
@@ -1145,8 +1186,8 @@ for df in desc_result_file_list:
 
 ### Logistic regression model
 
-#### Propensity score matching balance assessment
-```{r ps_model, echo=FALSE, warning=FALSE}
+
+```{r model_prep, echo=FALSE, warning=FALSE}
 # load final cohort dataset for modeling
 
 con = dbConnect(duckdb::duckdb(), dbdir=params$data_path, read_only=FALSE)
@@ -1158,260 +1199,161 @@ dbDisconnect(con, shutdown=TRUE)
 
 #hip_poly = read.csv('../../outputs/hip_polypharma_model.csv')
 
-hip_poly$residence_area_cd[is.na(hip_poly$residence_area_cd)] <- "not_known"
-hip_poly$hospital_admission_type_cd = as.factor(hip_poly$hospital_admission_type_cd)
-hip_poly$sex_cd = as.factor(hip_poly$sex_cd)
+####(New Updates)####
 
-############################################################### Caculate Propensity Score ###############################################################
-previous_adm_bl_notnull <- any(!is.na(hip_poly$previous_hospital_admission_bl))
-hospital_admtype_notnull  <- any(!is.na(hip_poly$hospital_admission_type_cd))
-
-
-####### START UPDATE IACS #####
-
-# GLM only uses rows without any NA value. So the dataframe you get from function predict() will have less records than the original one if you introduce NA values in the model. 
-
+hip_poly <- hip_poly %>% select(-residence_area_cd)
 hip_poly <- na.omit(hip_poly)
-######## END UPDATE IACS ########
 
-###change_0601
-ps_score <- function(outcome_variable, df) {
+hip_poly$exitus_readm_outcome <- as.factor(hip_poly$exitus_readm_outcome)
+hip_poly$refracture_outcome <- as.factor(hip_poly$refracture_outcome)
+
+hip_poly$exitus_readm_outcome_num <- as.numeric(hip_poly$exitus_readm_outcome)
+hip_poly$refracture_outcome_num <- as.numeric(hip_poly$refracture_outcome)
+
+hip_poly$sex_cd <- as.factor(hip_poly$sex_cd)
+hip_poly$previous_hospital_admission_bl <- as.factor(hip_poly$previous_hospital_admission_bl)
+
+columns_to_convert <- c(
+  "BZD_patterns", "CAA_patterns", "CONV_patterns", "DEP_patterns",
+  "DIAB_patterns", "DIUR_patterns", "H1_RA_patterns", "H2_RA_patterns",
+  "MUSREL_patterns", "NIT_patterns", "OPI_patterns", "PD_patterns",
+  "PPI_patterns", "PSY_patterns", "SED_patterns", "STER_patterns",
   
-  if (previous_adm_bl_notnull & hospital_admtype_notnull) {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, family = "binomial")
-} else if (previous_adm_bl_notnull) {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl, data = df, family = "binomial")
-} else if (hospital_admtype_notnull) {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd + hospital_admission_type_cd, data = df, family = "binomial")
-} else {
-    ps_model <- glm(outcome_variable ~ age_nm + sex_cd, data = hip_poly, family = "binomial")
-}
-  return(ps_model)
-}
-
-ps_model_exitus_readm <-  ps_score(hip_poly$exitus_readm_outcome, hip_poly)
-ps_model_refracture <-  ps_score(hip_poly$refracture_outcome, hip_poly)
-hip_poly$pscore_exitus_readm <- predict(ps_model_exitus_readm, type = "response")
-hip_poly$pscore_refracture <- predict(ps_model_refracture, type = "response")
-
-
-############################################################### Create Matched Dataset ###############################################################
-ps_matching <- function(outcome_variable, df) {
-
-    if (previous_adm_bl_notnull & hospital_admtype_notnull) {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
-} else if (previous_adm_bl_notnull) {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + previous_hospital_admission_bl, data = df, method = "nearest", ratio = 1)
-} else if (hospital_admtype_notnull) {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd + hospital_admission_type_cd, data = df, method = "nearest", ratio = 1)
-} else {
-    matchit_model_exitus_readm <- matchit(outcome_variable ~ age_nm + sex_cd, data = df, method = "nearest", ratio = 1)
-}
-  matched_exitus_readm <- match.data(matchit_model_exitus_readm)
-}
-
-###change_0601
-
-matched_exitus_readm <-  ps_matching(hip_poly$exitus_readm_outcome, hip_poly)
-matched_refracture <-  ps_matching(hip_poly$refracture_outcome, hip_poly)
-
-############################################################### Create Matched Distribution ###############################################################
-check_matching <- function(outcome, ps_score, df, title_part) {
+  "nervous_system_agents_patterns", "cardiovascular_agents_patterns",
+  "metabolic_agents_patterns", "respiratory_system_patterns",
+  "gastrointestinal_agents_patterns", "hormones_patterns",
   
-  full_title <- paste("Propensity Score Distribution", title_part)
-  ggplot(df, aes(x = ps_score, fill = factor(outcome))) +
-  geom_histogram(position = "dodge", bins = 10) +
-  theme_minimal() +
-  labs(fill = "Treatment Group", title = full_title)
+  "Fall_increase_moderate_patterns", "Fall_increase_high_patterns",
+  "Bone_mass_decrese_high_patterns", "Bone_mass_decrese_moderate_patterns"
+)
+
+for (col in columns_to_convert) {
+  if (col %in% names(hip_poly)) {
+    hip_poly[[col]] <- as.factor(hip_poly[[col]])
+  }
 }
 
-check_matching(hip_poly$exitus_readm_outcome, hip_poly$pscore_exitus_readm, hip_poly, 'Readmission & Exitus, Before Matching')
-check_matching(matched_exitus_readm$exitus_readm_outcome, matched_exitus_readm$pscore_exitus_readm, matched_exitus_readm, 'Readmission & Exitus, After Matching')
 
-check_matching(hip_poly$refracture_outcome, hip_poly$pscore_refracture, hip_poly, 'Refracture, Before Matching')
-check_matching(matched_refracture$refracture_outcome, matched_refracture$pscore_refracture, matched_refracture, 'Refracture, After Matching')
-```
-
-
-#### Model result on outcome 1: exitus_readm_outcome, by different drug classification
-```{r model_outcome_1, echo=FALSE, warning=FALSE}
-###change_0601
-### create model strings, only select exist drug columns
-cate_cols <- c('ACIDS_Patterns', 'H2_RA_Patterns', 'PPI_Patterns', 'TZD_Patterns', 'SU_Patterns', 'SGLT2_Patterns', 'NIT_Patterns', 'CAA_Patterns', 'THZLC_Patterns', 'LPD_Patterns', 'ORST_Patterns', 'MUSREL_Patterns', 'OPI_Patterns', 'GPTN_Patterns', 'BRBT_Patterns', 'HYDAN_Patterns', 'SUCC_Patterns', 'BZD_Patterns', 'CBX_Patterns', 'FAD_Patterns', 'OAE_Patterns', 'ACH_Patterns', 'DOPA_Patterns', 'PHEN_Patterns', 'BUTY_Patterns', 'INDOL_Patterns', 'THIOX_Patterns', 'DPBP_Patterns', 'DBZ_Patterns', 'OAP_Patterns', 'H1_RA_Patterns', 'CARB_Patterns', 'AZA_Patterns', 'ALD_Patterns', 'MEL_Patterns', 'OREX_Patterns', 'OHS_Patterns', 'TCA_Patterns', 'SSRI_Patterns', 'ICS_Patterns', 'AAE_Patterns', 'ALKAM_Patterns', 'EDIAM_Patterns', 'PHED_Patterns', 'PIP_Patterns', 'OAH_Patterns')
-
+cate_cols <- c('BZD_patterns', 'CAA_patterns', 'CONV_patterns', 'DEP_patterns', 'DIAB_patterns', 'DIUR_patterns', 'H1_RA_patterns', 'H2_RA_patterns', 'MUSREL_patterns', 'NIT_patterns', 'OPI_patterns', 'PD_patterns', 'PPI_patterns', 'PSY_patterns', 'SED_patterns', 'STER_patterns')
 cate_exist <- intersect(cate_cols, names(hip_poly))
 cate_missing <- sapply(hip_poly[cate_exist], function(x) n_distinct(x) == 1)
 cate_use <- cate_exist[!cate_missing]
-formula_cate_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
-formula_cate_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+formula_cate <- paste(" ~ age_nm + Length_of_stay + sex_cd + previous_hospital_admission_bl + All_Med_Count_Pre + All_Med_Count_Post +", paste(cate_use, collapse = " + "))
 
-cate_exist <- intersect(cate_cols, names(matched_exitus_readm))
-cate_missing <- sapply(matched_exitus_readm[cate_exist], function(x) n_distinct(x) == 1)
-cate_use <- cate_exist[!cate_missing]
-formula_cate_3 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
+cate_cols2 <- c('BZD_patterns','CAA_patterns', 'CONV_patterns', 'DEP_patterns', 'DIAB_patterns', 'DIUR_patterns', 'H1_RA_patterns', 'NIT_patterns', 'OPI_patterns', 'PD_patterns', 'PPI_patterns', 'PSY_patterns', 'SED_patterns', 'STER_patterns')
+cate_exist2 <- intersect(cate_cols2, names(hip_poly))
+cate_missing2 <- sapply(hip_poly[cate_exist2], function(x) n_distinct(x) == 1)
+cate_use2 <- cate_exist2[!cate_missing2]
+formula_cate2 <- paste(" ~ age_nm + Length_of_stay + sex_cd + previous_hospital_admission_bl + All_Med_Count_Pre + All_Med_Count_Post +", paste(cate_use2, collapse = " + "))
 
-cate_exist <- intersect(cate_cols, names(matched_refracture))
-cate_missing <- sapply(matched_refracture[cate_exist], function(x) n_distinct(x) == 1)
-cate_use <- cate_exist[!cate_missing]
-formula_cate_4 <- paste("refracture_outcome ~ Length_of_stay +", paste(cate_use, collapse = " + "))
-
-
-gp_cols <- c('musculo_skeletal_system_Patterns', 'Hypertension_Patterns', 'hormones_hormone_modifiers_Patterns', 'anxiolytics_Patterns', 'antiepileptics_Patterns', 'antihistamines_Patterns', 'Diuretic_Patterns', 'atypical_antipsychotics_Patterns', 'antidepressant_Patterns', 'Angina_pectoris_Patterns', 'hypnotics_and_sedatives_Patterns', 'analgesics_Patterns', 'anti_parkinson_drugs_Patterns', 'Acid_related_disorders_Patterns', 'obstructive_airway_diseases_Patterns', 'typical_antipsychotics_Patterns', 'Diabetes_Patterns', 'anesthetics_Patterns') ###change_0513
-
+gp_cols <- c('nervous_system_agents_patterns', 'cardiovascular_agents_patterns', 'metabolic_agents_patterns', 'respiratory_system_patterns', 'gastrointestinal_agents_patterns', 'hormones_patterns')
 gp_exist <- intersect(gp_cols, names(hip_poly))
 gp_missing <- sapply(hip_poly[gp_exist], function(x) n_distinct(x) == 1)
 gp_use <- gp_exist[!gp_missing]
-formula_gp_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-formula_gp_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
+formula_gp <- paste(" ~ age_nm + Length_of_stay + sex_cd + previous_hospital_admission_bl + All_Med_Count_Pre + All_Med_Count_Post +", paste(gp_use, collapse = " + "))
 
-gp_exist <- intersect(gp_cols, names(matched_exitus_readm))
-gp_missing <- sapply(matched_exitus_readm[gp_exist], function(x) n_distinct(x) == 1)
-gp_use <- gp_exist[!gp_missing]
-formula_gp_3 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-
-gp_exist <- intersect(gp_cols, names(matched_refracture))
-gp_missing <- sapply(matched_refracture[gp_exist], function(x) n_distinct(x) == 1)
-gp_use <- gp_exist[!gp_missing]
-formula_gp_4 <- paste("refracture_outcome ~ Length_of_stay +", paste(gp_use, collapse = " + "))
-
-
-risk_cols <- c('Fall_increase_moderate_Patterns', 'Fall_increase_high_Patterns', 'Bone_mass_decrese_high_Patterns', 'Bone_mass_decrese_moderate_Patterns')
-
+risk_cols <- c('Fall_increase_moderate_patterns', 'Fall_increase_high_patterns', 'Bone_mass_decrese_high_patterns', 'Bone_mass_decrese_moderate_patterns')
 risk_exist <- intersect(risk_cols, names(hip_poly))
 risk_missing <- sapply(hip_poly[risk_exist], function(x) n_distinct(x) == 1)
 risk_use <- risk_exist[!risk_missing]
-formula_risk_1 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
-formula_risk_2 <- paste("refracture_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
+formula_risk <- paste(" ~ age_nm + Length_of_stay + sex_cd + previous_hospital_admission_bl + All_Med_Count_Pre + All_Med_Count_Post +", paste(risk_use, collapse = " + "))
 
-risk_exist <- intersect(risk_cols, names(matched_exitus_readm))
-risk_missing <- sapply(matched_exitus_readm[risk_exist], function(x) n_distinct(x) == 1)
-risk_use <- risk_exist[!risk_missing]
-formula_risk_3 <- paste("exitus_readm_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
+####(New Updates)####
 
-risk_exist <- intersect(risk_cols, names(matched_refracture))
-risk_missing <- sapply(matched_refracture[risk_exist], function(x) n_distinct(x) == 1)
-risk_use <- risk_exist[!risk_missing]
-formula_risk_4 <- paste("refracture_outcome ~ Length_of_stay +", paste(risk_use, collapse = " + "))
-
-# construct Model Cohorts by burden level
-Poly_exre_high <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'High', ]
-Poly_exre_mid <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'Mid', ]
-Poly_exre_low <- matched_exitus_readm[matched_exitus_readm$Burden_of_Med_Pre == 'Low', ]
-
-Poly_refr_high <- matched_refracture[matched_refracture$Burden_of_Med_Pre == 'High', ]###change_0514
-Poly_refr_mid <- matched_refracture[matched_refracture$Burden_of_Med_Pre == 'Mid', ]###change_0514
-Poly_refr_low <- matched_refracture[matched_refracture$Burden_of_Med_Pre == 'Low', ]###change_0514
-
-###change_0512
-# Function to conditionally run glm if data is not empty
-glm_notnull <- function(formula, data, family) {
-  if (nrow(data) == 0) {
-    cat("The dataset is empty. Skipping glm.\n")
-    return(NULL)
-  }
-  
-  tryCatch({
-    glm(formula = formula, family = family, data = data)
-  }, error = function(e) {
-    cat("Error in glm: ", e$message, "\n")
-    return(NULL)
-  })
-}
-
-
-# Model m1_1a: outcome 1, by Risk, nearest match 
-m1_1a = glm(as.formula(formula_risk_3), family = binomial(link = "logit"), data = matched_exitus_readm) 
-summary(m1_1a)
-
-m1_1a_high = glm_notnull(as.formula(formula_risk_3), family = binomial(link = "logit"), data = Poly_exre_high) # model by burden level ###change_0512
-m1_1a_mid = glm_notnull(as.formula(formula_risk_3), family = binomial(link = "logit"), data = Poly_exre_mid)   # model by burden level ###change_0512
-m1_1a_low = glm_notnull(as.formula(formula_risk_3), family = binomial(link = "logit"), data = Poly_exre_low)   # model by burden level ###change_0512
-
-# Model m1_1b: outcome 1, by Risk, no match
-m1_1b = glm(as.formula(formula_risk_1), family = binomial(link = "logit"), data = hip_poly)
-summary(m1_1b)
-
-# Model m1_2a: outcome 1, by Grandparent, nearest match 
-m1_2a = glm(as.formula(formula_gp_3), family = binomial(link = "logit"), data = matched_exitus_readm)
-summary(m1_2a)
-
-m1_2a_high = glm_notnull(as.formula(formula_gp_3), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
-m1_2a_mid = glm_notnull(as.formula(formula_gp_3), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
-m1_2a_low = glm_notnull(as.formula(formula_gp_3), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
-
-# Model m1_2b: outcome 1, by Grandparent, no match 
-m1_2b = glm(as.formula(formula_gp_1), family = binomial(link = "logit"), data = hip_poly)
-summary(m1_2b)
-
-# Model m1_3a: outcome 1, by Drug Category, nearest match 
-m1_3a = glm(as.formula(formula_cate_3), family = binomial(link = "logit"), data = matched_exitus_readm)
-summary(m1_3a)
-
-m1_3a_high = glm_notnull(as.formula(formula_cate_3), family = binomial(link = "logit"), data = Poly_exre_high) ###change_0512
-m1_3a_mid = glm_notnull(as.formula(formula_cate_3), family = binomial(link = "logit"), data = Poly_exre_mid) ###change_0512
-m1_3a_low = glm_notnull(as.formula(formula_cate_3), family = binomial(link = "logit"), data = Poly_exre_low) ###change_0512
-
-# Model m1_3b: outcome 1, by Drug Category, no mathch
-m1_3b = glm(as.formula(formula_cate_1), family = binomial(link = "logit"), data = hip_poly)
-summary(m1_3b)
-
-###change_0601
 ```
 
-#### Model result on outcome 2: refracture_outcome, by different drug classification
-```{r model_outcome_2, echo=FALSE, warning=FALSE}
-###change_0601
 
-# Model m2_1a: outcome 1, by Risk, nearest match 
-m2_1a = glm(as.formula(formula_risk_4), family = binomial(link = "logit"), data = matched_refracture)   
-summary(m2_1a)
+#### Logistic Model
+```{r logit_model, echo=FALSE, warning=FALSE}
 
-m2_1a_high = glm_notnull(as.formula(formula_risk_4), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
-m2_1a_mid = glm_notnull(as.formula(formula_risk_4), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
-m2_1a_low = glm_notnull(as.formula(formula_risk_4), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+####(New Updates)####
+m_cate_1ogit_1 <- glm(as.formula(paste("exitus_readm_outcome", formula_cate)), family = binomial(link = "logit"), data = hip_poly)
+summary(m_cate_1ogit_1)
 
-# Model m2_1b: outcome 1, by Risk, no match
-m2_1b = glm(as.formula(formula_risk_2), family = binomial(link = "logit"), data = hip_poly)  
-summary(m2_1b)
+m_cate2_1ogit_1 <- glm(as.formula(paste("exitus_readm_outcome", formula_cate2)), family = binomial(link = "logit"), data = hip_poly) 
+summary(m_cate2_1ogit_1)
 
+m_gp_1ogit_1 <- glm(as.formula(paste("exitus_readm_outcome", formula_gp)), family = binomial(link = "logit"), data = hip_poly) 
+summary(m_gp_1ogit_1)
 
-# Model m2_2a: outcome 1, by Grandparent, nearest match 
+m_risk_1ogit_1 <- glm(as.formula(paste("exitus_readm_outcome", formula_risk)), family = binomial(link = "logit"), data = hip_poly) 
+summary(m_risk_1ogit_1)
 
-m2_2a = glm(as.formula(formula_gp_4), family = binomial(link = "logit"), data = matched_refracture)
-summary(m2_2a)
+m_cate_1ogit_2 <- glm(as.formula(paste("refracture_outcome", formula_cate)), family = binomial(link = "logit"), data = hip_poly) 
+summary(m_cate_1ogit_2)
 
-m2_2a_high = glm_notnull(as.formula(formula_gp_4), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
-m2_2a_mid = glm_notnull(as.formula(formula_gp_4), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
-m2_2a_low = glm_notnull(as.formula(formula_gp_4), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+m_gp_1ogit_2 <- glm(as.formula(paste("refracture_outcome", formula_gp)), family = binomial(link = "logit"), data = hip_poly) 
+summary(m_gp_1ogit_2)
 
-# Model m2_2b: outcome 1, by Grandparent, no match 
+m_risk_1ogit_2 <- glm(as.formula(paste("refracture_outcome", formula_risk)), family = binomial(link = "logit"), data = hip_poly) 
+summary(m_risk_1ogit_2)
 
+####(New Updates)####
+```
 
-m2_2b =glm(as.formula(formula_gp_2), family = binomial(link = "logit"), data = hip_poly)
-summary(m2_2b)
+#### Linear Model
+```{r linear_model, echo=FALSE, warning=FALSE}
 
-# Model m2_3a: outcome 1, by Drug Category, nearest match 
+####(New Updates)####
+m_cate_1pm_1 <- lm(as.formula(paste("exitus_readm_outcome_num", formula_cate)), data = hip_poly) 
+summary(m_cate_1pm_1)
 
+m_cate2_1pm_1 <- lm(as.formula(paste("exitus_readm_outcome_num", formula_cate2)), data = hip_poly) 
+summary(m_cate2_1pm_1)
 
-m2_3a = glm(as.formula(formula_cate_4), family = binomial(link = "logit"), data = matched_refracture)
-summary(m2_3a)
+m_gp_1pm_1 <- lm(as.formula(paste("exitus_readm_outcome_num", formula_gp)), data = hip_poly) 
+summary(m_gp_1pm_1)
 
-m2_3a_high = glm_notnull(as.formula(formula_cate_4), family = binomial(link = "logit"), data = Poly_refr_high)  ###change_0512
-m2_3a_mid = glm_notnull(as.formula(formula_cate_4), family = binomial(link = "logit"), data = Poly_refr_mid)  ###change_0512
-m2_3a_low = glm_notnull(as.formula(formula_cate_4), family = binomial(link = "logit"), data = Poly_refr_low)  ###change_0512
+m_risk_1pm_1 <- lm(as.formula(paste("exitus_readm_outcome_num", formula_risk)), data = hip_poly) 
+summary(m_risk_1pm_1)
 
-# Model m2_3b: outcome 1, by Drug Category, no match
+m_cate_1pm_2 <- lm(as.formula(paste("refracture_outcome_num", formula_cate)), data = hip_poly) 
+summary(m_cate_1pm_2)
 
-m2_3b = glm(as.formula(formula_cate_2), family = binomial(link = "logit"), data = hip_poly)
-summary(m2_3b)
+m_gp_1pm_2 <- lm(as.formula(paste("refracture_outcome_num", formula_gp)), data = hip_poly) 
+summary(m_gp_1pm_2)
 
-###change_0601
+m_risk_1pm_2 <- lm(as.formula(paste("refracture_outcome_num", formula_risk)), data = hip_poly) 
+summary(m_risk_1pm_2)
+
+####(New Updates)####
 ```
 
 
 
 ```{r result_saving_model, echo=FALSE, warning=FALSE}
-####(Updates)####
+####(New Updates)####
+
+# Function to calculate AUC manually
+calculate_auc <- function(true_labels, predicted_probs) {
+  roc_data <- data.frame(prob = predicted_probs, label = true_labels)
+  
+  roc_data <- roc_data[order(-roc_data$prob), ]
+  
+  n_pos <- sum(roc_data$label == 1)
+  n_neg <- sum(roc_data$label == 0)
+  
+  tpr <- c(0) 
+  fpr <- c(0) 
+  tp <- 0     
+  fp <- 0   
+  
+  for (i in 1:nrow(roc_data)) {
+    if (roc_data$label[i] == 1) {
+      tp <- tp + 1  
+    } else {
+      fp <- fp + 1  
+    }
+    tpr <- c(tpr, tp / n_pos) 
+    fpr <- c(fpr, fp / n_neg) 
+  }
+  
+  auc <- sum(diff(fpr) * (head(tpr, -1) + tail(tpr, -1)) / 2)
+  
+  return(auc)
+}
+
+
 extract_model_info <- function(model){
   # Get summary
   model_summary <- capture.output(summary(model))
@@ -1439,29 +1381,16 @@ extract_model_info <- function(model){
   if(nrow(conf_int_95) != nrow(coefficients)){
     conf_int_95<- as.data.frame(conf_int_95) %>% filter(row.names(conf_int_95) %in% row.names(coefficients))
   }
-  conf_int_99 <- conf_int_95
-  conf_int_99[,1] <- NA
-  conf_int_99[,2] <- NA
-  tryCatch(
-  {
-    conf_int_99 <- suppressMessages(confint(model, level = 0.99)) # 99% 
-  },
-  error=function(cond) {
-    log_error(paste0(cond))
-    conf_int_99[,1] <- NA
-    conf_int_99[,2] <- NA
-  }
-  )
-  if(nrow(conf_int_99) != nrow(coefficients)){
-    conf_int_99<- as.data.frame(conf_int_99) %>% filter(row.names(conf_int_99) %in% row.names(coefficients))
-  }
+  
   ######## END UPDATE IACS ########
   odds_ratios <- exp(coefficients[, "Estimate"])
   aic <- AIC(model)
   bic <- BIC(model)
   logLikelihood <- logLik(model)
+  pseudo_r2 <- 1 - (model$deviance / model$null.deviance)
+  auc <- calculate_auc(hip_poly$exitus_readm_outcome, predict(model, type = "response"))
+  
 
-  # Combine into a data frame
   results_df <- data.frame(
     Estimate = coefficients[, "Estimate"],
     StdError = coefficients[, "Std. Error"],
@@ -1469,23 +1398,21 @@ extract_model_info <- function(model){
     ZValue = coefficients[, 3],
     ci_95_upper = conf_int_95[,2],
     ci_95_lower = conf_int_95[,1],
-    ci_99_upper = conf_int_99[,2],
-    ci_99_lower = conf_int_99[,1],
     OddsRatio = odds_ratios,
     OR_ci_95_upper = exp(conf_int_95[,2]),
     OR_ci_95_lower = exp(conf_int_95[,1]),
-    OR_ci_99_upper = exp(conf_int_99[,2]),
-    OR_ci_99_lower = exp(conf_int_99[,1]),
     AIC = aic,
     BIC = bic,
-    LogLikelihood = logLikelihood
+    LogLikelihood = logLikelihood,
+    Pseudo_r2 = pseudo_r2,
+    AUC = auc
   )
   
   list(summary = model_summary, results = results_df)
 }
 
-outcome_1_list <- list(m1_1a, m1_1b, m1_2a, m1_2b, m1_3a, m1_3b)
-outcome_2_list <- list(m2_1a, m2_1b, m2_2a, m2_2b, m2_3a, m2_3b)
+outcome_1_list <- list(m_cate_1ogit_1, m_cate2_1ogit_1, m_gp_1ogit_1, m_risk_1ogit_1)
+outcome_2_list <- list(m_cate_1ogit_2, m_gp_1ogit_2, m_risk_1ogit_2)
 
 
 output_folder <- "../../outputs" # dir_flag
@@ -1495,10 +1422,10 @@ for (i in 1:length(outcome_1_list)) {
   model_info <- extract_model_info(outcome_1_list[[i]])
   
   # Write Summary
-  writeLines(model_info$summary, file.path(output_folder, paste0("model_outcome_1_", i, "_summary.txt")))
+  writeLines(model_info$summary, file.path(output_folder, paste0("logit_outcome_1_", i, "_summary.txt")))
   
   # Write Odds Ratios
-  write.csv(model_info$results, file.path(output_folder, paste0("model_outcome_1_", i, "_estimates.csv")), row.names = TRUE)
+  write.csv(model_info$results, file.path(output_folder, paste0("logit_outcome_1_", i, "_estimates.csv")), row.names = TRUE)
   
 }
 
@@ -1506,65 +1433,80 @@ for (i in 1:length(outcome_2_list)) {
   model_info <- extract_model_info(outcome_2_list[[i]])
   
   # Write Summary
-  writeLines(model_info$summary, file.path(output_folder, paste0("model_outcome_2_", i, "_summary.txt")))
+  writeLines(model_info$summary, file.path(output_folder, paste0("logit_outcome_2_", i, "_summary.txt")))
   
   # Write Odds Ratios
-  write.csv(model_info$results, file.path(output_folder, paste0("model_outcome_2_", i, "_estimates.csv")), row.names = TRUE)
+  write.csv(model_info$results, file.path(output_folder, paste0("logit_outcome_2_", i, "_estimates.csv")), row.names = TRUE)
   
 }
+
+####(New Updates)####
 ```
 
 
 
 ```{r result_saving_model_2, echo=FALSE, warning=FALSE}
-###change_0512
-extract_model_info_2 <- function(model) {
-  
-  if (is.null(model)) {
-  cat("Provided model is NULL. Returning NULL.\n")
-  return(NULL)
-  }
-  
+
+####(New Updates)####
+extract_model_info_2 <- function(model){
   # Get summary
   model_summary <- capture.output(summary(model))
   
-  list(summary = model_summary)
-}
+  # estimates and std error
+  coefficients <- summary(model)$coefficients
+  aic <- AIC(model)
+  bic <- BIC(model)
+  r_squared <- summary(model)$r.squared
+  adj_r_squared <- summary(model)$adj.r.squared
+  f_statistic <- summary(model)$fstatistic[1]
+  f_df1 <- summary(model)$fstatistic[2]
+  f_df2 <- summary(model)$fstatistic[3]
+  f_p_value <- pf(f_statistic, f_df1, f_df2, lower.tail = FALSE)
+  residual_se <- summary(model)$sigma
 
-outcome_1_list_poly <- list(m1_1a_high, m1_1a_mid, m1_1a_low, m1_2a_high, m1_2a_mid, m1_2a_low, m1_3a_high, m1_3a_mid, m1_3a_low)
-outcome_2_list_poly <- list(m2_1a_high, m2_1a_mid, m2_1a_low, m2_2a_high, m2_2a_mid, m2_2a_low, m2_3a_high, m2_3a_mid, m2_3a_low)
 
-
-#output_folder <- "../../outputs" # dir_flag
-
-for (i in 1:length(outcome_1_list_poly)) {
-  output_name_txt <- file.path(output_folder, paste0("model_poly_summary_1_", i, ".txt"))
+  # Combine into a data frame
+  results_df <- data.frame(
+    Estimate = coefficients[, "Estimate"],
+    StdError = coefficients[, "Std. Error"],
+    PValue = coefficients[, "Pr(>|t|)"],
+    TValue = coefficients[, 3],
+    AIC = aic,
+    BIC = bic,
+    R_squared = r_squared,
+    R_squared_adj = adj_r_squared,
+    F_stat = f_statistic,
+    F_stat_p = f_p_value,
+    Residual_se = residual_se
+  )
   
-  model_info <- extract_model_info_2(outcome_1_list_poly[[i]])
-  # Write Summary
-
-  if (is.null(model_info)) {
-    writeLines("Model information is NULL.", output_name_txt)
-  } else {
-    # Write Summary
-    writeLines(model_info$summary, output_name_txt)
-  }
-
+  list(summary = model_summary, results = results_df)
 }
 
-for (i in 1:length(outcome_2_list_poly)) {
-  output_name_txt <- file.path(output_folder, paste0("model_poly_summary_2_", i, ".txt"))
+outcome_3_list <- list(m_cate_1pm_1, m_cate2_1pm_1, m_gp_1pm_1, m_risk_1pm_1)
+outcome_4_list <- list(m_cate_1pm_1, m_gp_1pm_1, m_risk_1pm_1)
+
+for (i in 1:length(outcome_3_list)) {
   
-  model_info <- extract_model_info_2(outcome_2_list_poly[[i]])
+  model_info <- extract_model_info_2(outcome_3_list[[i]])
+  
   # Write Summary
-
-  if (is.null(model_info)) {
-    writeLines("Model information is NULL.", output_name_txt)
-  } else {
-    # Write Summary
-    writeLines(model_info$summary, output_name_txt)
-  }
-
+  writeLines(model_info$summary, file.path(output_folder, paste0("lpm_outcome_1_", i, "_summary.txt")))
+  
+  # Write Odds Ratios
+  write.csv(model_info$results, file.path(output_folder, paste0("lpm_outcome_1_", i, "_estimates.csv")), row.names = TRUE)
+  
 }
-###change_0512
+
+for (i in 1:length(outcome_4_list)) {
+  model_info <- extract_model_info_2(outcome_4_list[[i]])
+  
+  # Write Summary
+  writeLines(model_info$summary, file.path(output_folder, paste0("lpm_outcome_2_", i, "_summary.txt")))
+  
+  # Write Odds Ratios
+  write.csv(model_info$results, file.path(output_folder, paste0("lpm_outcome_2_", i, "_estimates.csv")), row.names = TRUE)
+  
+}
+####(New Updates)####
 ```
